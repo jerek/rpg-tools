@@ -1,0 +1,105 @@
+.dice {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+}
+
+.dice .dice-die-wrapper {
+    padding: 20px 0;
+    text-align: center;
+}
+
+.dice[data-dice-count="1"] .dice-die-wrapper {
+    width: 100%;
+}
+
+.dice[data-dice-count="2"] .dice-die-wrapper {
+    width: 50%;
+}
+
+.dice[data-dice-count="3"] .dice-die-wrapper {
+    width: 33.333%;
+}
+
+.dice[data-dice-count="4"] .dice-die-wrapper {
+    width: 25%;
+}
+
+.dice[data-dice-count="5"] .dice-die-wrapper {
+    width: 20%;
+}
+
+.dice[data-dice-count="6"] .dice-die-wrapper {
+    width: 16.666%;
+}
+
+.dice[data-dice-count="7"] .dice-die-wrapper {
+    width: 14.285%;
+}
+
+.dice[data-dice-count="8"] .dice-die-wrapper {
+    width: 12.5%;
+}
+
+.dice[data-dice-count="9"] .dice-die-wrapper {
+    width: 11.111%;
+}
+
+.dice[data-dice-count="10"] .dice-die-wrapper {
+    width: 10%;
+}
+
+.dice .dice-die {
+    background: #333;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF4C4C4C, endColorstr=#FF000000);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF4C4C4C, endColorstr=#FF000000)";
+    background-image: -moz-linear-gradient(top, #4c4c4c, #000);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4c4c4c), to(#000));
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,.65);
+    color: #ddd;
+    display: inline-block;
+    font-size: 30px;
+    margin: 0 0 5px;
+    outline: 0;
+    padding: 5px 10px;
+    text-decoration: none;
+    text-shadow: 0 0 20px #000;
+}
+
+.dice .dice-die.large {
+    border-radius: 22px;
+    font-size: 50px;
+    padding: 10px 20px;
+}
+
+.dice .dice-die:hover {
+    background: #2a2a2a;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF000000, endColorstr=#FF333333);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FF000000, endColorstr=#FF333333)";
+    background-image: -moz-linear-gradient(top, #000, #333);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#333));
+    box-shadow: 0 0 20px #000;
+    -moz-box-shadow: 0 0 20px #000;
+    -webkit-box-shadow: 0 0 20px #000;
+}
+
+.dice .dice-die-result {
+    color: #808080;
+    font-size: 30px;
+    padding: 5px 10px;
+    transition: opacity 1.7s;
+}
