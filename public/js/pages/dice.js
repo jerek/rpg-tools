@@ -61,23 +61,6 @@ var Page_Dice = new function() {
         target.attr('data-dice-count', config.dice.length);
     }
 
-    function action_roll(sides) {
-        if (!isNaN(sides)) {
-            var result = Base.roll(sides);
-
-            if (!rolls.hasOwnProperty(sides)) {
-                rolls[sides] = [];
-            }
-            rolls[sides].push(result);
-
-            LocalStorage.set('rolls', rolls);
-
-            display_result(sides, result);
-        } else {
-            // TODO: multi-side options
-        }
-    }
-
     function display_result(sides, result, doNotAnimate) {
         if (elements.dice[sides] && elements.dice[sides].log) {
             var animate = !doNotAnimate && config.animateRolls;
@@ -121,6 +104,23 @@ var Page_Dice = new function() {
                 .css({
                     color: '#111'
                 });
+        }
+    }
+
+    function action_roll(sides) {
+        if (!isNaN(sides)) {
+            var result = Base.roll(sides);
+
+            if (!rolls.hasOwnProperty(sides)) {
+                rolls[sides] = [];
+            }
+            rolls[sides].push(result);
+
+            LocalStorage.set('rolls', rolls);
+
+            display_result(sides, result);
+        } else {
+            // TODO: multi-side options
         }
     }
 
