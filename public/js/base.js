@@ -87,6 +87,7 @@ var Base = new function() {
     }
 
     function display_page(pageObject) {
+        $(document.body).attr('data-page', pageObject.path || pageObject.root);
         var pageClassName = utility_ucFirst(utility_camelCase(pageObject.path || 'home'));
         if (window['Page_' + pageClassName]) {
             elements.body.empty();

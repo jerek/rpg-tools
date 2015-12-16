@@ -1,3 +1,7 @@
+body[data-page="dice"] .body {
+    padding: 0;
+}
+
 .dice-wrapper {
     display: table;
     width: 100%;
