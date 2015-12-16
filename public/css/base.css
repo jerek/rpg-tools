@@ -55,3 +55,9 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 100%;
     width: 768px;
 }
+
+@media screen and (max-width: 339px) {
+    .header-inner > nav a {
+        font-size: 16px;
+    }
+}
