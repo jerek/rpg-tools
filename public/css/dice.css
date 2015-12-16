@@ -1,64 +1,16 @@
-.dice {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-flex-wrap: nowrap;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    -webkit-justify-content: flex-start;
-    -ms-flex-pack: start;
-    justify-content: flex-start;
-    -webkit-align-content: stretch;
-    -ms-flex-line-pack: stretch;
-    align-content: stretch;
-}
-
-.dice .dice-die-wrapper {
-    padding: 20px 0;
-    text-align: center;
-}
-
-.dice[data-dice-count="1"] .dice-die-wrapper {
+.dice-wrapper {
+    display: table;
     width: 100%;
 }
 
-.dice[data-dice-count="2"] .dice-die-wrapper {
-    width: 50%;
+.dice {
+    display: table-row;
 }
 
-.dice[data-dice-count="3"] .dice-die-wrapper {
-    width: 33.333%;
-}
-
-.dice[data-dice-count="4"] .dice-die-wrapper {
-    width: 25%;
-}
-
-.dice[data-dice-count="5"] .dice-die-wrapper {
-    width: 20%;
-}
-
-.dice[data-dice-count="6"] .dice-die-wrapper {
-    width: 16.666%;
-}
-
-.dice[data-dice-count="7"] .dice-die-wrapper {
-    width: 14.285%;
-}
-
-.dice[data-dice-count="8"] .dice-die-wrapper {
-    width: 12.5%;
-}
-
-.dice[data-dice-count="9"] .dice-die-wrapper {
-    width: 11.111%;
-}
-
-.dice[data-dice-count="10"] .dice-die-wrapper {
-    width: 10%;
+.dice .dice-die-wrapper {
+    display: table-cell;
+    padding: 20px 0;
+    text-align: center;
 }
 
 .dice .dice-die {
@@ -102,4 +54,18 @@
     font-size: 30px;
     padding: 5px 10px;
     transition: opacity 1.7s;
+}
+
+@media screen and (max-width: 599px) {
+    .dice .dice-die, .dice .dice-die-result {
+        font-size: 25px;
+        padding: 4px 8px;
+    }
+}
+
+@media screen and (max-width: 399px) {
+    .dice .dice-die, .dice .dice-die-result {
+        font-size: 20px;
+        padding: 3px 6px;
+    }
 }

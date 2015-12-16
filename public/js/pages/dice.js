@@ -13,7 +13,8 @@ var Page_Dice = new function() {
     };
 
     function display_body() {
-        elements.dice = Base.addElement('dice', elements.container);
+        elements.diceWrapper = Base.addElement('dice-wrapper', elements.container);
+        elements.dice = Base.addElement('dice', elements.diceWrapper);
         display_dice(elements.dice);
 
         rolls = LocalStorage.get('rolls') || {};
