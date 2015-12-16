@@ -21,8 +21,8 @@ var Page_Dice = new function() {
         if (!$.isEmptyObject(rolls)) {
             for (var die in rolls) {
                 if (rolls.hasOwnProperty(die) && rolls[die].length) {
-                    for (var i = 0, roll; roll = rolls[die][i]; i++) {
-                        display_result(die, roll, true);
+                    for (var i = 0, rollObject; rollObject = rolls[die][i]; i++) {
+                        display_result(die, rollObject, true);
                     }
                 }
             }
@@ -61,7 +61,7 @@ var Page_Dice = new function() {
         target.attr('data-dice-count', config.dice.length);
     }
 
-    function display_result(sides, result, doNotAnimate) {
+    function display_result(sides, rollObject, doNotAnimate) {
         if (elements.dice[sides] && elements.dice[sides].log) {
             var animate = !doNotAnimate && config.animateRolls;
             var css = animate ?
@@ -69,17 +69,18 @@ var Page_Dice = new function() {
                 { color: '#111' };
             var die = Base.addElement('dice-die-result', elements.dice[sides].log, {
                 prepend: true,
-                css: css
+                css: css,
+                title: rollObject.datetime
             });
 
             if (animate) {
-                display_resultAnimation(sides, die, result, 0);
+                display_resultAnimation(sides, die, rollObject.result, 0);
 
                 setTimeout(function () {
                     die.css({opacity: ''});
                 }, 1);
             } else {
-                die.html(result);
+                die.html(rollObject.result);
             }
         }
     }
@@ -114,11 +115,17 @@ var Page_Dice = new function() {
             if (!rolls.hasOwnProperty(sides)) {
                 rolls[sides] = [];
             }
-            rolls[sides].push(result);
+
+            var rollObject = {
+                datetime: DateFormat.format.date(new Date(), "yyyy-dd-MM hh:mm:ss"),
+                result: result
+            };
+
+            rolls[sides].push(rollObject);
 
             LocalStorage.set('rolls', rolls);
 
-            display_result(sides, result);
+            display_result(sides, rollObject);
         } else {
             // TODO: multi-side options
         }
