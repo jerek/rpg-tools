@@ -15,6 +15,18 @@ var Page_Dice = new function() {
     function display_body() {
         elements.dice = Base.addElement('dice', elements.container);
         display_dice(elements.dice);
+
+        rolls = LocalStorage.get('rolls') || {};
+
+        if (!$.isEmptyObject(rolls)) {
+            for (var die in rolls) {
+                if (rolls.hasOwnProperty(die) && rolls[die].length) {
+                    for (var i = 0, roll; roll = rolls[die][i]; i++) {
+                        display_result(die, roll, true);
+                    }
+                }
+            }
+        }
     }
 
     function display_dice(target) {
@@ -53,32 +65,39 @@ var Page_Dice = new function() {
         if (!isNaN(sides)) {
             var result = Base.roll(sides);
 
-            if (!rolls[sides]) {
+            if (!rolls.hasOwnProperty(sides)) {
                 rolls[sides] = [];
             }
-            rolls[sides].unshift(result);
+            rolls[sides].push(result);
 
-            if (elements.dice[sides] && elements.dice[sides].log) {
-                var css = config.animateRolls ?
-                    { opacity: '0' } :
-                    { color: '#111' };
-                var die = Base.addElement('dice-die-result', elements.dice[sides].log, {
-                    prepend: true,
-                    css: css
-                });
+            LocalStorage.set('rolls', rolls);
 
-                if (config.animateRolls) {
-                    display_resultAnimation(sides, die, result, 0);
-
-                    setTimeout(function () {
-                        die.css({opacity: ''});
-                    }, 1);
-                } else {
-                    die.html(result);
-                }
-            }
+            display_result(sides, result);
         } else {
             // TODO: multi-side options
+        }
+    }
+
+    function display_result(sides, result, doNotAnimate) {
+        if (elements.dice[sides] && elements.dice[sides].log) {
+            var animate = !doNotAnimate && config.animateRolls;
+            var css = animate ?
+                { opacity: '0' } :
+                { color: '#111' };
+            var die = Base.addElement('dice-die-result', elements.dice[sides].log, {
+                prepend: true,
+                css: css
+            });
+
+            if (animate) {
+                display_resultAnimation(sides, die, result, 0);
+
+                setTimeout(function () {
+                    die.css({opacity: ''});
+                }, 1);
+            } else {
+                die.html(result);
+            }
         }
     }
 
