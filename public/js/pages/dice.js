@@ -118,7 +118,7 @@ var Page_Dice = new function() {
             }
 
             var rollObject = {
-                datetime: DateFormat.format.date(new Date(), "yyyy-MM-dd hh:mm:ss"),
+                datetime: DateFormat.format.date(new Date(), "yyyy-MM-dd HH:mm:ss"),
                 result: result
             };
 
