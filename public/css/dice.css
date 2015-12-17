@@ -7,6 +7,16 @@ body[data-page="dice"] .body {
     width: 100%;
 }
 
+.dice-controls {
+    margin: 10px 0 0;
+    text-align: right;
+}
+
+.dice-controls a {
+    cursor: pointer;
+    margin: 0 0 0 10px;
+}
+
 .dice {
     display: table-row;
 }

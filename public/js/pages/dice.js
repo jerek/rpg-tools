@@ -9,15 +9,67 @@ var Page_Dice = new function() {
     this.init = function(target) {
         elements.container = target;
 
+        data_load();
+
+        display_controls();
         display_body();
     };
 
+    function display_controls() {
+        if (elements.controls) {
+            elements.controls.remove && elements.controls.remove();
+        }
+
+        elements.controls = Base.addElement('dice-controls', elements.container);
+
+        elements.animateControl = Base.addElement('dice-controls-animate', elements.controls, {
+            element: 'a',
+            text: 'Animation',
+            click: function() {
+                config.animateRolls = !config.animateRolls;
+                data_save();
+                Page_Dice.init(elements.container);
+            },
+            mousedown: Base.returnFalse
+        });
+        Base.addElement(null, elements.animateControl, {
+            element: 'i',
+            prepend: true,
+            'class': 'fa fa-fw fa-' + (config.animateRolls ? 'check-square-o' : 'square-o')
+        });
+
+        elements.clearControl = Base.addElement('dice-controls-clear', elements.controls, {
+            element: 'a',
+            text: 'Clear',
+            click: function() {
+                if ($.isEmptyObject(rolls)) {
+                    Page_Dice.init(elements.container);
+                } else {
+                    if (confirm('Clear ALL roll data?')) {
+                        rolls = {};
+                        data_save();
+                        Page_Dice.init(elements.container);
+                    }
+                }
+            },
+            mousedown: Base.returnFalse
+        });
+        Base.addElement(null, elements.clearControl, {
+            element: 'i',
+            prepend: true,
+            'class': 'fa fa-fw fa-times'
+        });
+    }
+
     function display_body() {
+        if (elements.dice && elements.diceWrapper) {
+            elements.dice.remove && elements.dice.remove();
+            elements.diceWrapper.remove && elements.diceWrapper.remove();
+        }
+
         elements.diceWrapper = Base.addElement('dice-wrapper', elements.container);
         elements.dice = Base.addElement('dice', elements.diceWrapper);
         display_dice(elements.dice);
-
-        rolls = LocalStorage.get('rolls') || {};
 
         if (!$.isEmptyObject(rolls)) {
             for (var die in rolls) {
@@ -133,11 +185,27 @@ var Page_Dice = new function() {
 
             rolls[sides].push(rollObject);
 
-            LocalStorage.set('rolls', rolls);
+            data_save();
 
             display_result(sides, rollObject);
         } else {
             // TODO: multi-side options
+        }
+    }
+
+    function data_save() {
+        LocalStorage.set('dice-settings', {
+            animateRolls: config.animateRolls
+        });
+        LocalStorage.set('rolls', rolls);
+    }
+
+    function data_load() {
+        rolls = LocalStorage.get('rolls') || {};
+
+        var settings = LocalStorage.get('dice-settings');
+        if (typeof settings == 'object') {
+            $.extend(config, settings);
         }
     }
 

@@ -58,6 +58,10 @@ var Base = new function() {
         return Math.floor((Math.random() * sides) + 1);
     };
 
+    this.returnFalse = function () {
+        return false;
+    };
+
     function display_header(target) {
         utility_addElement('header-inner', target);
         utility_addElement('logo', elements.headerInner);
