@@ -73,12 +73,12 @@ var Page_Dice = new function() {
                 css: css
             });
             die
-                .mouseenter(function () {
+                .mouseenter((function (rollObject) {
                     Base.addElement('dice-die-result-timestamp', this, {
                         text: DateFormat.format.prettyDate(rollObject.datetime + '.000'),
                         title: rollObject.datetime
                     });
-                })
+                }).bind(die, rollObject))
                 .mouseleave(function () {
                     $('.dice-die-result-timestamp', this).remove();
                 });
