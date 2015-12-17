@@ -54,7 +54,17 @@ body[data-page="dice"] .body {
     color: #808080;
     font-size: 30px;
     padding: 5px 10px;
+    position: relative;
     transition: opacity 1.7s;
+}
+
+.dice .dice-die-result .dice-die-result-timestamp {
+    bottom: 0;
+    cursor: default;
+    font-size: 10px;
+    left: -50px;
+    position: absolute;
+    right: -50px;
 }
 
 @media screen and (max-width: 599px) {

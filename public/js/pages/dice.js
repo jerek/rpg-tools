@@ -70,9 +70,18 @@ var Page_Dice = new function() {
                 { color: '#111' };
             var die = Base.addElement('dice-die-result', elements.dice[sides].log, {
                 prepend: true,
-                css: css,
-                title: rollObject.datetime
+                css: css
             });
+            die
+                .mouseenter(function () {
+                    Base.addElement('dice-die-result-timestamp', this, {
+                        text: DateFormat.format.prettyDate(rollObject.datetime + '.000'),
+                        title: rollObject.datetime
+                    });
+                })
+                .mouseleave(function () {
+                    $('.dice-die-result-timestamp', this).remove();
+                });
 
             if (animate) {
                 display_resultAnimation(sides, die, rollObject.result, 0);
