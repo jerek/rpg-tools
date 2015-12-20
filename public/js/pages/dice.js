@@ -1,15 +1,11 @@
 var Page_Dice = new function() {
     var config = {
-        animateRolls: true,
         dice: [ 'd', 4, 6, 8, 10, 12, 20, 100 ]
     };
     var elements = {};
-    var rolls = {};
 
     this.init = function(target) {
         elements.container = target;
-
-        data_load();
 
         display_controls();
         display_body();
@@ -22,43 +18,7 @@ var Page_Dice = new function() {
 
         elements.controls = Base.addElement('dice-controls', elements.container);
 
-        elements.animateControl = Base.addElement('dice-controls-animate', elements.controls, {
-            element: 'a',
-            text: 'Animation',
-            click: function() {
-                config.animateRolls = !config.animateRolls;
-                data_save();
-                Page_Dice.init(elements.container);
-            },
-            mousedown: Base.returnFalse
-        });
-        Base.addElement(null, elements.animateControl, {
-            element: 'i',
-            prepend: true,
-            'class': 'fa fa-fw fa-' + (config.animateRolls ? 'check-square-o' : 'square-o')
-        });
-
-        elements.clearControl = Base.addElement('dice-controls-clear', elements.controls, {
-            element: 'a',
-            text: 'Clear',
-            click: function() {
-                if ($.isEmptyObject(rolls)) {
-                    Page_Dice.init(elements.container);
-                } else {
-                    if (confirm('Clear ALL roll data?')) {
-                        rolls = {};
-                        data_save();
-                        Page_Dice.init(elements.container);
-                    }
-                }
-            },
-            mousedown: Base.returnFalse
-        });
-        Base.addElement(null, elements.clearControl, {
-            element: 'i',
-            prepend: true,
-            'class': 'fa fa-fw fa-times'
-        });
+        Dice.displayControls(elements.controls, Page_Dice.init.bind(null, elements.container));
     }
 
     function display_body() {
@@ -71,11 +31,12 @@ var Page_Dice = new function() {
         elements.dice = Base.addElement('dice', elements.diceWrapper);
         display_dice(elements.dice);
 
+        var rolls = Dice.getRolls();
         if (!$.isEmptyObject(rolls)) {
             for (var die in rolls) {
                 if (rolls.hasOwnProperty(die) && rolls[die].length) {
                     for (var i = 0, rollObject; rollObject = rolls[die][i]; i++) {
-                        display_result(die, rollObject, true);
+                        display_result(rollObject, true);
                     }
                 }
             }
@@ -96,12 +57,7 @@ var Page_Dice = new function() {
         elements.dice = {};
         for (var i = 0, die; die = config.dice[i]; i++) {
             var wrapper = Base.addElement('dice-die-wrapper', target);
-            var dieButton = Base.addElement('dice-die', wrapper, {
-                element: 'a',
-                href: 'javascript:;',
-                text: die,
-                click: action_roll.bind(null, die)
-            });
+            var dieButton = Dice.appendDie(wrapper, die, action_roll);
             var log = Base.addElement('dice-die-log', wrapper);
 
             elements.dice[die] = {
@@ -114,112 +70,19 @@ var Page_Dice = new function() {
         target.attr('data-dice-count', config.dice.length);
     }
 
-    function display_result(sides, rollObject, doNotAnimate) {
-        if (elements.dice[sides] && elements.dice[sides].log) {
-            var animate = !doNotAnimate && config.animateRolls;
-            var css = animate ?
-                { opacity: '0' } :
-                { color: '#111' };
-            var die = Base.addElement('dice-die-result', elements.dice[sides].log, {
-                prepend: true,
-                css: css
-            });
-            die
-                .mouseenter((function (rollObject) {
-                    Base.addElement('dice-die-result-timestamp', this, {
-                        text: DateFormat.format.prettyDate(rollObject.datetime + '.000'),
-                        title: rollObject.datetime
-                    });
-                }).bind(die, rollObject))
-                .mouseleave(function () {
-                    $('.dice-die-result-timestamp', this).remove();
-                });
-
-            if (animate) {
-                display_resultAnimation(sides, die, rollObject.result, 0);
-
-                setTimeout(function () {
-                    die.css({opacity: ''});
-                }, 1);
-            } else {
-                die.html(rollObject.result);
-            }
-        }
-    }
-
-    function display_resultAnimation(sides, target, result, count, current) {
-        if (count < 30) {
-            var excludes = [];
-            if (count >=29) {
-                excludes.push(result);
-            }
-            if (!isNaN(current) && current != excludes[0]) {
-                excludes.push(current);
-            }
-
-            current = utility_getExclusionaryRoll(sides, excludes);
-            target.html(current);
-
-            setTimeout(display_resultAnimation.bind(this, sides, target, result, count + 1, current), count * count / 5);
-        } else {
-            target
-                .html(result)
-                .css({
-                    color: '#111'
-                });
+    function display_result(rollObject, suppressAnimation) {
+        if (elements.dice[rollObject.sides] && elements.dice[rollObject.sides].log) {
+            Dice.appendResult(elements.dice[rollObject.sides].log, rollObject, suppressAnimation);
         }
     }
 
     function action_roll(sides) {
         if (!isNaN(sides)) {
-            var result = Base.roll(sides);
+            var rollObject = Dice.roll({ sides: sides });
 
-            if (!rolls.hasOwnProperty(sides)) {
-                rolls[sides] = [];
-            }
-
-            var rollObject = {
-                datetime: DateFormat.format.date(new Date(), "yyyy-MM-dd HH:mm:ss"),
-                result: result
-            };
-
-            rolls[sides].push(rollObject);
-
-            data_save();
-
-            display_result(sides, rollObject);
+            display_result(rollObject);
         } else {
             // TODO: multi-side options
-        }
-    }
-
-    function data_save() {
-        LocalStorage.set('dice-settings', {
-            animateRolls: config.animateRolls
-        });
-        LocalStorage.set('rolls', rolls);
-    }
-
-    function data_load() {
-        rolls = LocalStorage.get('rolls') || {};
-
-        var settings = LocalStorage.get('dice-settings');
-        if (typeof settings == 'object') {
-            $.extend(config, settings);
-        }
-    }
-
-    function utility_getExclusionaryRoll(sides, excludes) {
-        if (excludes.length >= sides) {
-            excludes.splice(sides - 1);
-        }
-
-        var result = Base.roll(sides);
-
-        if (excludes.indexOf(result) > -1) {
-            return utility_getExclusionaryRoll(sides, excludes);
-        } else {
-            return result;
         }
     }
 };
