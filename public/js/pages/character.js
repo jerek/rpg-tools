@@ -29,9 +29,9 @@ var Page_Character = new function() {
             elements.controls.remove && elements.controls.remove();
         }
 
-        elements.controls = Base.addElement('dice-controls', elements.container);
+        elements.controls = Base.addElement('character-controls', elements.container);
 
-        elements.clearControl = Base.addElement('dice-controls-clear', elements.controls, {
+        elements.clearControl = Base.addElement('character-controls-clear', elements.controls, {
             element: 'a',
             text: 'Clear Rolls',
             click: Dice.clearRolls.bind(Dice, Page_Character.init.bind(null, elements.container)),
@@ -90,6 +90,14 @@ var Page_Character = new function() {
 
         var logInner = Base.addElement('character-attribute-log-inner', log);
 
+        var logTogglerBg = Base.addElement('character-attribute-log-toggler-background', log);
+
+        var logToggler = Base.addElement('character-attribute-log-toggler fa fa-plus', log, {
+            element: 'a',
+            click: action_toggleLog.bind(elements.attributes[attribute.id], attribute),
+            mousedown: Base.returnFalse
+        });
+
         var rolls = Dice.getRolls({ system: 'deciv', stat: attribute.id, sides: attribute.die });
 
         if (rolls && rolls.length) {
@@ -111,5 +119,19 @@ var Page_Character = new function() {
         });
 
         display_result($('.character-attribute-log-inner', this), rollObject);
+    }
+
+    function action_toggleLog(attribute) {
+        if (this.hasClass('expand')) {
+            this.removeClass('expand');
+            $('.character-attribute-log-toggler', this)
+                .removeClass('fa-minus')
+                .addClass('fa-plus');
+        } else {
+            this.addClass('expand');
+            $('.character-attribute-log-toggler', this)
+                .removeClass('fa-plus')
+                .addClass('fa-minus');
+        }
     }
 };

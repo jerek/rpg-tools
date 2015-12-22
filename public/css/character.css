@@ -13,6 +13,7 @@
 .character-attributes {
     display: table;
     margin: 0 0 25px;
+    overflow: hidden;
     width: 100%;
 }
 
@@ -26,13 +27,14 @@
     height: 24px;
     line-height: 24px;
     padding: 5px 20px 5px 5px;
+    vertical-align: top;
+    white-space: nowrap;
 }
 
 .character-attribute-name {
     cursor: pointer;
     font-family: Montserrat, Verdana, Arial, Helvetica, sans-serif;
     font-weight: bold;
-    white-space: nowrap;
 }
 
 .character-attribute-name:hover {
@@ -50,7 +52,7 @@
 }
 
 .character-attribute-log {
-    padding-right: 5px;
+    padding-right: 25px !important;
     position: relative;
     width: 99%;
 }
@@ -61,7 +63,11 @@
     position: absolute;
     right: 5px;
     top: 5px;
-    white-space: nowrap;
+}
+
+.character-attribute.expand .character-attribute-log-inner {
+    position: static;
+    white-space: normal;
 }
 
 .character-attribute-log .dice-die-result {
@@ -86,4 +92,49 @@
     line-height: 1;
     position: absolute;
     right: -50px;
+}
+
+.character-attribute-log .character-attribute-log-toggler-background {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,eeeeee+100&0+0,1+90,1+100 */
+    background: -moz-linear-gradient(left,  rgba(238,238,238,0) 0%, rgba(238,238,238,1) 90%, rgba(238,238,238,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left,  rgba(238,238,238,0) 0%,rgba(238,238,238,1) 90%,rgba(238,238,238,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right,  rgba(238,238,238,0) 0%,rgba(238,238,238,1) 90%,rgba(238,238,238,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00eeeeee', endColorstr='#eeeeee',GradientType=1 ); /* IE6-9 */
+
+    bottom: 0;
+    left: 50%;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.character-attribute.expand .character-attribute-log .character-attribute-log-toggler-background {
+    display: none;
+}
+
+.character-attribute-log .character-attribute-log-toggler {
+    bottom: 0;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 80%;
+    opacity: 0;
+    padding: 5px 10px;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    text-decoration: none !important;
+    top: 0;
+}
+
+.character-attribute-log:hover .character-attribute-log-toggler {
+    opacity: 1;
+}
+
+.character-attribute-log .character-attribute-log-toggler:before {
+    line-height: 25px;
+}
+
+.character-attribute-log .character-attribute-log-toggler:hover {
+    color: inherit;
 }
