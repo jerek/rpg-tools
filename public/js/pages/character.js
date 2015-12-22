@@ -9,7 +9,9 @@ var Page_Character = new function() {
             }
         }
     };
-    var elements = {};
+    var elements = {
+        attributes: {}
+    };
 
     this.init = function(target) {
         elements.container = target;
@@ -54,67 +56,45 @@ var Page_Character = new function() {
         elements.characterAttributes = Base.addElement('character-attributes', elements.character);
 
         var attributes = systemClass.getAttributes();
-
-        elements.attributes = {};
         for (var i = 0, attribute; attribute = attributes[i]; i++) {
-            elements.attributes[attribute.id] = Base.addElement('character-attribute', elements.characterAttributes);
-
-            var name = Base.addElement('character-attribute-name', elements.attributes[attribute.id], {
-                text: attribute.name,
-                click: action_roll.bind(elements.attributes[attribute.id], attribute),
-                mousedown: Base.returnFalse
-            });
-
-            if (attribute.secondary) {
-                name.addClass('secondary');
-            }
-
-            var stat = Base.addElement('character-attribute-stat', elements.attributes[attribute.id], {
-                text: 10
-            });
-
-            var log = Base.addElement('character-attribute-log', elements.attributes[attribute.id]);
-
-            var logInner = Base.addElement('character-attribute-log-inner', log);
-
-            var rolls = Dice.getRolls({ system: 'deciv', stat: attribute.id, sides: attribute.die });
-
-            if (rolls && rolls.length) {
-                for (var j = 0, roll; roll = rolls[j]; j++) {
-                    Dice.appendResult(logInner, roll, true);
-                }
-            }
+            display_attribute(elements.characterAttributes, attribute);
         }
 
         var emptyRow = Base.addElement('character-attribute', elements.characterAttributes);
         Base.addElement(null, emptyRow);
 
         var technicalAttributes = systemClass.getTechnicalAttributes();
-
-        elements.attributes = {};
         for (var k = 0, technicalAttribute; technicalAttribute = technicalAttributes[k]; k++) {
-            elements.attributes[technicalAttribute.id] = Base.addElement('character-attribute', elements.characterAttributes);
+            display_attribute(elements.characterAttributes, technicalAttribute);
+        }
+    }
 
-            var tName = Base.addElement('character-attribute-name', elements.attributes[technicalAttribute.id], {
-                text: technicalAttribute.name,
-                click: action_roll.bind(elements.attributes[technicalAttribute.id], technicalAttribute),
-                mousedown: Base.returnFalse
-            });
+    function display_attribute(target, attribute) {
+        elements.attributes[attribute.id] = Base.addElement('character-attribute', target);
 
-            var tStat = Base.addElement('character-attribute-stat', elements.attributes[technicalAttribute.id], {
-                text: 10
-            });
+        var name = Base.addElement('character-attribute-name', elements.attributes[attribute.id], {
+            text: attribute.name,
+            click: action_roll.bind(elements.attributes[attribute.id], attribute),
+            mousedown: Base.returnFalse
+        });
 
-            var tLog = Base.addElement('character-attribute-log', elements.attributes[technicalAttribute.id]);
+        if (attribute.secondary) {
+            name.addClass('secondary');
+        }
 
-            var tLogInner = Base.addElement('character-attribute-log-inner', tLog);
+        var stat = Base.addElement('character-attribute-stat', elements.attributes[attribute.id], {
+            text: 10
+        });
 
-            var tRolls = Dice.getRolls({ system: 'deciv', stat: technicalAttribute.id, sides: technicalAttribute.die });
+        var log = Base.addElement('character-attribute-log', elements.attributes[attribute.id]);
 
-            if (tRolls && tRolls.length) {
-                for (var l = 0, tRoll; tRoll = tRolls[l]; l++) {
-                    Dice.appendResult(tLogInner, tRoll, true);
-                }
+        var logInner = Base.addElement('character-attribute-log-inner', log);
+
+        var rolls = Dice.getRolls({ system: 'deciv', stat: attribute.id, sides: attribute.die });
+
+        if (rolls && rolls.length) {
+            for (var j = 0, roll; roll = rolls[j]; j++) {
+                Dice.appendResult(logInner, roll, true);
             }
         }
     }
