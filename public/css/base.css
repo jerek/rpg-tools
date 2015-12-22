@@ -12,6 +12,15 @@ h1, h2, h3, h4, h5, h6 {
     font-family: Montserrat, Verdana, Arial, Helvetica, sans-serif;
 }
 
+a {
+    color: #00c;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 .header {
     background: #e1e1e1;
     height: 40px;
