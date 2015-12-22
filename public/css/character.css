@@ -1,0 +1,73 @@
+.character-attributes {
+    display: table;
+    margin: 0 0 25px;
+    width: 100%;
+}
+
+.character-attribute {
+    display: table-row;
+}
+
+.character-attribute > div {
+    border-radius: 3px;
+    display: table-cell;
+    height: 24px;
+    line-height: 24px;
+    padding: 5px 20px 5px 5px;
+}
+
+.character-attribute-name {
+    color: #333;
+    cursor: pointer;
+    font-family: Montserrat, Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.character-attribute-name:hover {
+    background: #ddd;
+}
+
+.character-attribute-stat {
+    font-family: Montserrat, Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+.character-attribute-log {
+    padding-right: 5px;
+    position: relative;
+    width: 99%;
+}
+
+.character-attribute-log-inner {
+    bottom: 5px;
+    left: 5px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    white-space: nowrap;
+}
+
+.character-attribute-log .dice-die-result {
+    color: #808080;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    vertical-align: top;
+    width: 2em;
+}
+
+.character-attribute-log .dice-die-result:hover {
+    font-weight: bold;
+}
+
+.character-attribute-log .dice-die-result-timestamp {
+    bottom: -5px;
+    cursor: default;
+    font-size: 10px;
+    font-weight: normal;
+    left: -50px;
+    line-height: 1;
+    position: absolute;
+    right: -50px;
+}

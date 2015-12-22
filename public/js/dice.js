@@ -16,6 +16,23 @@ var Dice = new function() {
         return data_roll(options);
     };
 
+    this.clearRolls = function(callback) {
+        if (rolls && !$.isEmptyObject(rolls)) {
+            if (confirm('Clear ALL roll data? This is PERMANENT!')) {
+                rolls = {};
+                data_save();
+                if (typeof callback == 'function') {
+                    callback('clear-rolls');
+                }
+                return;
+            }
+        }
+
+        if (typeof callback == 'function') {
+            callback('clear-rolls');
+        }
+    };
+
     /**
      * Fill the target element with dice controls.
      *
@@ -52,21 +69,7 @@ var Dice = new function() {
         elements.clearControl = Base.addElement('dice-controls-clear', elements.controls, {
             element: 'a',
             text: 'Clear',
-            click: function() {
-                if (!rolls || $.isEmptyObject(rolls)) {
-                    if (typeof callback == 'function') {
-                        callback('clear-rolls');
-                    }
-                } else {
-                    if (confirm('Clear ALL roll data?')) {
-                        rolls = {};
-                        data_save();
-                        if (typeof callback == 'function') {
-                            callback('clear-rolls');
-                        }
-                    }
-                }
-            },
+            click: Dice.clearRolls.bind(this, callback),
             mousedown: Base.returnFalse
         });
         Base.addElement(null, elements.clearControl, {
@@ -156,14 +159,32 @@ var Dice = new function() {
     /**
      * Get all rolls or rolls of a particular number of sides.
      *
-     * @param [sides] {number}
+     * @param [filters] {number|object} If it's a number it'll return all rolls with that number of sides. Object filters MUST include a "sides" filter.
      * @returns {*}
      */
-    this.getRolls = function (sides) {
-        if (sides) {
-            return rolls && rolls[sides] || [];
-        } else {
-            return rolls || {};
+    this.getRolls = function (filters) {
+        switch (typeof filters) {
+            case 'number':
+                return rolls && rolls[filters] || [];
+                break;
+            case 'object':
+                var initialRolls = $.extend(true, [], rolls && rolls[filters.sides] || []);
+                var filteredRolls = [];
+                for (var i = 0, roll; roll = initialRolls[i]; i++) {
+                    var keeper = true;
+                    for (var key in filters) {
+                        if (filters.hasOwnProperty(key) && roll[key] != filters[key]) {
+                            keeper = false;
+                        }
+                    }
+                    if (keeper) {
+                        filteredRolls.push(roll);
+                    }
+                }
+                return filteredRolls;
+                break;
+            default:
+                return rolls || {};
         }
     };
 

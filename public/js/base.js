@@ -6,6 +6,11 @@ var Base = new function() {
                 path: '404',
                 root: null
             },
+            character: {
+                name: 'Character',
+                path: 'character',
+                root: 'character'
+            },
             dice: {
                 name: 'Dice',
                 path: 'dice',
@@ -30,6 +35,7 @@ var Base = new function() {
         nav: [
             'home',
             'dice',
+            'character',
             'initiative',
             'watches'
         ]
