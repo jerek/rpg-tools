@@ -65,6 +65,10 @@ var Page_Character = new function() {
                 mousedown: Base.returnFalse
             });
 
+            if (attribute.secondary) {
+                name.addClass('secondary');
+            }
+
             var stat = Base.addElement('character-attribute-stat', elements.attributes[attribute.id], {
                 text: 10
             });

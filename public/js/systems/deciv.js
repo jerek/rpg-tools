@@ -5,17 +5,17 @@ var System_Deciv = new function() {
     };
     var attributes = [
         { id: 'athleticism', name: 'Athleticism', die: 20 },
-        { id: 'strength',    name: 'Strength',    die: 20 },
-        { id: 'agility',     name: 'Agility',     die: 20 },
+        { id: 'strength',    name: 'Strength',    die: 20, secondary: true },
+        { id: 'agility',     name: 'Agility',     die: 20, secondary: true },
         { id: 'toughness',   name: 'Toughness',   die: 20 },
-        { id: 'health',      name: 'Health',      die: 20 },
-        { id: 'resolve',     name: 'Resolve',     die: 20 },
+        { id: 'health',      name: 'Health',      die: 20, secondary: true },
+        { id: 'resolve',     name: 'Resolve',     die: 20, secondary: true },
         { id: 'perception',  name: 'Perception',  die: 20 },
-        { id: 'intellect',   name: 'Intellect',   die: 20 },
-        { id: 'awareness',   name: 'Awareness',   die: 20 },
+        { id: 'intellect',   name: 'Intellect',   die: 20, secondary: true },
+        { id: 'awareness',   name: 'Awareness',   die: 20, secondary: true },
         { id: 'charisma',    name: 'Charisma',    die: 20 },
-        { id: 'allure',      name: 'Allure',      die: 20 },
-        { id: 'influence',   name: 'Influence',   die: 20 }
+        { id: 'allure',      name: 'Allure',      die: 20, secondary: true },
+        { id: 'influence',   name: 'Influence',   die: 20, secondary: true }
     ];
     var technicalAttributes = [
         { id: 'melee',    name: 'Melee',    die: 20 },
