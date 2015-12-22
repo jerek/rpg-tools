@@ -55,17 +55,16 @@ var Page_Character = new function() {
 
         elements.characterAttributes = Base.addElement('character-attributes', elements.character);
 
-        var attributes = systemClass.getAttributes();
-        for (var i = 0, attribute; attribute = attributes[i]; i++) {
-            display_attribute(elements.characterAttributes, attribute);
-        }
+        var allAttributes = systemClass.getAllAttributes();
+        for (var i = 0, attributeSet; attributeSet = allAttributes[i]; i++) {
+            if (i > 0) {
+                var emptyRow = Base.addElement('character-attribute', elements.characterAttributes);
+                Base.addElement(null, emptyRow);
+            }
 
-        var emptyRow = Base.addElement('character-attribute', elements.characterAttributes);
-        Base.addElement(null, emptyRow);
-
-        var technicalAttributes = systemClass.getTechnicalAttributes();
-        for (var k = 0, technicalAttribute; technicalAttribute = technicalAttributes[k]; k++) {
-            display_attribute(elements.characterAttributes, technicalAttribute);
+            for (var j = 0, attribute; attribute = attributeSet[j]; j++) {
+                display_attribute(elements.characterAttributes, attribute);
+            }
         }
     }
 

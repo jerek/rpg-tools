@@ -17,6 +17,14 @@ var System_Deciv = new function() {
         { id: 'allure',      name: 'Allure',      die: 20, secondary: true },
         { id: 'influence',   name: 'Influence',   die: 20, secondary: true }
     ];
+    var specialAttributes = [
+        { id: 'luck',        name: 'Luck',        die: 20 },
+        { id: 'initiative',  name: 'Initiative',  die: 20, formula: {
+            type: 'average',
+            round: 'down',
+            attributes: ['awareness', 'agility']
+        } }
+    ];
     var technicalAttributes = [
         { id: 'melee',    name: 'Melee',    die: 20 },
         { id: 'guns',     name: 'Guns',     die: 20 },
@@ -33,8 +41,20 @@ var System_Deciv = new function() {
         return config;
     };
 
+    this.getAllAttributes = function() {
+        return [
+            this.getAttributes(),
+            this.getSpecialAttributes(),
+            this.getTechnicalAttributes()
+        ];
+    };
+
     this.getAttributes = function() {
         return attributes;
+    };
+
+    this.getSpecialAttributes = function() {
+        return specialAttributes;
     };
 
     this.getTechnicalAttributes = function() {
