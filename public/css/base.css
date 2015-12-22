@@ -58,8 +58,47 @@ h1, h2, h3, h4, h5, h6 {
     width: 768px;
 }
 
-@media screen and (max-width: 339px) {
+@media screen and (max-width: 454px) {
+    .header {
+        height: 38px;
+    }
+
+    .header-inner > nav li {
+        line-height: 38px;
+    }
+
     .header-inner > nav a {
         font-size: 16px;
+        padding: 0 8px;
+    }
+}
+
+@media screen and (max-width: 399px) {
+    .header {
+        height: 36px;
+    }
+
+    .header-inner > nav li {
+        line-height: 36px;
+    }
+
+    .header-inner > nav a {
+        font-size: 14px;
+        padding: 0 6px;
+    }
+}
+
+@media screen and (max-width: 334px) {
+    .header {
+        height: 34px;
+    }
+
+    .header-inner > nav li {
+        line-height: 34px;
+    }
+
+    .header-inner > nav a {
+        font-size: 13px;
+        padding: 0 5px;
     }
 }
