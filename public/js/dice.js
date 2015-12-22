@@ -109,12 +109,9 @@ var Dice = new function() {
         }
 
         var animate = !suppressAnimation && config.animateRolls;
-        var css = animate ?
-            { opacity: '0' } :
-            { color: '#111' };
         var die = Base.addElement('dice-die-result', target, {
             prepend: true,
-            css: css
+            css: animate ? {} : { color: '#111' }
         });
         die
             .mouseenter((function (rollObject) {
@@ -129,10 +126,6 @@ var Dice = new function() {
 
         if (animate) {
             display_resultAnimation(die, rollObjectOrOptions, 0);
-
-            setTimeout(function () {
-                die.css({opacity: ''});
-            }, 1);
         } else {
             die.html(rollObjectOrOptions.result);
         }

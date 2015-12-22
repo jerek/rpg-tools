@@ -67,7 +67,6 @@ body[data-page="dice"] .body {
     font-size: 30px;
     padding: 5px 10px;
     position: relative;
-    transition: opacity 1.7s;
 }
 
 .dice .dice-die-result .dice-die-result-timestamp {
