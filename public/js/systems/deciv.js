@@ -20,8 +20,8 @@ var System_Deciv = new function() {
     var specialAttributes = [
         { id: 'luck',        name: 'Luck',        die: 20 },
         { id: 'initiative',  name: 'Initiative',  die: 20, formula: {
-            type: 'average',
-            round: 'down',
+            type: 'lowest',
+            // round: 'down',
             attributes: ['awareness', 'agility']
         } }
     ];
