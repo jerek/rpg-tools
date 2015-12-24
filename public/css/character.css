@@ -57,12 +57,16 @@
 }
 
 .character-attribute-stat {
-    cursor: pointer;
+    cursor: default;
     font-family: Montserrat, Verdana, Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
 
-.character-attribute-stat:hover {
+.character-attribute-stat.editable {
+    cursor: pointer;
+}
+
+.character-attribute-stat.editable:hover {
     color: #808080;
 }
 

@@ -111,9 +111,12 @@ var Page_Character = new function() {
         }
 
         var stat = Base.addElement('character-attribute-stat', elements.attributes[attribute.id], {
-            text: character.stats[attribute.id],
-            click: action_setStat.bind(null, attribute.id)
+            text: character.stats[attribute.id]
         });
+        if (!attribute.formula) {
+            stat.addClass('editable');
+            stat.click(action_setStat.bind(null, attribute.id));
+        }
 
         var log = Base.addElement('character-attribute-log', elements.attributes[attribute.id]);
 
@@ -138,6 +141,16 @@ var Page_Character = new function() {
 
     function display_result(target, rollObject, suppressAnimation) {
         Dice.appendResult(target, rollObject, suppressAnimation);
+    }
+
+    function updateDisplay_statValue(statId, value) {
+        if (!value) {
+            value = character.stats[statId];
+        }
+
+        if (elements.attributes[statId]) {
+            $('.character-attribute-stat', elements.attributes[statId]).html(value);
+        }
     }
 
     function action_roll(attribute) {
@@ -178,11 +191,14 @@ var Page_Character = new function() {
 
     function action_setStats() {
         var systemClass = utility_getSystemClass();
-
         var stats = systemClass.getAllStats();
 
         for (var i = 0, statGroup; statGroup = stats[i]; i++) {
             for (var j = 0, stat; stat = statGroup[j]; j++) {
+                if (stat.formula) {
+                    continue;
+                }
+
                 var value = prompt('Set ' + stat.name + ' to:', character.stats[stat.id]);
                 if (value) {
                     data_setStat(stat.id, value);
@@ -206,7 +222,43 @@ var Page_Character = new function() {
         $('.character-attribute-stat', elements.attributes[stat]).html(value);
     }
 
+    function data_updateCalculatedStats() {
+        var systemClass = utility_getSystemClass();
+        var stats = systemClass.getAllStats();
+
+        for (var i = 0, statGroup; statGroup = stats[i]; i++) {
+            for (var j = 0, stat; stat = statGroup[j]; j++) {
+                if (stat.formula) {
+                    switch (stat.formula.type) {
+                        case 'lowest':
+                            var lowestStats = [];
+                            for (var k = 0, lowestStat; lowestStat = stat.formula.stats[k]; k++) {
+                                lowestStats.push(parseInt(character.stats[lowestStat]) || 0);
+                            }
+                            character.stats[stat.id] = Math.min.apply(Math, lowestStats);
+                            updateDisplay_statValue(stat.id);
+                            break;
+                        case 'highest':
+                            var highestStats = [];
+                            for (var l = 0, highestStat; highestStat = stat.formula.stats[l]; l++) {
+                                highestStats.push(parseInt(character.stats[highestStat]) || 0);
+                            }
+                            character.stats[stat.id] = Math.max.apply(Math, highestStats);
+                            updateDisplay_statValue(stat.id);
+                            break;
+                        case 'average':
+                            // TODO
+                        default:
+                            alert('Unknown formula type!\nType: ' + stat.formula.type);
+                    }
+                }
+            }
+        }
+    }
+
     function data_save() {
+        data_updateCalculatedStats();
+
         LocalStorage.set('character', character);
     }
 

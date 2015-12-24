@@ -21,8 +21,8 @@ var System_Deciv = new function() {
         { id: 'luck',        name: 'Luck',        die: 20 },
         { id: 'initiative',  name: 'Initiative',  die: 20, formula: {
             type: 'lowest',
-            // round: 'down',
-            attributes: ['awareness', 'agility']
+            // round: 'down', // TODO: for formulas of type "average".
+            stats: ['awareness', 'agility']
         } }
     ];
     var technicalAttributes = [
