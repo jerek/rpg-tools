@@ -1,14 +1,7 @@
 var Page_Character = new function() {
     var config = {
         stats: {},
-        system: 'deciv',
-        systems: {
-            deciv: {
-                id: 'deciv',
-                name: 'Deciv',
-                'class': 'Deciv'
-            }
-        }
+        system: 'deciv'
     };
     var elements = {
         attributes: {}
@@ -24,7 +17,7 @@ var Page_Character = new function() {
     };
 
     function utility_getSystemClass() {
-        return window['System_' + config.systems[config.system]['class']];
+        return Base.getSystemClass(config.system);
     }
 
     function display_controls() {

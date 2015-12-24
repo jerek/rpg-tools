@@ -38,7 +38,14 @@ var Base = new function() {
             'character',
             'initiative',
             'watches'
-        ]
+        ],
+        systems: {
+            deciv: {
+                id: 'deciv',
+                name: 'Deciv',
+                'class': 'Deciv'
+            }
+        }
     };
     var elements = {};
     var status = {
@@ -60,12 +67,31 @@ var Base = new function() {
         return utility_addElement(name, target, options);
     };
 
-    this.roll = function (sides) {
-        return Math.floor((Math.random() * sides) + 1);
+    /**
+     * @param {string} systemId
+     * @returns {object|null}
+     */
+    this.getSystemClass = function(systemId) {
+        if (config.systems[systemId]) {
+            return window['System_' + config.systems[systemId]['class']];
+        }
+
+        return null;
+    };
+
+    /**
+     * @returns {object}
+     */
+    this.getSystems = function() {
+        return config.systems;
     };
 
     this.returnFalse = function () {
         return false;
+    };
+
+    this.roll = function (sides) {
+        return Math.floor((Math.random() * sides) + 1);
     };
 
     function display_header(target) {
