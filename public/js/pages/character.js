@@ -180,15 +180,17 @@ var Page_Character = new function() {
     }
 
     function data_save() {
-        LocalStorage.set('character', {
-            stats: config.stats
-        });
+        LocalStorage.set('character', config);
     }
 
     function data_load() {
         var character = LocalStorage.get('character');
-        if (character && character.stats) {
-            config.stats = character.stats;
+        if (character) {
+            for (var property in config) {
+                if (config.hasOwnProperty(property) && character.hasOwnProperty(property)) {
+                    config[property] = character[property];
+                }
+            }
         }
     }
 };
