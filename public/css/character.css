@@ -1,4 +1,5 @@
 .character-controls {
+    float: right;
     margin: 10px 0 0;
     padding: 0 10px 0 0;
     text-align: right;
@@ -8,6 +9,11 @@
     color: inherit;
     cursor: pointer;
     margin: 0 0 0 10px;
+}
+
+.character-name {
+    cursor: pointer;
+    display: table;
 }
 
 .character-attributes {

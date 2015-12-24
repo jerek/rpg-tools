@@ -1,6 +1,7 @@
 var Page_Character = new function() {
     var character = {
         id: 1,
+        name: 'Unnamed Character',
         stats: {},
         system: 'deciv'
     };
@@ -14,6 +15,7 @@ var Page_Character = new function() {
         data_load();
 
         display_controls();
+        display_name();
         display_body();
     };
 
@@ -50,6 +52,18 @@ var Page_Character = new function() {
             element: 'i',
             prepend: true,
             'class': 'fa fa-fw fa-times'
+        });
+    }
+
+    function display_name() {
+        if (elements.name) {
+            elements.name.remove && elements.name.remove();
+        }
+
+        elements.name = Base.addElement('character-name', elements.container, {
+            element: 'h1',
+            text: character.name || 'Unnamed Character',
+            click: action_setName
         });
     }
 
@@ -146,6 +160,17 @@ var Page_Character = new function() {
             $('.character-attribute-log-toggler', this)
                 .removeClass('fa-plus')
                 .addClass('fa-minus');
+        }
+    }
+
+    function action_setName() {
+        var systemInfo = Base.getSystemInfo(character.system);
+
+        var value = prompt('Enter your ' + systemInfo.name + ' character name:', character.name);
+        if (value) {
+            character.name = value;
+            data_save();
+            Page_Character.init(elements.container);
         }
     }
 
