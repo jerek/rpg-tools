@@ -1,5 +1,6 @@
 var Page_Character = new function() {
     var config = {
+        stats: {},
         system: 'deciv',
         systems: {
             deciv: {
@@ -16,6 +17,8 @@ var Page_Character = new function() {
     this.init = function(target) {
         elements.container = target;
 
+        data_load();
+
         display_controls();
         display_body();
     };
@@ -30,6 +33,13 @@ var Page_Character = new function() {
         }
 
         elements.controls = Base.addElement('character-controls', elements.container);
+
+        elements.setStatsControl = Base.addElement('character-controls-set-stats', elements.controls, {
+            element: 'a',
+            text: 'Set All Stats',
+            click: action_setStats,
+            mousedown: Base.returnFalse
+        });
 
         elements.clearControl = Base.addElement('character-controls-clear', elements.controls, {
             element: 'a',
@@ -81,8 +91,13 @@ var Page_Character = new function() {
             name.addClass('secondary');
         }
 
+        if (!config.stats.hasOwnProperty(attribute.id)) {
+            config.stats[attribute.id] = 10;
+        }
+
         var stat = Base.addElement('character-attribute-stat', elements.attributes[attribute.id], {
-            text: 10
+            text: config.stats[attribute.id],
+            click: action_setStat.bind(null, attribute.id)
         });
 
         var log = Base.addElement('character-attribute-log', elements.attributes[attribute.id]);
@@ -131,6 +146,49 @@ var Page_Character = new function() {
             $('.character-attribute-log-toggler', this)
                 .removeClass('fa-plus')
                 .addClass('fa-minus');
+        }
+    }
+
+    function action_setStats() {
+        var systemClass = utility_getSystemClass();
+
+        var stats = systemClass.getAllAttributes();
+
+        for (var i = 0, statGroup; statGroup = stats[i]; i++) {
+            for (var j = 0, stat; stat = statGroup[j]; j++) {
+                var value = prompt('Set ' + stat.name + ' to:', config.stats[stat.id]);
+                if (value) {
+                    data_setStat(stat.id, value);
+                } else {
+                    return;
+                }
+            }
+        }
+    }
+
+    function action_setStat(stat) {
+        var value = prompt('Set ' + stat + ' to:', config.stats[stat]);
+        if (value) {
+            data_setStat(stat, value);
+        }
+    }
+
+    function data_setStat(stat, value) {
+        config.stats[stat] = value;
+        data_save();
+        $('.character-attribute-stat', elements.attributes[stat]).html(value);
+    }
+
+    function data_save() {
+        LocalStorage.set('character', {
+            stats: config.stats
+        });
+    }
+
+    function data_load() {
+        var character = LocalStorage.get('character');
+        if (character && character.stats) {
+            config.stats = character.stats;
         }
     }
 };
