@@ -80,6 +80,14 @@ var Base = new function() {
     };
 
     /**
+     * @param {string} systemId
+     * @returns {object|null}
+     */
+    this.getSystemInfo = function(systemId) {
+        return config.systems[systemId] || null;
+    };
+
+    /**
      * @returns {object}
      */
     this.getSystems = function() {
