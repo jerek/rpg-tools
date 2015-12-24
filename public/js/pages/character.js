@@ -1,5 +1,6 @@
 var Page_Character = new function() {
     var config = {
+        id: 1,
         stats: {},
         system: 'deciv'
     };
@@ -125,9 +126,10 @@ var Page_Character = new function() {
 
     function action_roll(attribute) {
         var rollObject = Dice.roll({
-            sides: attribute.die,
+            system: config.system,
+            character: config.id,
             stat: attribute.id,
-            system: config.system
+            sides: attribute.die
         });
 
         display_result($('.character-attribute-log-inner', this), rollObject);
