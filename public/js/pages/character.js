@@ -40,6 +40,11 @@ var Page_Character = new function() {
             click: action_setStats,
             mousedown: Base.returnFalse
         });
+        Base.addElement(null, elements.setStatsControl, {
+            element: 'i',
+            prepend: true,
+            'class': 'fa fa-fw fa-pencil-square-o'
+        });
 
         elements.clearControl = Base.addElement('character-controls-clear', elements.controls, {
             element: 'a',
