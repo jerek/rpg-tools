@@ -69,13 +69,21 @@ body[data-page="dice"] .body {
     position: relative;
 }
 
+.dice .dice-die-result .dice-die-result-stat,
 .dice .dice-die-result .dice-die-result-timestamp {
-    bottom: 0;
     cursor: default;
     font-size: 10px;
     left: -50px;
     position: absolute;
     right: -50px;
+}
+
+.dice .dice-die-result .dice-die-result-stat {
+    top: 0;
+}
+
+.dice .dice-die-result .dice-die-result-timestamp {
+    bottom: 0;
 }
 
 @media screen and (max-width: 599px) {

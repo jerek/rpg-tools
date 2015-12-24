@@ -115,13 +115,20 @@ var Dice = new function() {
         });
         die
             .mouseenter((function (rollObject) {
+                if (rollObject.stat) {
+                    Base.addElement('dice-die-result-stat', this, {
+                        text: rollObject.stat,
+                        title: rollObject.system
+                    });
+                }
+
                 Base.addElement('dice-die-result-timestamp', this, {
                     text: DateFormat.format.prettyDate(rollObject.datetime + '.000'),
                     title: rollObject.datetime
                 });
             }).bind(die, rollObjectOrOptions))
             .mouseleave(function () {
-                $('.dice-die-result-timestamp', this).remove();
+                $('.dice-die-result-stat, .dice-die-result-timestamp', this).remove();
             });
 
         if (animate) {

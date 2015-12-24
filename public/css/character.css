@@ -84,8 +84,8 @@
     font-weight: bold;
 }
 
+.character-attribute-log .dice-die-result-stat,
 .character-attribute-log .dice-die-result-timestamp {
-    bottom: -5px;
     cursor: default;
     font-size: 10px;
     font-weight: normal;
@@ -93,6 +93,15 @@
     line-height: 1;
     position: absolute;
     right: -50px;
+}
+
+.character-attribute-log .dice-die-result-stat {
+    display: none;
+    top: -5px;
+}
+
+.character-attribute-log .dice-die-result-timestamp {
+    bottom: -5px;
 }
 
 .character-attribute-log .character-attribute-log-toggler-background {
