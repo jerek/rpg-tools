@@ -12,8 +12,6 @@ var Page_Character = new function() {
     this.init = function(target) {
         elements.container = target;
 
-        data_load();
-
         display_controls();
         display_name();
         display_body();
@@ -218,4 +216,6 @@ var Page_Character = new function() {
             }
         }
     }
+
+    data_load();
 };
