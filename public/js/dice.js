@@ -105,7 +105,7 @@ var Dice = new function() {
     this.appendResult = function(target, rollObjectOrOptions, suppressAnimation) {
         if (typeof rollObjectOrOptions.result != 'number') {
             return;
-            // rollObjectOrOptions = data_roll(rollObjectOrOptions); // TODO: This should replace the roll instead of creating a new one!
+            // rollObjectOrOptions = data_roll(rollObjectOrOptions); // TODO: This should replace the roll instead of creating a new one! Currently this method is not called without the result property.
         }
 
         var animate = !suppressAnimation && config.animateRolls;
