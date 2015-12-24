@@ -46,9 +46,9 @@ var Base = new function() {
     };
 
     this.init = function() {
-        utility_addElement('wrapper', document.body);
-        utility_addElement('header', elements.wrapper);
-        utility_addElement('body', elements.wrapper);
+        elements.wrapper = utility_addElement('wrapper', document.body);
+        elements.header = utility_addElement('header', elements.wrapper);
+        elements.body = utility_addElement('body', elements.wrapper);
 
         display_header(elements.header);
 
@@ -69,10 +69,10 @@ var Base = new function() {
     };
 
     function display_header(target) {
-        utility_addElement('header-inner', target);
-        utility_addElement('logo', elements.headerInner);
-        utility_addElement('nav', elements.headerInner, 'nav');
-        utility_addElement('nav-inner', elements.nav, 'ul');
+        elements.headerInner = utility_addElement('header-inner', target);
+        elements.logo = utility_addElement('logo', elements.headerInner);
+        elements.nav = utility_addElement('nav', elements.headerInner, 'nav');
+        elements.navInner = utility_addElement('nav-inner', elements.nav, 'ul');
 
         display_navigation(elements.navInner);
     }
@@ -186,11 +186,6 @@ var Base = new function() {
         delete options.prepend;
 
         var element = $('<' + nodeType + '/>', options);
-
-        if (name) {
-            var propertyName = utility_camelCase(name);
-            elements[propertyName] = element;
-        }
 
         if (target) {
             if (prepend) {
