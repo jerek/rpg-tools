@@ -16,6 +16,10 @@
     display: table;
 }
 
+.character-name:hover {
+    color: #808080;
+}
+
 .character-attributes {
     display: table;
     margin: 0 0 25px;
@@ -56,6 +60,10 @@
     cursor: pointer;
     font-family: Montserrat, Verdana, Arial, Helvetica, sans-serif;
     font-weight: bold;
+}
+
+.character-attribute-stat:hover {
+    color: #808080;
 }
 
 .character-attribute-log {
