@@ -1,5 +1,5 @@
 var Page_Character = new function() {
-    var config = {
+    var character = {
         id: 1,
         stats: {},
         system: 'deciv'
@@ -18,7 +18,7 @@ var Page_Character = new function() {
     };
 
     function utility_getSystemClass() {
-        return Base.getSystemClass(config.system);
+        return Base.getSystemClass(character.system);
     }
 
     function display_controls() {
@@ -90,12 +90,12 @@ var Page_Character = new function() {
             name.addClass('secondary');
         }
 
-        if (!config.stats.hasOwnProperty(attribute.id)) {
-            config.stats[attribute.id] = 10;
+        if (!character.stats.hasOwnProperty(attribute.id)) {
+            character.stats[attribute.id] = 10;
         }
 
         var stat = Base.addElement('character-attribute-stat', elements.attributes[attribute.id], {
-            text: config.stats[attribute.id],
+            text: character.stats[attribute.id],
             click: action_setStat.bind(null, attribute.id)
         });
 
@@ -126,8 +126,8 @@ var Page_Character = new function() {
 
     function action_roll(attribute) {
         var rollObject = Dice.roll({
-            system: config.system,
-            character: config.id,
+            system: character.system,
+            character: character.id,
             stat: attribute.id,
             sides: attribute.die
         });
@@ -156,7 +156,7 @@ var Page_Character = new function() {
 
         for (var i = 0, statGroup; statGroup = stats[i]; i++) {
             for (var j = 0, stat; stat = statGroup[j]; j++) {
-                var value = prompt('Set ' + stat.name + ' to:', config.stats[stat.id]);
+                var value = prompt('Set ' + stat.name + ' to:', character.stats[stat.id]);
                 if (value) {
                     data_setStat(stat.id, value);
                 } else {
@@ -167,28 +167,28 @@ var Page_Character = new function() {
     }
 
     function action_setStat(stat) {
-        var value = prompt('Set ' + stat + ' to:', config.stats[stat]);
+        var value = prompt('Set ' + stat + ' to:', character.stats[stat]);
         if (value) {
             data_setStat(stat, value);
         }
     }
 
     function data_setStat(stat, value) {
-        config.stats[stat] = value;
+        character.stats[stat] = value;
         data_save();
         $('.character-attribute-stat', elements.attributes[stat]).html(value);
     }
 
     function data_save() {
-        LocalStorage.set('character', config);
+        LocalStorage.set('character', character);
     }
 
     function data_load() {
-        var character = LocalStorage.get('character');
-        if (character) {
-            for (var property in config) {
-                if (config.hasOwnProperty(property) && character.hasOwnProperty(property)) {
-                    config[property] = character[property];
+        var characterData = LocalStorage.get('character');
+        if (characterData) {
+            for (var property in character) {
+                if (character.hasOwnProperty(property) && characterData.hasOwnProperty(property)) {
+                    character[property] = characterData[property];
                 }
             }
         }
