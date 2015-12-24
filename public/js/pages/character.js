@@ -17,6 +17,10 @@ var Page_Character = new function() {
         display_body();
     };
 
+    this.getName = function() {
+        return character.name;
+    };
+
     function utility_getSystemClass() {
         return Base.getSystemClass(character.system);
     }
@@ -76,7 +80,7 @@ var Page_Character = new function() {
 
         elements.characterAttributes = Base.addElement('character-attributes', elements.character);
 
-        var allAttributes = systemClass.getAllAttributes();
+        var allAttributes = systemClass.getAllStats();
         for (var i = 0, attributeSet; attributeSet = allAttributes[i]; i++) {
             if (i > 0) {
                 var emptyRow = Base.addElement('character-attribute', elements.characterAttributes);
@@ -175,7 +179,7 @@ var Page_Character = new function() {
     function action_setStats() {
         var systemClass = utility_getSystemClass();
 
-        var stats = systemClass.getAllAttributes();
+        var stats = systemClass.getAllStats();
 
         for (var i = 0, statGroup; statGroup = stats[i]; i++) {
             for (var j = 0, stat; stat = statGroup[j]; j++) {

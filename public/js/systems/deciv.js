@@ -41,12 +41,26 @@ var System_Deciv = new function() {
         return config;
     };
 
-    this.getAllAttributes = function() {
+    this.getAllStats = function() {
         return [
             this.getAttributes(),
             this.getSpecialAttributes(),
             this.getTechnicalAttributes()
         ];
+    };
+
+    this.getStat = function(attributeId) {
+        var attributes = this.getAllStats();
+
+        for (var i = 0, statGroup; statGroup = attributes[i]; i++) {
+            for (var j = 0, attribute; attribute = statGroup[j]; j++) {
+                if (attribute.id = attributeId) {
+                    return attribute;
+                }
+            }
+        }
+
+        return null;
     };
 
     this.getAttributes = function() {
