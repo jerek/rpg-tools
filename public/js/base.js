@@ -98,7 +98,7 @@ var Base = new function() {
         return false;
     };
 
-    this.roll = function (sides) {
+    this.roll = function(sides) {
         return Math.floor((Math.random() * sides) + 1);
     };
 
