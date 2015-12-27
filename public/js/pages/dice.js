@@ -16,7 +16,7 @@ var Page_Dice = new function() {
             elements.controls.remove && elements.controls.remove();
         }
 
-        elements.controls = Base.addElement('dice-controls', elements.container);
+        elements.controls = Utility.addElement('dice-controls', elements.container);
 
         Dice.displayControls(elements.controls, Page_Dice.init.bind(null, elements.container));
     }
@@ -27,8 +27,8 @@ var Page_Dice = new function() {
             elements.diceWrapper.remove && elements.diceWrapper.remove();
         }
 
-        elements.diceWrapper = Base.addElement('dice-wrapper', elements.container);
-        elements.dice = Base.addElement('dice', elements.diceWrapper);
+        elements.diceWrapper = Utility.addElement('dice-wrapper', elements.container);
+        elements.dice = Utility.addElement('dice', elements.diceWrapper);
         display_dice(elements.dice);
 
         var rolls = Dice.getRolls();
@@ -56,9 +56,9 @@ var Page_Dice = new function() {
 
         elements.dice = {};
         for (var i = 0, die; die = config.dice[i]; i++) {
-            var wrapper = Base.addElement('dice-die-wrapper', target);
+            var wrapper = Utility.addElement('dice-die-wrapper', target);
             var dieButton = Dice.appendDie(wrapper, die, action_roll);
-            var log = Base.addElement('dice-die-log', wrapper);
+            var log = Utility.addElement('dice-die-log', wrapper);
 
             elements.dice[die] = {
                 wrapper: wrapper,

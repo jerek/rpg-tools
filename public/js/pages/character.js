@@ -30,27 +30,27 @@ var Page_Character = new function() {
             elements.controls.remove && elements.controls.remove();
         }
 
-        elements.controls = Base.addElement('character-controls', elements.container);
+        elements.controls = Utility.addElement('character-controls', elements.container);
 
-        elements.setStatsControl = Base.addElement('character-controls-set-stats', elements.controls, {
+        elements.setStatsControl = Utility.addElement('character-controls-set-stats', elements.controls, {
             element: 'a',
             text: 'Set All Stats',
             click: action_setStats,
-            mousedown: Base.returnFalse
+            mousedown: Utility.returnFalse
         });
-        Base.addElement(null, elements.setStatsControl, {
+        Utility.addElement(null, elements.setStatsControl, {
             element: 'i',
             prepend: true,
             'class': 'fa fa-fw fa-pencil-square-o'
         });
 
-        elements.clearControl = Base.addElement('character-controls-clear', elements.controls, {
+        elements.clearControl = Utility.addElement('character-controls-clear', elements.controls, {
             element: 'a',
             text: 'Clear Rolls',
             click: Dice.clearRolls.bind(Dice, Page_Character.init.bind(null, elements.container)),
-            mousedown: Base.returnFalse
+            mousedown: Utility.returnFalse
         });
-        Base.addElement(null, elements.clearControl, {
+        Utility.addElement(null, elements.clearControl, {
             element: 'i',
             prepend: true,
             'class': 'fa fa-fw fa-times'
@@ -62,7 +62,7 @@ var Page_Character = new function() {
             elements.name.remove && elements.name.remove();
         }
 
-        elements.name = Base.addElement('character-name', elements.container, {
+        elements.name = Utility.addElement('character-name', elements.container, {
             element: 'h1',
             text: character.name || 'Unnamed Character',
             click: action_setName
@@ -74,17 +74,17 @@ var Page_Character = new function() {
             elements.character.remove && elements.character.remove();
         }
 
-        elements.character = Base.addElement('character', elements.container);
+        elements.character = Utility.addElement('character', elements.container);
 
         var systemClass = utility_getSystemClass();
 
-        elements.characterAttributes = Base.addElement('character-attributes', elements.character);
+        elements.characterAttributes = Utility.addElement('character-attributes', elements.character);
 
         var allAttributes = systemClass.getAllStats();
         for (var i = 0, attributeSet; attributeSet = allAttributes[i]; i++) {
             if (i > 0) {
-                var emptyRow = Base.addElement('character-attribute', elements.characterAttributes);
-                Base.addElement(null, emptyRow);
+                var emptyRow = Utility.addElement('character-attribute', elements.characterAttributes);
+                Utility.addElement(null, emptyRow);
             }
 
             for (var j = 0, attribute; attribute = attributeSet[j]; j++) {
@@ -94,12 +94,12 @@ var Page_Character = new function() {
     }
 
     function display_attribute(target, attribute) {
-        elements.attributes[attribute.id] = Base.addElement('character-attribute', target);
+        elements.attributes[attribute.id] = Utility.addElement('character-attribute', target);
 
-        var name = Base.addElement('character-attribute-name', elements.attributes[attribute.id], {
+        var name = Utility.addElement('character-attribute-name', elements.attributes[attribute.id], {
             text: attribute.name,
             click: action_roll.bind(elements.attributes[attribute.id], attribute),
-            mousedown: Base.returnFalse
+            mousedown: Utility.returnFalse
         });
 
         if (attribute.secondary) {
@@ -110,7 +110,7 @@ var Page_Character = new function() {
             character.stats[attribute.id] = 10;
         }
 
-        var stat = Base.addElement('character-attribute-stat', elements.attributes[attribute.id], {
+        var stat = Utility.addElement('character-attribute-stat', elements.attributes[attribute.id], {
             text: character.stats[attribute.id]
         });
         if (!attribute.formula) {
@@ -118,16 +118,16 @@ var Page_Character = new function() {
             stat.click(action_setStat.bind(null, attribute));
         }
 
-        var log = Base.addElement('character-attribute-log', elements.attributes[attribute.id]);
+        var log = Utility.addElement('character-attribute-log', elements.attributes[attribute.id]);
 
-        var logInner = Base.addElement('character-attribute-log-inner', log);
+        var logInner = Utility.addElement('character-attribute-log-inner', log);
 
-        var logTogglerBg = Base.addElement('character-attribute-log-toggler-background', log);
+        var logTogglerBg = Utility.addElement('character-attribute-log-toggler-background', log);
 
-        var logToggler = Base.addElement('character-attribute-log-toggler fa fa-plus', log, {
+        var logToggler = Utility.addElement('character-attribute-log-toggler fa fa-plus', log, {
             element: 'a',
             click: action_toggleLog.bind(elements.attributes[attribute.id], attribute),
-            mousedown: Base.returnFalse
+            mousedown: Utility.returnFalse
         });
 
         var rolls = Dice.getRolls({ system: 'deciv', stat: attribute.id, sides: attribute.die });
@@ -220,7 +220,7 @@ var Page_Character = new function() {
                 data_setStat(stat.id, value);
                 return true;
             } else {
-                Base.error('You must set stats to a whole number!');
+                Utility.error('You must set stats to a whole number!');
                 return false;
             }
         }

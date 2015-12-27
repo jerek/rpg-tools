@@ -48,7 +48,7 @@ var Dice = new function() {
 
         elements.controls = target;
 
-        elements.animateControl = Base.addElement('dice-controls-animate', elements.controls, {
+        elements.animateControl = Utility.addElement('dice-controls-animate', elements.controls, {
             element: 'a',
             text: 'Animation',
             click: function() {
@@ -58,21 +58,21 @@ var Dice = new function() {
                     callback('roll-animation');
                 }
             },
-            mousedown: Base.returnFalse
+            mousedown: Utility.returnFalse
         });
-        Base.addElement(null, elements.animateControl, {
+        Utility.addElement(null, elements.animateControl, {
             element: 'i',
             prepend: true,
             'class': 'fa fa-fw fa-' + (config.animateRolls ? 'check-square-o' : 'square-o')
         });
 
-        elements.clearControl = Base.addElement('dice-controls-clear', elements.controls, {
+        elements.clearControl = Utility.addElement('dice-controls-clear', elements.controls, {
             element: 'a',
             text: 'Clear',
             click: Dice.clearRolls.bind(this, callback),
-            mousedown: Base.returnFalse
+            mousedown: Utility.returnFalse
         });
-        Base.addElement(null, elements.clearControl, {
+        Utility.addElement(null, elements.clearControl, {
             element: 'i',
             prepend: true,
             'class': 'fa fa-fw fa-times'
@@ -87,7 +87,7 @@ var Dice = new function() {
      * @param callback {function} Called when the button is clicked.
      */
     this.appendDie = function(target, sides, callback) {
-        return Base.addElement('dice-die', target, {
+        return Utility.addElement('dice-die', target, {
             element: 'a',
             href: 'javascript:;',
             text: sides,
@@ -109,7 +109,7 @@ var Dice = new function() {
         }
 
         var animate = !suppressAnimation && config.animateRolls;
-        var die = Base.addElement('dice-die-result', target, {
+        var die = Utility.addElement('dice-die-result', target, {
             prepend: true,
             css: animate ? {} : { color: '#111' }
         });
@@ -121,13 +121,13 @@ var Dice = new function() {
                     var attribute = systemClass.getStat(rollObject.stat);
                     var characterName = Page_Character.getName();
 
-                    Base.addElement('dice-die-result-stat', this, {
+                    Utility.addElement('dice-die-result-stat', this, {
                         text: attribute.name,
                         title: characterName + ' - ' + systemInfo.name
                     });
                 }
 
-                Base.addElement('dice-die-result-timestamp', this, {
+                Utility.addElement('dice-die-result-timestamp', this, {
                     text: DateFormat.format.prettyDate(rollObject.datetime + '.000'),
                     title: rollObject.datetime
                 });
@@ -232,7 +232,7 @@ var Dice = new function() {
      */
     function data_roll(options) {
         if (!isNaN(options.sides)) {
-            var result = Base.roll(options.sides);
+            var result = Utility.roll(options.sides);
 
             if (!rolls.hasOwnProperty(options.sides)) {
                 rolls[options.sides] = [];
@@ -289,7 +289,7 @@ var Dice = new function() {
             excludes.splice(sides - 1);
         }
 
-        var result = Base.roll(sides);
+        var result = Utility.roll(sides);
 
         if (excludes.indexOf(result) > -1) {
             return utility_getExclusionaryRoll(sides, excludes);
