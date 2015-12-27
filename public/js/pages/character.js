@@ -115,7 +115,7 @@ var Page_Character = new function() {
         });
         if (!attribute.formula) {
             stat.addClass('editable');
-            stat.click(action_setStat.bind(null, attribute.id));
+            stat.click(action_setStat.bind(null, attribute));
         }
 
         var log = Base.addElement('character-attribute-log', elements.attributes[attribute.id]);
@@ -193,27 +193,39 @@ var Page_Character = new function() {
         var systemClass = utility_getSystemClass();
         var stats = systemClass.getAllStats();
 
+        var result = false;
         for (var i = 0, statGroup; statGroup = stats[i]; i++) {
             for (var j = 0, stat; stat = statGroup[j]; j++) {
                 if (stat.formula) {
                     continue;
                 }
 
-                var value = prompt('Set ' + stat.name + ' to:', character.stats[stat.id]);
-                if (value) {
-                    data_setStat(stat.id, value);
-                } else {
-                    return;
+                while (result === false) {
+                    result = action_setStat(stat);
+
+                    if (result === null) {
+                        return;
+                    }
                 }
+
+                result = false;
             }
         }
     }
 
     function action_setStat(stat) {
-        var value = prompt('Set ' + stat + ' to:', character.stats[stat]);
+        var value = prompt('Set ' + stat.name + ' to:', character.stats[stat.id]);
         if (value) {
-            data_setStat(stat, value);
+            if (value.match(/^[0-9]+$/)) {
+                data_setStat(stat.id, value);
+                return true;
+            } else {
+                Base.error('You must set stats to a whole number!');
+                return false;
+            }
         }
+
+        return null;
     }
 
     function data_setStat(stat, value) {
