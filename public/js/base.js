@@ -20,24 +20,12 @@ var Base = new function() {
                 name: 'Home',
                 path: '',
                 root: 'home'
-            },
-            initiative: {
-                name: 'Initiative',
-                path: 'initiative',
-                root: 'initiative'
-            },
-            watches: {
-                name: 'Watches',
-                path: 'watches',
-                root: 'watches'
             }
         },
         nav: [
             'home',
             'dice',
-            'character',
-            'initiative',
-            'watches'
+            'character'
         ],
         systems: {
             deciv: {
