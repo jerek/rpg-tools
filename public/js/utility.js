@@ -73,4 +73,17 @@ var Utility = new function() {
             alert(message);
         }
     };
+
+    /**
+     * @param {Array} numbers
+     * @returns {number}
+     */
+    this.average = function(numbers) {
+        var total = 0;
+        for (var i = 0, len = numbers.length; i < len; i++) {
+            total += numbers[i];
+        }
+
+        return total / len;
+    };
 };

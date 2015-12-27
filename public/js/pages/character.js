@@ -259,7 +259,24 @@ var Page_Character = new function() {
                             updateDisplay_statValue(stat.id);
                             break;
                         case 'average':
-                            // TODO
+                            var numbersToAverage = [];
+                            for (var m = 0, numberToAverage; numberToAverage = stat.formula.stats[m]; m++) {
+                                numbersToAverage.push(parseInt(character.stats[numberToAverage]) || 0);
+                            }
+                            var average = Utility.average(numbersToAverage);
+                            switch (stat.formula.round) {
+                                case 'down':
+                                    average = Math.floor(average);
+                                    break;
+                                case 'up':
+                                    average = Math.ceil(average);
+                                    break;
+                                default:
+                                    average = Math.round(average);
+                            }
+                            character.stats[stat.id] = average;
+                            updateDisplay_statValue(stat.id);
+                            break;
                         default:
                             alert('Unknown formula type!\nType: ' + stat.formula.type);
                     }
