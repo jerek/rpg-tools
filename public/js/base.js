@@ -102,6 +102,16 @@ var Base = new function() {
         return Math.floor((Math.random() * sides) + 1);
     };
 
+    this.error = function(message, consoleOnly) {
+        if (consoleOnly) {
+            if (typeof console != 'undefined' && console && typeof console.error == 'function') {
+                console.error(message);
+            }
+        } else {
+            alert(message);
+        }
+    };
+
     function display_header(target) {
         elements.headerInner = utility_addElement('header-inner', target);
         elements.logo = utility_addElement('logo', elements.headerInner);
