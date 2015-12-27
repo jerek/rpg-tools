@@ -38,7 +38,7 @@ var System_Deciv = new function() {
     ];
 
     this.getConfig = function() {
-        return config;
+        return $.extend(true, {}, config);
     };
 
     this.getAllStats = function() {
@@ -55,7 +55,7 @@ var System_Deciv = new function() {
         for (var i = 0, statGroup; statGroup = attributes[i]; i++) {
             for (var j = 0, attribute; attribute = statGroup[j]; j++) {
                 if (attribute.id = attributeId) {
-                    return attribute;
+                    return $.extend(true, {}, attribute);
                 }
             }
         }
@@ -64,14 +64,14 @@ var System_Deciv = new function() {
     };
 
     this.getAttributes = function() {
-        return attributes;
+        return $.extend(true, [], attributes);
     };
 
     this.getSpecialAttributes = function() {
-        return specialAttributes;
+        return $.extend(true, [], specialAttributes);
     };
 
     this.getTechnicalAttributes = function() {
-        return technicalAttributes;
+        return $.extend(true, [], technicalAttributes);
     };
 };
