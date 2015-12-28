@@ -86,4 +86,16 @@ var Utility = new function() {
 
         return total / len;
     };
+
+    this.getObjectUpdateList = function(oldObject, newObject) {
+        var updates = [];
+
+        for (var property in newObject) {
+            if (newObject.hasOwnProperty(property) && newObject[property] !== oldObject[property]) {
+                updates.push(property);
+            }
+        }
+
+        return updates;
+    };
 };

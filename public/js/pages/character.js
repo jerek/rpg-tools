@@ -1,9 +1,6 @@
 var Page_Character = new function() {
-    var character = {
-        id: 1,
-        name: 'Unnamed Character',
-        stats: {},
-        system: 'deciv'
+    var config = {
+        character: 1
     };
     var elements = {
         attributes: {}
@@ -15,10 +12,6 @@ var Page_Character = new function() {
         display_controls();
         display_name();
         display_body();
-    };
-
-    this.getName = function() {
-        return character.name;
     };
 
     function display_controls() {
@@ -60,7 +53,7 @@ var Page_Character = new function() {
 
         elements.name = Utility.addElement('character-name', elements.container, {
             element: 'h1',
-            text: character.name || 'Unnamed Character',
+            text: Character.getName(config.character) || 'Unnamed Character',
             click: action_setName
         });
     }
@@ -72,7 +65,7 @@ var Page_Character = new function() {
 
         elements.character = Utility.addElement('character', elements.container);
 
-        var systemClass = System.getClass(character.system);
+        var systemClass = System.getClass(Character.getSystem(config.character));
 
         elements.characterAttributes = Utility.addElement('character-attributes', elements.character);
 
@@ -102,12 +95,9 @@ var Page_Character = new function() {
             name.addClass('secondary');
         }
 
-        if (!character.stats.hasOwnProperty(attribute.id)) {
-            character.stats[attribute.id] = 10;
-        }
-
+        var statValue = Character.getStat(config.character, attribute.id);
         var stat = Utility.addElement('character-attribute-stat', elements.attributes[attribute.id], {
-            text: character.stats[attribute.id]
+            text: typeof statValue == 'number' ? statValue : '?'
         });
         if (!attribute.formula) {
             stat.addClass('editable');
@@ -139,17 +129,27 @@ var Page_Character = new function() {
         Dice.appendResult(target, rollObject, suppressAnimation);
     }
 
+    function updateDisplay_name() {
+        elements.name.html(Character.getName(config.character));
+    }
+
+    /**
+     * @param {string} statId
+     * @param {number} [value]
+     */
     function updateDisplay_statValue(statId, value) {
         if (!value) {
-            value = character.stats[statId];
+            value = Character.getStat(config.character, statId);
         }
 
         if (elements.attributes[statId]) {
-            $('.character-attribute-stat', elements.attributes[statId]).html(value);
+            $('.character-attribute-stat', elements.attributes[statId]).html(typeof value == 'number' ? value : '?');
         }
     }
 
     function action_roll(attribute) {
+        var character = Character.get(config.character);
+
         var rollObject = Dice.roll({
             system: character.system,
             character: character.id,
@@ -175,18 +175,19 @@ var Page_Character = new function() {
     }
 
     function action_setName() {
+        var character = Character.get(config.character);
+
         var systemInfo = System.getInfo(character.system);
 
         var value = prompt('Enter your ' + systemInfo.name + ' character name:', character.name);
         if (value) {
-            character.name = value;
-            data_save();
-            Page_Character.init(elements.container);
+            Character.setName(character.id, value);
+            updateDisplay_name();
         }
     }
 
     function action_setStats() {
-        var systemClass = System.getClass(character.system);
+        var systemClass = System.getClass(Character.getSystem(config.character));
         var stats = systemClass.getAllStats();
 
         var result = false;
@@ -210,7 +211,9 @@ var Page_Character = new function() {
     }
 
     function action_setStat(stat) {
-        var value = prompt('Set ' + stat.name + ' to:', character.stats[stat.id]);
+        var stats = Character.getStats(config.character);
+
+        var value = prompt('Set ' + stat.name + ' to:', stats[stat.id]);
         if (value) {
             if (value.match(/^[0-9]+$/)) {
                 data_setStat(stat.id, value);
@@ -224,79 +227,10 @@ var Page_Character = new function() {
         return null;
     }
 
-    function data_setStat(stat, value) {
-        character.stats[stat] = value;
-        data_save();
-        $('.character-attribute-stat', elements.attributes[stat]).html(value);
-    }
-
-    function data_updateCalculatedStats() {
-        var systemClass = System.getClass(character.system);
-        var stats = systemClass.getAllStats();
-
-        for (var i = 0, statGroup; statGroup = stats[i]; i++) {
-            for (var j = 0, stat; stat = statGroup[j]; j++) {
-                if (stat.formula) {
-                    switch (stat.formula.type) {
-                        case 'lowest':
-                            var lowestStats = [];
-                            for (var k = 0, lowestStat; lowestStat = stat.formula.stats[k]; k++) {
-                                lowestStats.push(parseInt(character.stats[lowestStat]) || 0);
-                            }
-                            character.stats[stat.id] = Math.min.apply(Math, lowestStats);
-                            updateDisplay_statValue(stat.id);
-                            break;
-                        case 'highest':
-                            var highestStats = [];
-                            for (var l = 0, highestStat; highestStat = stat.formula.stats[l]; l++) {
-                                highestStats.push(parseInt(character.stats[highestStat]) || 0);
-                            }
-                            character.stats[stat.id] = Math.max.apply(Math, highestStats);
-                            updateDisplay_statValue(stat.id);
-                            break;
-                        case 'average':
-                            var numbersToAverage = [];
-                            for (var m = 0, numberToAverage; numberToAverage = stat.formula.stats[m]; m++) {
-                                numbersToAverage.push(parseInt(character.stats[numberToAverage]) || 0);
-                            }
-                            var average = Utility.average(numbersToAverage);
-                            switch (stat.formula.round) {
-                                case 'down':
-                                    average = Math.floor(average);
-                                    break;
-                                case 'up':
-                                    average = Math.ceil(average);
-                                    break;
-                                default:
-                                    average = Math.round(average);
-                            }
-                            character.stats[stat.id] = average;
-                            updateDisplay_statValue(stat.id);
-                            break;
-                        default:
-                            alert('Unknown formula type!\nType: ' + stat.formula.type);
-                    }
-                }
-            }
+    function data_setStat(statId, value) {
+        var updatedStats = Character.setStat(config.character, statId, value);
+        for (var i = 0, updatedStat; updatedStat = updatedStats[i]; i++) {
+            updateDisplay_statValue(updatedStat);
         }
     }
-
-    function data_save() {
-        data_updateCalculatedStats();
-
-        LocalStorage.set('character', character);
-    }
-
-    function data_load() {
-        var characterData = LocalStorage.get('character');
-        if (characterData) {
-            for (var property in character) {
-                if (character.hasOwnProperty(property) && characterData.hasOwnProperty(property)) {
-                    character[property] = characterData[property];
-                }
-            }
-        }
-    }
-
-    data_load();
 };

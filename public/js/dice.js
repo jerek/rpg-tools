@@ -119,7 +119,7 @@ var Dice = new function() {
                     var systemInfo = System.getInfo(rollObject.system);
                     var systemClass = System.getClass(rollObject.system);
                     var attribute = systemClass.getStat(rollObject.stat);
-                    var characterName = Page_Character.getName();
+                    var characterName = Character.getName(rollObject.character);
 
                     Utility.addElement('dice-die-result-stat', this, {
                         text: attribute.name,
