@@ -22,7 +22,7 @@ var Page_Character = new function() {
     };
 
     function utility_getSystemClass() {
-        return Base.getSystemClass(character.system);
+        return System.getClass(character.system);
     }
 
     function display_controls() {
@@ -179,7 +179,7 @@ var Page_Character = new function() {
     }
 
     function action_setName() {
-        var systemInfo = Base.getSystemInfo(character.system);
+        var systemInfo = System.getInfo(character.system);
 
         var value = prompt('Enter your ' + systemInfo.name + ' character name:', character.name);
         if (value) {

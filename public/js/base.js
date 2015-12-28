@@ -26,14 +26,7 @@ var Base = new function() {
             'home',
             'dice',
             'character'
-        ],
-        systems: {
-            deciv: {
-                id: 'deciv',
-                name: 'Deciv',
-                'class': 'Deciv'
-            }
-        }
+        ]
     };
     var elements = {};
     var status = {
@@ -49,33 +42,6 @@ var Base = new function() {
 
         $(window).on('hashchange', action_nav);
         action_nav();
-    };
-
-    /**
-     * @param {string} systemId
-     * @returns {object|null}
-     */
-    this.getSystemClass = function(systemId) {
-        if (config.systems[systemId]) {
-            return window['System_' + config.systems[systemId]['class']];
-        }
-
-        return null;
-    };
-
-    /**
-     * @param {string} systemId
-     * @returns {object|null}
-     */
-    this.getSystemInfo = function(systemId) {
-        return config.systems[systemId] || null;
-    };
-
-    /**
-     * @returns {object}
-     */
-    this.getSystems = function() {
-        return config.systems;
     };
 
     function display_header(target) {

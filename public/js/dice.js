@@ -116,8 +116,8 @@ var Dice = new function() {
         die
             .mouseenter((function (rollObject) {
                 if (rollObject.stat) {
-                    var systemInfo = Base.getSystemInfo(rollObject.system);
-                    var systemClass = Base.getSystemClass(rollObject.system);
+                    var systemInfo = System.getInfo(rollObject.system);
+                    var systemClass = System.getClass(rollObject.system);
                     var attribute = systemClass.getStat(rollObject.stat);
                     var characterName = Page_Character.getName();
 
