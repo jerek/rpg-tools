@@ -10,7 +10,7 @@ var System = new function() {
     };
 
     /**
-     * @returns {object}
+     * @returns {Array}
      */
     this.getSystems = function() {
         var systems = [];
