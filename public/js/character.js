@@ -95,12 +95,11 @@ var Character = new function() {
     };
 
     function data_load() {
-        var characterData = LocalStorage.get('character');
-        if (characterData) {
-            characters[characterData.id] = {};
-            for (var property in characterTemplate) {
-                if (characterTemplate.hasOwnProperty(property) && characterData.hasOwnProperty(property)) {
-                    characters[characterData.id][property] = characterData[property];
+        var characterData = LocalStorage.get('characters');
+        if (typeof characterData == 'object') {
+            for (var characterId in characterData) {
+                if (characterData.hasOwnProperty(characterId)) {
+                    characters[characterId] = $.extend(true, {}, characterTemplate, characterData[characterId]);
                 }
             }
         }
@@ -109,10 +108,10 @@ var Character = new function() {
     function data_save(characterId) {
         data_updateCalculatedStats(characterId);
 
-        var lastSave = LocalStorage.get('character');
-        var updatedStats = Utility.getObjectUpdateList(lastSave ? lastSave.stats : {}, characters[characterId].stats);
+        var lastSave = LocalStorage.get('characters');
+        var updatedStats = Utility.getObjectUpdateList(lastSave && lastSave[characterId] ? lastSave[characterId].stats : {}, characters[characterId].stats);
 
-        LocalStorage.set('character', characters[characterId]);
+        LocalStorage.set('characters', characters);
 
         return updatedStats;
     }
