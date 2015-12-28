@@ -21,10 +21,6 @@ var Page_Character = new function() {
         return character.name;
     };
 
-    function utility_getSystemClass() {
-        return System.getClass(character.system);
-    }
-
     function display_controls() {
         if (elements.controls) {
             elements.controls.remove && elements.controls.remove();
@@ -76,7 +72,7 @@ var Page_Character = new function() {
 
         elements.character = Utility.addElement('character', elements.container);
 
-        var systemClass = utility_getSystemClass();
+        var systemClass = System.getClass(character.system);
 
         elements.characterAttributes = Utility.addElement('character-attributes', elements.character);
 
@@ -190,7 +186,7 @@ var Page_Character = new function() {
     }
 
     function action_setStats() {
-        var systemClass = utility_getSystemClass();
+        var systemClass = System.getClass(character.system);
         var stats = systemClass.getAllStats();
 
         var result = false;
@@ -235,7 +231,7 @@ var Page_Character = new function() {
     }
 
     function data_updateCalculatedStats() {
-        var systemClass = utility_getSystemClass();
+        var systemClass = System.getClass(character.system);
         var stats = systemClass.getAllStats();
 
         for (var i = 0, statGroup; statGroup = stats[i]; i++) {
