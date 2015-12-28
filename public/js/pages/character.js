@@ -65,9 +65,13 @@ var Page_Character = new function() {
 
         elements.character = Utility.addElement('character', elements.container);
 
+        elements.characterAttributes = Utility.addElement('character-attributes', elements.character);
+
         var systemClass = System.getClass(Character.getSystem(config.character));
 
-        elements.characterAttributes = Utility.addElement('character-attributes', elements.character);
+        if (!systemClass) {
+            return;
+        }
 
         var allAttributes = systemClass.getAllStats();
         for (var i = 0, attributeSet; attributeSet = allAttributes[i]; i++) {
