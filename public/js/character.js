@@ -1,4 +1,7 @@
 var Character = new function() {
+    var config = {
+        highestId: 0
+    };
     var characters = {};
     var characterTemplate = {
         id: 1,
@@ -8,7 +11,7 @@ var Character = new function() {
     };
 
     this.create = function(name, system) {
-        var highestId = 0;
+        var highestId = config.highestId;
         for (var id in characters) {
             if (characters.hasOwnProperty(id) && typeof characters[id] == 'object' && characters[id] && characters[id].id > highestId) {
                 highestId = characters[id].id;
@@ -21,6 +24,8 @@ var Character = new function() {
             name: name,
             system: system || 'deciv'
         });
+
+        config.highestId = newId;
 
         data_save();
 
@@ -121,6 +126,8 @@ var Character = new function() {
     };
 
     function data_load() {
+        config.highestId = LocalStorage.get('characters-highest-id') || 0;
+
         var characterData = LocalStorage.get('characters');
         if (typeof characterData == 'object') {
             for (var characterId in characterData) {
@@ -135,6 +142,8 @@ var Character = new function() {
      * @param {number} [characterId]
      */
     function data_save(characterId) {
+        LocalStorage.set('characters-highest-id', config.highestId);
+
         if (characterId) {
             data_updateCalculatedStats(characterId);
 
