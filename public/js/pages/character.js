@@ -19,7 +19,7 @@ var Page_Character = new function() {
 
         elements.controls = Utility.addElement('character-controls', elements.container);
 
-        elements.characterListControl = Utility.addElement('character-controls-load-character', elements.controls, {
+        elements.characterListControl = Utility.addElement('character-controls-characters', elements.controls, {
             element: 'a',
             text: 'Characters',
             click: action_characterList,
@@ -106,18 +106,18 @@ var Page_Character = new function() {
     }
 
     function display_characterManagement() {
-        elements.characterList = Utility.addElement('character-load', elements.container);
+        elements.characterList = Utility.addElement('character-list', elements.container);
 
         var characters = Character.getCharacters();
         if (!characters) {
             return;
         }
 
-        elements.charactersList = Utility.addElement('character-load-list', elements.characterList);
+        elements.charactersList = Utility.addElement('character-list-characters', elements.characterList);
 
-        var charWrapper = Utility.addElement('character-load-list-character character-load-list-character-create', elements.characterList);
+        var charWrapper = Utility.addElement('character-list-characters-character character-list-characters-character-create', elements.characterList);
 
-        var createChar = Utility.addElement('character-load-list-character-name', charWrapper, {
+        var createChar = Utility.addElement('character-list-characters-character-name', charWrapper, {
             element: 'a',
             text: ' Create Character',
             click: action_createCharacter
@@ -128,9 +128,9 @@ var Page_Character = new function() {
         });
 
         for (var i = 0, character; character = characters[i]; i++) {
-            charWrapper = Utility.addElement('character-load-list-character', elements.characterList);
+            charWrapper = Utility.addElement('character-list-characters-character', elements.characterList);
 
-            var deleteLink = Utility.addElement('character-load-list-character-delete', charWrapper, {
+            var deleteLink = Utility.addElement('character-list-characters-character-delete', charWrapper, {
                 element: 'a',
                 text: ' Delete',
                 click: action_deleteCharacter.bind(null, character.id)
@@ -140,7 +140,7 @@ var Page_Character = new function() {
                 prepend: true
             });
 
-            Utility.addElement('character-load-list-character-name', charWrapper, {
+            Utility.addElement('character-list-characters-character-name', charWrapper, {
                 element: 'a',
                 text: character.name,
                 click: action_loadCharacter.bind(null, character.id)

@@ -27,17 +27,17 @@ body[data-character="none"] .character-controls {
     display: none;
 }
 
-.character-load-list-character {
+.character-list-characters-character {
     padding: 5px 0;
 }
 
-.character-load-list-character:after {
+.character-list-characters-character:after {
     clear: both;
     content: ' ';
     display: table;
 }
 
-.character-load-list-character-delete {
+.character-list-characters-character-delete {
     color: inherit;
     cursor: pointer;
     float: right;
@@ -45,22 +45,22 @@ body[data-character="none"] .character-controls {
     text-decoration: none !important;
 }
 
-.character-load-list-character-delete:hover {
+.character-list-characters-character-delete:hover {
     color: #808080;
 }
 
-.character-load-list-character-name {
+.character-list-characters-character-name {
     color: inherit;
     cursor: pointer;
     font-size: 32px;
     text-decoration: none !important;
 }
 
-.character-load-list-character-name:hover {
+.character-list-characters-character-name:hover {
     color: #808080;
 }
 
-.character-load-list-character-create .character-load-list-character-name {
+.character-list-characters-character-create .character-list-characters-character-name {
     font-size: inherit;
     margin-bottom: .5em;
 }
