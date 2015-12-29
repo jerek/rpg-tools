@@ -12,9 +12,7 @@ var Page_Dice = new function() {
     };
 
     function display_controls() {
-        if (elements.controls) {
-            elements.controls.remove && elements.controls.remove();
-        }
+        elements.controls && elements.controls.remove && elements.controls.remove();
 
         elements.controls = Utility.addElement('dice-controls', elements.container);
 
@@ -22,10 +20,8 @@ var Page_Dice = new function() {
     }
 
     function display_body() {
-        if (elements.dice && elements.diceWrapper) {
-            elements.dice.remove && elements.dice.remove();
-            elements.diceWrapper.remove && elements.diceWrapper.remove();
-        }
+        elements.dice && elements.dice.remove && elements.dice.remove();
+        elements.diceWrapper && elements.diceWrapper.remove && elements.diceWrapper.remove();
 
         elements.diceWrapper = Utility.addElement('dice-wrapper', elements.container);
         elements.dice = Utility.addElement('dice', elements.diceWrapper);

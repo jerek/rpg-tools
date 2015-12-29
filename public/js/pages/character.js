@@ -15,9 +15,7 @@ var Page_Character = new function() {
     };
 
     function display_controls() {
-        if (elements.controls) {
-            elements.controls.remove && elements.controls.remove();
-        }
+        elements.controls && elements.controls.remove && elements.controls.remove();
 
         elements.controls = Utility.addElement('character-controls', elements.container);
 
@@ -59,9 +57,7 @@ var Page_Character = new function() {
     }
 
     function display_name() {
-        if (elements.name) {
-            elements.name.remove && elements.name.remove();
-        }
+        elements.name && elements.name.remove && elements.name.remove();
 
         elements.name = Utility.addElement('character-name', elements.container, 'h1');
 
