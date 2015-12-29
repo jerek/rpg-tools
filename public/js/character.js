@@ -66,7 +66,7 @@ var Character = new function() {
      * @returns {string|null}
      */
     this.getName = function(characterId) {
-        return characters[characterId] && characters[characterId].name || null;
+        return characters[characterId] && characters[characterId].name || 'Character #' + characterId;
     };
 
     /**

@@ -65,7 +65,7 @@ var Page_Character = new function() {
 
         if (config.character) {
             elements.name
-                .text(Character.getName(config.character) || 'Unnamed Character')
+                .text(Character.getName(config.character))
                 .addClass('editable')
                 .click(action_setName);
         } else {
