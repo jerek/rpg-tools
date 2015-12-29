@@ -53,7 +53,7 @@ var System_Deciv = new function() {
 
         for (var i = 0, statGroup; statGroup = attributes[i]; i++) {
             for (var j = 0, attribute; attribute = statGroup[j]; j++) {
-                if (attribute.id = attributeId) {
+                if (attribute.id == attributeId) {
                     return $.extend(true, {}, attribute);
                 }
             }
