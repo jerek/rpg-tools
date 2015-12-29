@@ -3,7 +3,7 @@ var Page_Character = new function() {
         character: null
     };
     var elements = {
-        attributes: {}
+        stats: {}
     };
 
     this.init = function(target) {
@@ -65,7 +65,7 @@ var Page_Character = new function() {
 
         elements.character = Utility.addElement('character', elements.container);
 
-        elements.characterAttributes = Utility.addElement('character-attributes', elements.character);
+        elements.characterStats = Utility.addElement('character-stats', elements.character);
 
         var systemClass = System.getClass(Character.getSystem(config.character));
 
@@ -73,54 +73,54 @@ var Page_Character = new function() {
             return;
         }
 
-        var allAttributes = systemClass.getAllStats();
-        for (var i = 0, attributeSet; attributeSet = allAttributes[i]; i++) {
+        var allStats = systemClass.getAllStats();
+        for (var i = 0, statSet; statSet = allStats[i]; i++) {
             if (i > 0) {
-                var emptyRow = Utility.addElement('character-attribute', elements.characterAttributes);
+                var emptyRow = Utility.addElement('character-stat', elements.characterStats);
                 Utility.addElement(null, emptyRow);
             }
 
-            for (var j = 0, attribute; attribute = attributeSet[j]; j++) {
-                display_attribute(elements.characterAttributes, attribute);
+            for (var j = 0, stat; stat = statSet[j]; j++) {
+                display_stat(elements.characterStats, stat);
             }
         }
     }
 
-    function display_attribute(target, attribute) {
-        elements.attributes[attribute.id] = Utility.addElement('character-attribute', target);
+    function display_stat(target, stat) {
+        elements.stats[stat.id] = Utility.addElement('character-stat', target);
 
-        var name = Utility.addElement('character-attribute-name', elements.attributes[attribute.id], {
-            text: attribute.name,
-            click: action_roll.bind(elements.attributes[attribute.id], attribute),
+        var name = Utility.addElement('character-stat-name', elements.stats[stat.id], {
+            text: stat.name,
+            click: action_roll.bind(elements.stats[stat.id], stat),
             mousedown: Utility.returnFalse
         });
 
-        if (attribute.secondary) {
+        if (stat.secondary) {
             name.addClass('secondary');
         }
 
-        var statValue = Character.getStat(config.character, attribute.id);
-        var stat = Utility.addElement('character-attribute-stat', elements.attributes[attribute.id], {
+        var statValue = Character.getStat(config.character, stat.id);
+        var statValueDisplay = Utility.addElement('character-stat-value', elements.stats[stat.id], {
             text: typeof statValue == 'number' ? statValue : '?'
         });
-        if (!attribute.formula) {
-            stat.addClass('editable');
-            stat.click(action_setStat.bind(null, attribute));
+        if (!stat.formula) {
+            statValueDisplay.addClass('editable');
+            statValueDisplay.click(action_setStat.bind(null, stat));
         }
 
-        var log = Utility.addElement('character-attribute-log', elements.attributes[attribute.id]);
+        var log = Utility.addElement('character-stat-log', elements.stats[stat.id]);
 
-        var logInner = Utility.addElement('character-attribute-log-inner', log);
+        var logInner = Utility.addElement('character-stat-log-inner', log);
 
-        var logTogglerBg = Utility.addElement('character-attribute-log-toggler-background', log);
+        var logTogglerBg = Utility.addElement('character-stat-log-toggler-background', log);
 
-        var logToggler = Utility.addElement('character-attribute-log-toggler fa fa-plus', log, {
+        var logToggler = Utility.addElement('character-stat-log-toggler fa fa-plus', log, {
             element: 'a',
-            click: action_toggleLog.bind(elements.attributes[attribute.id], attribute),
+            click: action_toggleLog.bind(elements.stats[stat.id], stat),
             mousedown: Utility.returnFalse
         });
 
-        var rolls = Dice.getRolls({ system: 'deciv', stat: attribute.id, sides: attribute.die });
+        var rolls = Dice.getRolls({ system: 'deciv', stat: stat.id, sides: stat.die });
 
         if (rolls && rolls.length) {
             for (var j = 0, roll; roll = rolls[j]; j++) {
@@ -146,33 +146,33 @@ var Page_Character = new function() {
             value = Character.getStat(config.character, statId);
         }
 
-        if (elements.attributes[statId]) {
-            $('.character-attribute-stat', elements.attributes[statId]).html(typeof value == 'number' ? value : '?');
+        if (elements.stats[statId]) {
+            $('.character-stat-value', elements.stats[statId]).html(typeof value == 'number' ? value : '?');
         }
     }
 
-    function action_roll(attribute) {
+    function action_roll(stat) {
         var character = Character.get(config.character);
 
         var rollObject = Dice.roll({
             system: character.system,
             character: character.id,
-            stat: attribute.id,
-            sides: attribute.die
+            stat: stat.id,
+            sides: stat.die
         });
 
-        display_result($('.character-attribute-log-inner', this), rollObject);
+        display_result($('.character-stat-log-inner', this), rollObject);
     }
 
-    function action_toggleLog(attribute) {
+    function action_toggleLog(stat) {
         if (this.hasClass('expand')) {
             this.removeClass('expand');
-            $('.character-attribute-log-toggler', this)
+            $('.character-stat-log-toggler', this)
                 .removeClass('fa-minus')
                 .addClass('fa-plus');
         } else {
             this.addClass('expand');
-            $('.character-attribute-log-toggler', this)
+            $('.character-stat-log-toggler', this)
                 .removeClass('fa-plus')
                 .addClass('fa-minus');
         }

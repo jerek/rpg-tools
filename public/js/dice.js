@@ -118,11 +118,11 @@ var Dice = new function() {
                 if (rollObject.stat) {
                     var systemInfo = System.getInfo(rollObject.system);
                     var systemClass = System.getClass(rollObject.system);
-                    var attribute = systemClass.getStat(rollObject.stat);
+                    var stat = systemClass.getStat(rollObject.stat);
                     var characterName = Character.getName(rollObject.character);
 
                     Utility.addElement('dice-die-result-stat', this, {
-                        text: attribute.name,
+                        text: stat.name,
                         title: characterName + ' - ' + systemInfo.name
                     });
                 }

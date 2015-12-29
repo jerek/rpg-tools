@@ -20,18 +20,18 @@
     color: #808080;
 }
 
-.character-attributes {
+.character-stats {
     display: table;
     margin: 0 0 25px;
     overflow: hidden;
     width: 100%;
 }
 
-.character-attribute {
+.character-stat {
     display: table-row;
 }
 
-.character-attribute > div {
+.character-stat > div {
     border-radius: 3px;
     display: table-cell;
     height: 24px;
@@ -41,42 +41,42 @@
     white-space: nowrap;
 }
 
-.character-attribute-name {
+.character-stat-name {
     cursor: pointer;
     font-family: Montserrat, Verdana, Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
 
-.character-attribute-name:hover {
+.character-stat-name:hover {
     background: #ddd;
 }
 
-.character-attribute-name.secondary {
+.character-stat-name.secondary {
     color: #444;
     font-weight: normal;
 }
 
-.character-attribute-stat {
+.character-stat-value {
     cursor: default;
     font-family: Montserrat, Verdana, Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
 
-.character-attribute-stat.editable {
+.character-stat-value.editable {
     cursor: pointer;
 }
 
-.character-attribute-stat.editable:hover {
+.character-stat-value.editable:hover {
     color: #808080;
 }
 
-.character-attribute-log {
+.character-stat-log {
     padding-right: 25px !important;
     position: relative;
     width: 99%;
 }
 
-.character-attribute-log-inner {
+.character-stat-log-inner {
     bottom: 5px;
     left: 5px;
     position: absolute;
@@ -84,12 +84,12 @@
     top: 5px;
 }
 
-.character-attribute.expand .character-attribute-log-inner {
+.character-stat.expand .character-stat-log-inner {
     position: static;
     white-space: normal;
 }
 
-.character-attribute-log .dice-die-result {
+.character-stat-log .dice-die-result {
     color: #808080;
     display: inline-block;
     position: relative;
@@ -98,12 +98,12 @@
     width: 2em;
 }
 
-.character-attribute-log .dice-die-result:hover {
+.character-stat-log .dice-die-result:hover {
     font-weight: bold;
 }
 
-.character-attribute-log .dice-die-result-stat,
-.character-attribute-log .dice-die-result-timestamp {
+.character-stat-log .dice-die-result-stat,
+.character-stat-log .dice-die-result-timestamp {
     cursor: default;
     font-size: 10px;
     font-weight: normal;
@@ -113,16 +113,16 @@
     right: -50px;
 }
 
-.character-attribute-log .dice-die-result-stat {
+.character-stat-log .dice-die-result-stat {
     display: none;
     top: -5px;
 }
 
-.character-attribute-log .dice-die-result-timestamp {
+.character-stat-log .dice-die-result-timestamp {
     bottom: -5px;
 }
 
-.character-attribute-log .character-attribute-log-toggler-background {
+.character-stat-log .character-stat-log-toggler-background {
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,eeeeee+100&0+0,1+90,1+100 */
     background: -moz-linear-gradient(left,  rgba(238,238,238,0) 0%, rgba(238,238,238,1) 90%, rgba(238,238,238,1) 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(left,  rgba(238,238,238,0) 0%,rgba(238,238,238,1) 90%,rgba(238,238,238,1) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -137,11 +137,11 @@
     top: 0;
 }
 
-.character-attribute.expand .character-attribute-log .character-attribute-log-toggler-background {
+.character-stat.expand .character-stat-log .character-stat-log-toggler-background {
     display: none;
 }
 
-.character-attribute-log .character-attribute-log-toggler {
+.character-stat-log .character-stat-log-toggler {
     bottom: 0;
     color: #ccc;
     cursor: pointer;
@@ -155,14 +155,14 @@
     top: 0;
 }
 
-.character-attribute-log:hover .character-attribute-log-toggler {
+.character-stat-log:hover .character-stat-log-toggler {
     opacity: 1;
 }
 
-.character-attribute-log .character-attribute-log-toggler:before {
+.character-stat-log .character-stat-log-toggler:before {
     line-height: 25px;
 }
 
-.character-attribute-log .character-attribute-log-toggler:hover {
+.character-stat-log .character-stat-log-toggler:hover {
     color: inherit;
 }
