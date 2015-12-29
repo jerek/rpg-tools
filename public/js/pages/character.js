@@ -1,6 +1,6 @@
 var Page_Character = new function() {
     var config = {
-        character: 1
+        character: null
     };
     var elements = {
         attributes: {}
@@ -231,10 +231,39 @@ var Page_Character = new function() {
         return null;
     }
 
+    function data_load() {
+        var pageConfig = LocalStorage.get('page-character');
+        if (pageConfig && typeof pageConfig.character == 'number') {
+            config.character = pageConfig.character;
+        }
+    }
+
+    function data_save() {
+        var oldConfig = LocalStorage.get('page-character');
+        var pageNeedsRefresh = typeof oldConfig != 'object';
+        if (!pageNeedsRefresh) {
+            var changes = Utility.getObjectUpdateList(oldConfig, config);
+            pageNeedsRefresh = changes.length > 0;
+        }
+
+        LocalStorage.set('page-character', config);
+
+        if (pageNeedsRefresh) {
+            Page_Character.init(elements.container);
+        }
+    }
+
+    function data_setCharacter(characterId) {
+        config.character = characterId;
+        data_save();
+    }
+
     function data_setStat(statId, value) {
         var updatedStats = Character.setStat(config.character, statId, value);
         for (var i = 0, updatedStat; updatedStat = updatedStats[i]; i++) {
             updateDisplay_statValue(updatedStat);
         }
     }
+
+    data_load();
 };
