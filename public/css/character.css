@@ -12,12 +12,36 @@
 }
 
 .character-name {
-    cursor: pointer;
     display: table;
 }
 
-.character-name:hover {
+.character-name.editable {
+    cursor: pointer;
+}
+
+.character-name.editable:hover {
     color: #808080;
+}
+
+body[data-character="none"] .character-controls {
+    display: none;
+}
+
+.character-load-list-character {
+    color: inherit;
+    cursor: pointer;
+    display: table;
+    font-size: 32px;
+    text-decoration: none !important;
+}
+
+.character-load-list-character:hover {
+    color: #808080;
+}
+
+.character-load-list-character-create {
+    font-size: inherit;
+    margin-bottom: .5em;
 }
 
 .character-stats {

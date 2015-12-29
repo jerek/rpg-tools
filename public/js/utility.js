@@ -91,11 +91,30 @@ var Utility = new function() {
         var updates = [];
 
         for (var property in newObject) {
-            if (newObject.hasOwnProperty(property) && newObject[property] !== oldObject[property]) {
+            if (typeof oldObject != 'object' || !oldObject || (newObject.hasOwnProperty(property) && newObject[property] !== oldObject[property])) {
                 updates.push(property);
             }
         }
 
         return updates;
+    };
+
+    /**
+     * @param {object} object
+     * @param {function} [sortFunc]
+     * @returns {Array}
+     */
+    this.sortObject = function(object, sortFunc) {
+        var result = [];
+
+        for (var property in object) {
+            if (object.hasOwnProperty(property)) {
+                result.push(object[property]);
+            }
+        }
+
+        result.sort(sortFunc);
+
+        return result;
     };
 };

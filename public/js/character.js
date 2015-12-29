@@ -7,6 +7,26 @@ var Character = new function() {
         system: 'deciv'
     };
 
+    this.create = function(name, system) {
+        var highestId = 0;
+        for (var id in characters) {
+            if (characters.hasOwnProperty(id) && typeof characters[id] == 'object' && characters[id] && characters[id].id > highestId) {
+                highestId = characters[id].id;
+            }
+        }
+        var newId = highestId + 1;
+
+        characters[newId] = $.extend(true, {}, characterTemplate, {
+            id: newId,
+            name: name,
+            system: system || 'deciv'
+        });
+
+        data_save();
+
+        return newId;
+    };
+
     /**
      * @param {number} characterId
      * @returns {object}
@@ -15,6 +35,12 @@ var Character = new function() {
         return characters[characterId] ?
             $.extend(true, {}, characters[characterId]) :
             null;
+    };
+
+    this.getCharacters = function() {
+        return Utility.sortObject(characters, function(a, b) {
+            return a.name.localeCompare(b.name);
+        });
     };
 
     /**
@@ -105,15 +131,22 @@ var Character = new function() {
         }
     }
 
+    /**
+     * @param {number} [characterId]
+     */
     function data_save(characterId) {
-        data_updateCalculatedStats(characterId);
+        if (characterId) {
+            data_updateCalculatedStats(characterId);
 
-        var lastSave = LocalStorage.get('characters');
-        var updatedStats = Utility.getObjectUpdateList(lastSave && lastSave[characterId] ? lastSave[characterId].stats : {}, characters[characterId].stats);
+            var lastSave = LocalStorage.get('characters');
+            var updatedStats = Utility.getObjectUpdateList(lastSave && lastSave[characterId] ? lastSave[characterId].stats : {}, characters[characterId].stats);
 
-        LocalStorage.set('characters', characters);
+            LocalStorage.set('characters', characters);
 
-        return updatedStats;
+            return updatedStats;
+        } else {
+            LocalStorage.set('characters', characters);
+        }
     }
 
     function data_updateCalculatedStats(characterId) {

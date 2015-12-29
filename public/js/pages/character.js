@@ -21,6 +21,18 @@ var Page_Character = new function() {
 
         elements.controls = Utility.addElement('character-controls', elements.container);
 
+        elements.characterListControl = Utility.addElement('character-controls-load-character', elements.controls, {
+            element: 'a',
+            text: 'Characters',
+            click: action_characterList,
+            mousedown: Utility.returnFalse
+        });
+        Utility.addElement(null, elements.characterListControl, {
+            element: 'i',
+            prepend: true,
+            'class': 'fa fa-fw fa-file-text-o'
+        });
+
         elements.setStatsControl = Utility.addElement('character-controls-set-stats', elements.controls, {
             element: 'a',
             text: 'Set All Stats',
@@ -51,16 +63,25 @@ var Page_Character = new function() {
             elements.name.remove && elements.name.remove();
         }
 
-        elements.name = Utility.addElement('character-name', elements.container, {
-            element: 'h1',
-            text: Character.getName(config.character) || 'Unnamed Character',
-            click: action_setName
-        });
+        elements.name = Utility.addElement('character-name', elements.container, 'h1');
+
+        if (config.character) {
+            elements.name
+                .text(Character.getName(config.character) || 'Unnamed Character')
+                .addClass('editable')
+                .click(action_setName);
+        } else {
+            elements.name.text('Characters');
+        }
     }
 
     function display_body() {
-        if (elements.character) {
-            elements.character.remove && elements.character.remove();
+        elements.character && elements.character.remove && elements.character.remove();
+        elements.characterList && elements.characterList.remove && elements.characterList.remove();
+
+        if (!config.character) {
+            display_characterManagement();
+            return;
         }
 
         elements.character = Utility.addElement('character', elements.container);
@@ -83,6 +104,35 @@ var Page_Character = new function() {
             for (var j = 0, stat; stat = statSet[j]; j++) {
                 display_stat(elements.characterStats, stat);
             }
+        }
+    }
+
+    function display_characterManagement() {
+        elements.characterList = Utility.addElement('character-load', elements.container);
+
+        var characters = Character.getCharacters();
+        if (!characters) {
+            return;
+        }
+
+        elements.charactersList = Utility.addElement('character-load-list', elements.characterList);
+
+        var createChar = Utility.addElement('character-load-list-character character-load-list-character-create', elements.charactersList, {
+            element: 'div',
+            text: ' Create Character',
+            click: action_createCharacter
+        });
+        Utility.addElement('fa fa-plus-square-o', createChar, {
+            element: 'i',
+            prepend: true
+        });
+
+        for (var i = 0, character; character = characters[i]; i++) {
+            Utility.addElement('character-load-list-character', elements.charactersList, {
+                element: 'div',
+                text: character.name,
+                click: action_loadCharacter.bind(null, character.id)
+            });
         }
     }
 
@@ -120,7 +170,7 @@ var Page_Character = new function() {
             mousedown: Utility.returnFalse
         });
 
-        var rolls = Dice.getRolls({ system: 'deciv', stat: stat.id, sides: stat.die });
+        var rolls = Dice.getRolls({ system: 'deciv', character: config.character, stat: stat.id, sides: stat.die });
 
         if (rolls && rolls.length) {
             for (var j = 0, roll; roll = rolls[j]; j++) {
@@ -149,6 +199,28 @@ var Page_Character = new function() {
         if (elements.stats[statId]) {
             $('.character-stat-value', elements.stats[statId]).html(typeof value == 'number' ? value : '?');
         }
+    }
+
+    function action_createCharacter() {
+        var name = prompt('Character Name:');
+        if (name) {
+            data_setCharacter(Character.create(name, 'deciv'));
+        }
+    }
+
+    function action_loadCharacter(id) {
+        var character = Character.get(id);
+
+        if (!character) {
+            alert('Character with ID ' + id + ' not found!');
+            return;
+        }
+
+        data_setCharacter(character.id);
+    }
+
+    function action_characterList() {
+        data_unsetCharacter();
     }
 
     function action_roll(stat) {
@@ -236,6 +308,7 @@ var Page_Character = new function() {
         if (pageConfig && typeof pageConfig.character == 'number') {
             config.character = pageConfig.character;
         }
+        data_setCharacterDataAttribute();
     }
 
     function data_save() {
@@ -248,6 +321,8 @@ var Page_Character = new function() {
 
         LocalStorage.set('page-character', config);
 
+        data_setCharacterDataAttribute();
+
         if (pageNeedsRefresh) {
             Page_Character.init(elements.container);
         }
@@ -256,6 +331,17 @@ var Page_Character = new function() {
     function data_setCharacter(characterId) {
         config.character = characterId;
         data_save();
+    }
+
+    function data_unsetCharacter() {
+        config.character = null;
+        data_save();
+    }
+
+    function data_setCharacterDataAttribute() {
+        $(function() {
+            $(document.body).attr('data-character', config.character || 'none');
+        });
     }
 
     function data_setStat(statId, value) {
