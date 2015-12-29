@@ -43,6 +43,7 @@ var Page_Character = new function() {
             'class': 'fa fa-fw fa-pencil-square-o'
         });
 
+        /*
         elements.clearControl = Utility.addElement('character-controls-clear', elements.controls, {
             element: 'a',
             text: 'Clear Rolls',
@@ -54,6 +55,7 @@ var Page_Character = new function() {
             prepend: true,
             'class': 'fa fa-fw fa-times'
         });
+        */
     }
 
     function display_name() {
