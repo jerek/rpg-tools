@@ -42,6 +42,19 @@ var Character = new function() {
             null;
     };
 
+    this.delete = function(characterId) {
+        if (characters[characterId]) {
+            if (confirm('Are you sure you want to delete "' + characters[characterId].name + '"?')) {
+                if (confirm('If you delete "' + characters[characterId].name + '" you CANNOT get them back!')) {
+                    delete characters[characterId];
+                    data_save();
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
     this.getCharacters = function() {
         return Utility.sortObject(characters, function(a, b) {
             return a.name.localeCompare(b.name);

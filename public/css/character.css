@@ -28,18 +28,39 @@ body[data-character="none"] .character-controls {
 }
 
 .character-load-list-character {
+    padding: 5px 0;
+}
+
+.character-load-list-character:after {
+    clear: both;
+    content: ' ';
+    display: table;
+}
+
+.character-load-list-character-delete {
     color: inherit;
     cursor: pointer;
-    display: table;
+    float: right;
+    margin: 10px;
+    text-decoration: none !important;
+}
+
+.character-load-list-character-delete:hover {
+    color: #808080;
+}
+
+.character-load-list-character-name {
+    color: inherit;
+    cursor: pointer;
     font-size: 32px;
     text-decoration: none !important;
 }
 
-.character-load-list-character:hover {
+.character-load-list-character-name:hover {
     color: #808080;
 }
 
-.character-load-list-character-create {
+.character-load-list-character-create .character-load-list-character-name {
     font-size: inherit;
     margin-bottom: .5em;
 }

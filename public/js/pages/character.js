@@ -115,8 +115,10 @@ var Page_Character = new function() {
 
         elements.charactersList = Utility.addElement('character-load-list', elements.characterList);
 
-        var createChar = Utility.addElement('character-load-list-character character-load-list-character-create', elements.charactersList, {
-            element: 'div',
+        var charWrapper = Utility.addElement('character-load-list-character character-load-list-character-create', elements.characterList);
+
+        var createChar = Utility.addElement('character-load-list-character-name', charWrapper, {
+            element: 'a',
             text: ' Create Character',
             click: action_createCharacter
         });
@@ -126,8 +128,20 @@ var Page_Character = new function() {
         });
 
         for (var i = 0, character; character = characters[i]; i++) {
-            Utility.addElement('character-load-list-character', elements.charactersList, {
-                element: 'div',
+            charWrapper = Utility.addElement('character-load-list-character', elements.characterList);
+
+            var deleteLink = Utility.addElement('character-load-list-character-delete', charWrapper, {
+                element: 'a',
+                text: ' Delete',
+                click: action_deleteCharacter.bind(null, character.id)
+            });
+            Utility.addElement('fa fa-times', deleteLink, {
+                element: 'i',
+                prepend: true
+            });
+
+            Utility.addElement('character-load-list-character-name', charWrapper, {
+                element: 'a',
                 text: character.name,
                 click: action_loadCharacter.bind(null, character.id)
             });
@@ -181,6 +195,10 @@ var Page_Character = new function() {
         Dice.appendResult(target, rollObject, suppressAnimation);
     }
 
+    function updateDisplay_refreshPage() {
+        Page_Character.init(elements.container);
+    }
+
     function updateDisplay_name() {
         elements.name.html(Character.getName(config.character));
     }
@@ -203,6 +221,19 @@ var Page_Character = new function() {
         var name = prompt('Character Name:');
         if (name) {
             data_setCharacter(Character.create(name, 'deciv'));
+        }
+    }
+
+    function action_deleteCharacter(id) {
+        var character = Character.get(id);
+
+        if (!character) {
+            alert('Character with ID ' + id + ' not found!');
+            return;
+        }
+
+        if (Character.delete(id)) {
+            updateDisplay_refreshPage();
         }
     }
 
@@ -322,7 +353,7 @@ var Page_Character = new function() {
         data_setCharacterDataAttribute();
 
         if (pageNeedsRefresh) {
-            Page_Character.init(elements.container);
+            updateDisplay_refreshPage();
         }
     }
 
