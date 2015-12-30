@@ -46,6 +46,14 @@ var Utility = new function() {
     };
 
     /**
+     * @param {string} text
+     * @param {jQuery|HTMLElement} target
+     */
+    this.addText = function(text, target) {
+        $(target).append(document.createTextNode(text));
+    };
+
+    /**
      * @param {number} sides
      * @returns {number}
      */
@@ -85,6 +93,21 @@ var Utility = new function() {
         }
 
         return total / len;
+    };
+
+    this.propertyAverage = function(objectOrArray, property) {
+        var numbers = [];
+        for (var i in objectOrArray) {
+            if (objectOrArray.hasOwnProperty(i) && $.isNumeric(objectOrArray[i][property])) {
+                numbers.push(parseInt(objectOrArray[i][property]));
+            }
+        }
+
+        if (!numbers.length) {
+            return 0;
+        }
+
+        return Utility.average(numbers);
     };
 
     this.getObjectUpdateList = function(oldObject, newObject) {

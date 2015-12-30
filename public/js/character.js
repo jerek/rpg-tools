@@ -138,6 +138,45 @@ var Character = new function() {
         return null;
     };
 
+    this.sort = function(a, b) {
+        // General Rolls last
+        if (a.id == 0) {
+            return 1;
+        } else if (b.id == 0) {
+            return -1;
+        }
+
+        // Nameless deleted characters go after named undeleted characters
+        if (a.name.match(/^Character #[0-9]+$/)) {
+            return 1;
+        } else if (b.name.match(/^Character #[0-9]+$/)) {
+            return -1;
+        }
+
+        // Sort existing non-general characters by name...
+        if (a.name.toLowerCase() < b.name.toLowerCase()) {
+            return -1;
+        } else if (b.name.toLowerCase() < a.name.toLowerCase()) {
+            return 1;
+        }
+
+        // ...then by system name...
+        if (a.system && !b.system) {
+            return -1;
+        } else if (!a.system && b.system) {
+            return 1;
+        } else if (a.system && b.system) {
+            if (a.system < b.system) {
+                return -1;
+            } else if (a.system > b.system) {
+                return 1;
+            }
+        }
+
+        // ...and finally be ID
+        return a.id - b.id;
+    };
+
     function data_load() {
         config.highestId = LocalStorage.get('characters-highest-id') || 0;
 

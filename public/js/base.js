@@ -20,12 +20,18 @@ var Base = new function() {
                 name: 'Home',
                 path: '',
                 root: 'home'
+            },
+            stats: {
+                name: 'Stats',
+                path: 'stats',
+                root: 'stats'
             }
         },
         nav: [
             'home',
             'dice',
-            'character'
+            'character',
+            'stats'
         ]
     };
     var elements = {};
