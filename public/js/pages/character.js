@@ -169,6 +169,9 @@ var Page_Character = new function() {
             statValueDisplay.addClass('editable');
             statValueDisplay.click(action_setStat.bind(null, stat));
         }
+        if (typeof statValue != 'number') {
+            statValueDisplay.addClass('unknown');
+        }
 
         var log = Utility.addElement('character-stat-log', elements.stats[stat.id]);
 
@@ -213,7 +216,11 @@ var Page_Character = new function() {
         }
 
         if (elements.stats[statId]) {
-            $('.character-stat-value', elements.stats[statId]).html(typeof value == 'number' ? value : '?');
+            if (typeof value == 'number') {
+                $('.character-stat-value', elements.stats[statId]).html(value).removeClass('unknown');
+            } else {
+                $('.character-stat-value', elements.stats[statId]).html('?');
+            }
         }
     }
 

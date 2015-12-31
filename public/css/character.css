@@ -115,6 +115,14 @@ body[data-character="none"] .character-controls {
     color: #808080;
 }
 
+.character-stat-value.unknown {
+    color: #808080;
+}
+
+.character-stat-value.unknown:hover {
+    color: #c0c0c0;
+}
+
 .character-stat-log {
     padding-right: 25px !important;
     position: relative;
