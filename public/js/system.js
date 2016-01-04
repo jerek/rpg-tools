@@ -40,7 +40,7 @@ var System = new function() {
      * @param {string} systemId
      * @returns {object|null}
      */
-    this.getInfo = function(systemId) {
+    this.getConfig = function(systemId) {
         return config.systems[systemId] || null;
     };
 };

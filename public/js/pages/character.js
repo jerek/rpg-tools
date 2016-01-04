@@ -289,9 +289,9 @@ var Page_Character = new function() {
     function action_setName() {
         var character = Character.get(config.character);
 
-        var systemInfo = System.getInfo(character.system);
+        var systemConfig = System.getConfig(character.system);
 
-        var value = prompt('Enter your ' + systemInfo.name + ' character name:', character.name);
+        var value = prompt('Enter your ' + systemConfig.name + ' character name:', character.name);
         if (value) {
             Character.setName(character.id, value);
             updateDisplay_name();

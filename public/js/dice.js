@@ -116,14 +116,14 @@ var Dice = new function() {
         die
             .mouseenter((function (rollObject) {
                 if (rollObject.stat) {
-                    var systemInfo = System.getInfo(rollObject.system);
+                    var systemConfig = System.getConfig(rollObject.system);
                     var systemClass = System.getClass(rollObject.system);
                     var stat = systemClass.getStat(rollObject.stat);
                     var characterName = Character.getName(rollObject.character);
 
                     Utility.addElement('dice-die-result-stat', this, {
                         text: stat.name,
-                        title: characterName + ' - ' + systemInfo.name
+                        title: characterName + ' - ' + systemConfig.name
                     });
                 }
 
