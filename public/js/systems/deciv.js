@@ -30,6 +30,7 @@ var System_Deciv = new function() {
         { id: 'stealth',  name: 'Stealth',  die: 20 },
         { id: 'survival', name: 'Survival', die: 20 },
         { id: 'social',   name: 'Social',   die: 20 },
+        { id: 'trading',  name: 'Trading',  die: 20 },
         { id: 'medical',  name: 'Medical',  die: 20 },
         { id: 'tech',     name: 'Tech',     die: 20 },
         { id: 'science',  name: 'Science',  die: 20 },
