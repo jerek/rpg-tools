@@ -14,14 +14,14 @@ var System_Deciv = new function() {
         { id: 'intellect',   name: 'Intellect',   die: 20, secondary: true },
         { id: 'awareness',   name: 'Awareness',   die: 20, secondary: true },
         { id: 'charisma',    name: 'Charisma',    die: 20 },
-        { id: 'allure',      name: 'Allure',      die: 20, secondary: true },
+        { id: 'allure',      name: 'Affinity',    die: 20, secondary: true },
         { id: 'influence',   name: 'Influence',   die: 20, secondary: true }
     ];
     var specialAttributes = [
         { id: 'luck',        name: 'Luck',        die: 20 },
         { id: 'initiative',  name: 'Initiative',  die: 20, formula: {
             type: 'lowest',
-            stats: ['awareness', 'agility']
+            stats: ['perception', 'agility']
         } }
     ];
     var technicalAttributes = [
