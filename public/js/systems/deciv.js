@@ -12,9 +12,11 @@ var System_Deciv = new function() {
         { id: 'resolve',     name: 'Resolve',     die: 20, secondary: true },
         { id: 'perception',  name: 'Perception',  die: 20 },
         { id: 'intellect',   name: 'Intellect',   die: 20, secondary: true },
-        { id: 'awareness',   name: 'Dexterity',   die: 20, secondary: true },
+        // { id: 'awareness',   name: 'Awareness',   die: 20, secondary: true },
+        { id: 'dexterity',   name: 'Dexterity',   die: 20, secondary: true },
         { id: 'charisma',    name: 'Charisma',    die: 20 },
-        { id: 'allure',      name: 'Affinity',    die: 20, secondary: true },
+        // { id: 'allure',      name: 'Allure',      die: 20, secondary: true },
+        { id: 'affinity',    name: 'Affinity',    die: 20, secondary: true },
         { id: 'influence',   name: 'Influence',   die: 20, secondary: true }
     ];
     var specialAttributes = [
