@@ -1,3 +1,7 @@
 .idea
 /public/js/jquery.min.js
 /TODO.txt
+
+# PHP Composer
+/composer.lock
+/composer.phar
