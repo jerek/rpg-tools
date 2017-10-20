@@ -1,0 +1,12 @@
+version: '2'
+services:
+  app:
+    build: "."
+    container_name: "rpg-tools"
+    image: "rpg-tools"
+    volumes:
+      - ".:/var/www/blatcave.com"
+    environment:
+      APP_ENV: "prod"
+    ports:
+      - "80:80"
