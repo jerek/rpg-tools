@@ -4,39 +4,39 @@ var Base = new function() {
             '404': {
                 name: 'Page Not Found',
                 path: '404',
-                root: null
+                root: null,
             },
             character: {
                 name: 'Character',
                 path: 'character',
-                root: 'character'
+                root: 'character',
             },
             dice: {
                 name: 'Dice',
                 path: 'dice',
-                root: 'dice'
+                root: 'dice',
             },
             home: {
                 name: 'Home',
                 path: '',
-                root: 'home'
+                root: 'home',
             },
             stats: {
                 name: 'Stats',
                 path: 'stats',
-                root: 'stats'
-            }
+                root: 'stats',
+            },
         },
         nav: [
             'home',
             'dice',
             'character',
-            'stats'
-        ]
+            'stats',
+        ],
     };
     var elements = {};
     var status = {
-        lockHash: false
+        lockHash: false,
     };
 
     this.init = function() {
@@ -69,11 +69,11 @@ var Base = new function() {
     function display_navigationItem(target, navItem) {
         var li = Utility.addElement(null, target, {
             element: 'li',
-            id: 'nav-page-' + navItem.root
+            id: 'nav-page-' + navItem.root,
         });
         var a = Utility.addElement(null, li, {
             element: 'a',
-            href: '#' + navItem.path
+            href: '#' + navItem.path,
         });
         a.html(navItem.name);
     }
