@@ -1,0 +1,4 @@
+# If the requested URL doesn't exist as a file, send to the controller
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ /index.php [NC,L,QSA]

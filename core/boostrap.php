@@ -6,9 +6,15 @@
 // Root of the entire codebase
 define("SYS_ROOT", dirname(__DIR__));
 
+// Add the root to the include path
+ini_set('include_path', ini_get('include_path') . ':' . SYS_ROOT);
+
 // Load the autoloader
 require_once SYS_ROOT . '/vendor/autoload.php';
 
 // Run the bootstrap process
 require_once SYS_ROOT . '/library/Bootstrap.php';
 \RpgTools\Bootstrap::run();
+
+// Run the application
+RpgTools::run();
