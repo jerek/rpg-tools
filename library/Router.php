@@ -83,8 +83,13 @@ class Router {
         $request = $this->getRequest();
 
         switch ($request['path'][0]) {
-            default:
+            case '':
+                // Root page
                 echo \RpgTools::renderView('home');
+                break;
+            default:
+                // 404
+                echo \RpgTools::renderView('404');
         }
     }
 
