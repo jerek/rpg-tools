@@ -7,10 +7,14 @@ class Words {
     // ***** CONSTANTS ***** //
     // ********************* //
 
+    // The word count used when none is specified
     const DEFAULT_WORD_COUNT = 100;
 
-    const NOUNS_MIN_SYLLABLES = 1;
-    const NOUNS_MAX_SYLLABLES = 4;
+    // Minimum and maximum values used for validation
+    const WORDS_MIN = 1;
+    const WORDS_MAX = 1000;
+    const SYLLABLES_MIN = 1;
+    const SYLLABLES_MAX = 4;
 
     // ********************* //
     // ***** FUNCTIONS ***** //
@@ -73,6 +77,12 @@ class Words {
         // Make sure we have a valid word count, or null
         if (is_numeric($wordCount) && (string)(int)$wordCount === $wordCount) {
             $wordCount = (int)$wordCount;
+            if ($wordCount < self::WORDS_MIN) {
+                $wordCount = self::WORDS_MIN;
+            }
+            if ($wordCount > self::WORDS_MAX) {
+                $wordCount = self::WORDS_MAX;
+            }
         } else {
             $wordCount = null;
         }
@@ -80,11 +90,11 @@ class Words {
         // Make sure we have a valid syllable count, or null
         if (is_numeric($syllableCount) && (string)(int)$syllableCount === $syllableCount) {
             $syllableCount = (int)$syllableCount;
-            if ($syllableCount < self::NOUNS_MIN_SYLLABLES) {
-                $syllableCount = self::NOUNS_MIN_SYLLABLES;
+            if ($syllableCount < self::SYLLABLES_MIN) {
+                $syllableCount = self::SYLLABLES_MIN;
             }
-            if ($syllableCount > self::NOUNS_MAX_SYLLABLES) {
-                $syllableCount = self::NOUNS_MAX_SYLLABLES;
+            if ($syllableCount > self::SYLLABLES_MAX) {
+                $syllableCount = self::SYLLABLES_MAX;
             }
         } else {
             $syllableCount = null;
