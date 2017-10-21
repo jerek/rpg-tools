@@ -2,9 +2,28 @@ var Page_RandomWords = new function() {
     var elements = {
         formElements: {},
     };
-    var defaults = {
-        wordCount: 100,
-        syllableCount: 0,
+    var config = {
+        defaults: {
+            type: 'noun',
+            wordCount: 100,
+            syllableCount: '',
+        },
+        maximums: {
+            wordCount: 1000,
+            syllableCount: 4,
+        },
+        minimums: {
+            wordCount: 1,
+            syllableCount: 1,
+        },
+        values: {
+            type: [
+                'noun',
+                'adjective',
+                'verb',
+                'adverb',
+            ],
+        },
     };
     var lastResult = null;
 
@@ -38,18 +57,41 @@ var Page_RandomWords = new function() {
             submit: function(event) {
                 var params = {};
                 if (document.forms['random-words-form']['type'].value) {
-                    params['type'] = document.forms['random-words-form']['type'].value;
+                    var type = document.forms['random-words-form']['type'].value;
+                    if (config.values.type.indexOf(type) >= 0) {
+                        params['type'] = type;
+                    } else {
+                        document.forms['random-words-form']['type'].value = config.defaults.type;
+                    }
                 }
                 if (document.forms['random-words-form']['word-count'].value) {
                     var wordCount = parseInt(document.forms['random-words-form']['word-count'].value);
+                    if (wordCount < config.minimums.wordCount) {
+                        wordCount = config.minimums.wordCount;
+                    }
+                    if (wordCount > config.maximums.wordCount) {
+                        wordCount = config.maximums.wordCount;
+                    }
                     if (!isNaN(wordCount)) {
                         params['word-count'] = wordCount;
+                        document.forms['random-words-form']['word-count'].value = wordCount;
+                    } else {
+                        document.forms['random-words-form']['word-count'].value = config.defaults.wordCount;
                     }
                 }
                 if (document.forms['random-words-form']['syllable-count'].value) {
                     var syllableCount = parseInt(document.forms['random-words-form']['syllable-count'].value);
+                    if (syllableCount < config.minimums.syllableCount) {
+                        syllableCount = config.minimums.syllableCount;
+                    }
+                    if (syllableCount > config.maximums.syllableCount) {
+                        syllableCount = config.maximums.syllableCount;
+                    }
                     if (!isNaN(syllableCount)) {
                         params['syllable-count'] = syllableCount;
+                        document.forms['random-words-form']['syllable-count'].value = syllableCount;
+                    } else {
+                        document.forms['random-words-form']['syllable-count'].value = config.defaults.syllableCount;
                     }
                 }
                 $.getJSON('/get-random-words', params, display_words);
@@ -68,17 +110,11 @@ var Page_RandomWords = new function() {
             name: 'type',
             type: 'text',
         });
-        var types = [
-            ['noun', 'Noun'],
-            ['adjective', 'Adjective'],
-            ['verb', 'Verb'],
-            ['adverb', 'Adverb'],
-        ];
-        for (var i = 0, type; type = types[i]; i++) {
+        for (var i = 0, type; type = config.values.type[i]; i++) {
             Utility.addElement('random-words-form-type-option', elements.formElements.type, {
                 element: 'option',
-                value: type[0],
-                text: type[1],
+                value: type,
+                text: type.substr(0, 1).toUpperCase() + type.substr(1),
             });
         }
 
@@ -92,7 +128,7 @@ var Page_RandomWords = new function() {
             element: 'input',
             name: 'word-count',
             type: 'text',
-            value: defaults.wordCount,
+            value: config.defaults.wordCount,
         });
 
         // Syllable Count
