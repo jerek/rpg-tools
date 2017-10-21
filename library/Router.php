@@ -83,8 +83,8 @@ class Router {
         $request = $this->getRequest();
 
         switch ($request['path'][0]) {
-            case 'get-nouns':
-                Words::getRandomNounsAction($request['query']);
+            case 'get-random-words':
+                Words::getRandomWordsAction($request['query']);
                 break;
             case '':
                 // Root page

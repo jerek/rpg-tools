@@ -20,7 +20,18 @@ class Words {
     // PUBLIC //
     // ------ //
 
-    public static function getRandomNounsAction($query = []) {
+    /**
+     * Display random words in JSON based on the page query.
+     *
+     * @param array $query
+     */
+    public static function getRandomWordsAction($query = []) {
+        // Check for a requested word type
+        $type = null;
+        if (!empty($query['type'])) {
+            $type = $query['type'];
+        }
+
         // Check for a requested syllable count
         $syllableCount = null;
         if (!empty($query['syllable-count']) && is_numeric($query['syllable-count'])) {
@@ -33,8 +44,8 @@ class Words {
             $wordCount = $query['word-count'];
         }
 
-        // Get the random nouns
-        $words = self::getRandomNouns($wordCount, $syllableCount);
+        // Get the random words
+        $words = self::getRandomWords($type, $wordCount, $syllableCount);
 
         // Display it in a JSON page
         \RpgTools::printJsonPage($words);
@@ -45,13 +56,20 @@ class Words {
     // ------- //
 
     /**
-     * Get an array of random nouns.
+     * Get an array of random words.
      *
-     * @param int $wordCount
-     * @param int $syllableCount
+     * @param string $type
+     * @param int    $wordCount
+     * @param int    $syllableCount
      * @return array
+     * @throws \Exception
      */
-    private static function getRandomNouns($wordCount = null, $syllableCount = null) {
+    private static function getRandomWords($type, $wordCount = null, $syllableCount = null) {
+        // Make sure we have a valid type
+        if (!in_array($type, ['adjective', 'adverb', 'noun', 'verb'])) {
+            throw new \Exception("\"$type\" is not a valid word type");
+        }
+
         // Make sure we have a valid word count, or null
         if (is_numeric($wordCount) && (string)(int)$wordCount === $wordCount) {
             $wordCount = (int)$wordCount;
@@ -73,12 +91,12 @@ class Words {
         }
 
         if ($syllableCount) {
-            $filename = $syllableCount . 'syllablenouns';
+            $filename = $syllableCount . '-syllable';
         } else {
-            $filename = '91Knouns';
+            $filename = 'all';
         }
 
-        return self::getRandomWords('nouns/' . $filename, $wordCount);
+        return self::getRandomWordsFromFile($type . '/' . $filename, $wordCount);
     }
 
     /**
@@ -89,7 +107,7 @@ class Words {
      * @return array
      * @throws \Exception
      */
-    private static function getRandomWords($file, $wordCount = null) {
+    private static function getRandomWordsFromFile($file, $wordCount = null) {
         $path = 'words/' . $file . '.txt';
         $fullPath = SYS_ROOT . '/' . $path;
         if (!file_exists($fullPath)) {
