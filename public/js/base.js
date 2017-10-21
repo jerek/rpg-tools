@@ -21,6 +21,11 @@ var Base = new function() {
                 path: '',
                 root: 'home',
             },
+            randomWords: {
+                name: 'Random Words',
+                path: 'random-words',
+                root: 'random-words',
+            },
             stats: {
                 name: 'Stats',
                 path: 'stats',
@@ -32,6 +37,7 @@ var Base = new function() {
             'dice',
             'character',
             'stats',
+            'randomWords',
         ],
     };
     var elements = {};

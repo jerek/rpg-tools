@@ -83,6 +83,9 @@ class Router {
         $request = $this->getRequest();
 
         switch ($request['path'][0]) {
+            case 'get-nouns':
+                Words::getRandomNounsAction($request['query']);
+                break;
             case '':
                 // Root page
                 echo \RpgTools::renderView('home');

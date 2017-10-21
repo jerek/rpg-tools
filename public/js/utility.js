@@ -3,7 +3,7 @@ var Utility = new function() {
      * @param {string|null} name
      * @param {jQuery|HTMLElement} [target]
      * @param {object|string} [options] If it's string, it's treated as the "element" property of the options object.
-     * @returns {*|jQuery|HTMLElement}
+     * @returns {jQuery}
      */
     this.addElement = function(name, target, options) {
         switch (typeof options) {

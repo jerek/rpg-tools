@@ -30,6 +30,12 @@ class RpgTools {
         self::$router->dispatch();
     }
 
+    public static function printJsonPage($data) {
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        exit;
+    }
+
     /**
      * Shortcut to return a rendered view.
      *
