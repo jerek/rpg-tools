@@ -1,7 +1,8 @@
 var Dice = new function() {
     var config = {
         animateRolls: true,
-        dice: [ 'd', 4, 6, 8, 10, 12, 20, 100 ]
+        dice: [ 'd', 4, 6, 8, 10, 12, 20, 100 ],
+        rollAnimationCount: 30,
     };
     var elements = {};
     var rolls = null;
@@ -202,9 +203,9 @@ var Dice = new function() {
      * @param [current] {number} The currently displayed false result.
      */
     function display_resultAnimation(target, rollObject, count, current) {
-        if (count < 30) {
+        if (count < config.rollAnimationCount) {
             var excludes = [];
-            if (count >=29) {
+            if (count >= config.rollAnimationCount - 1) {
                 excludes.push(rollObject.result);
             }
             if (!isNaN(current) && current != excludes[0]) {
