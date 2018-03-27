@@ -3,6 +3,7 @@ var Dice = new function() {
         animateRolls: true,
         dice: [ 'd', 4, 6, 8, 10, 12, 20, 100 ],
         rollAnimationCount: 30,
+        rollAnimationRate: 5,
     };
     var elements = {};
     var rolls = null;
@@ -215,7 +216,7 @@ var Dice = new function() {
             current = utility_getExclusionaryRoll(rollObject.sides, excludes);
             target.html(current);
 
-            setTimeout(display_resultAnimation.bind(this, target, rollObject, count + 1, current), count * count / 5);
+            setTimeout(display_resultAnimation.bind(this, target, rollObject, count + 1, current), count * count / config.rollAnimationRate);
         } else {
             target
                 .html(rollObject.result)
