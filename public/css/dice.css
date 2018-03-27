@@ -69,6 +69,10 @@ body[data-page="dice"] .body {
     position: relative;
 }
 
+.dice .dice-die-result:first-child {
+    font-weight: bold;
+}
+
 .dice .dice-die-result .dice-die-result-stat,
 .dice .dice-die-result .dice-die-result-timestamp {
     cursor: default;
