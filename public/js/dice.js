@@ -2,8 +2,8 @@ var Dice = new function() {
     var config = {
         animateRolls: true,
         dice: [ 'd', 4, 6, 8, 10, 12, 20, 100 ],
-        rollAnimationCount: 30,
-        rollAnimationRate: 5,
+        rollAnimationCount: 20,
+        rollAnimationRate: 4,
     };
     var elements = {};
     var rolls = null;
