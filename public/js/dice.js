@@ -12,7 +12,7 @@ var Dice = new function() {
      * Get the result of a roll without effecting the DOM.
      *
      * @param options
-     * @returns {object|undefined}
+     * @returns {object}
      */
     this.roll = function (options) {
         return data_roll(options);
@@ -85,10 +85,25 @@ var Dice = new function() {
      * Append a die roll button to the target.
      *
      * @param target {jQuery}
-     * @param sides {number}
+     * @param sides {number|string}
      * @param callback {function} Called when the button is clicked.
      */
     this.appendDie = function(target, sides, callback) {
+        if (sides === 'd') {
+            return Utility.addElement('dice-die custom', target, {
+                element: 'input',
+                type: 'text',
+                placeholder: 'custom',
+                title: 'Type a value like 3d6 and press Enter',
+                keydown: (function(callback, sides, event) {
+                    if (event && event.keyCode === 13) {
+                        callback(sides);
+                        return false;
+                    }
+                }).bind(null, callback, sides)
+            });
+        }
+
         return Utility.addElement('dice-die', target, {
             element: 'a',
             href: 'javascript:;',
@@ -115,6 +130,9 @@ var Dice = new function() {
             prepend: true,
             css: animate ? {} : { color: '#111' }
         });
+        if (rollObjectOrOptions.dice && rollObjectOrOptions.dice > 1) {
+            die.attr('title', rollObjectOrOptions.sides + 'd' + rollObjectOrOptions.dice);
+        }
         die
             .mouseenter((function (rollObject) {
                 if (rollObject.stat) {
@@ -230,31 +248,37 @@ var Dice = new function() {
      * Generate, store, and return a rollObject.
      *
      * @param options {object}
-     * @returns {{datetime: *, result, ...}|undefined}
+     * @returns {object}
      */
     function data_roll(options) {
-        if (!isNaN(options.sides)) {
-            var result = Utility.roll(options.sides);
-
-            if (!rolls.hasOwnProperty(options.sides)) {
-                rolls[options.sides] = [];
-            }
-
-            var rollObject = {
-                datetime: DateFormat.format.date(new Date(), "yyyy-MM-dd HH:mm:ss"),
-                result: result
-            };
-
-            if (options) {
-                $.extend(rollObject, options);
-            }
-
-            rolls[options.sides].push(rollObject);
-
-            data_save();
-
-            return rollObject;
+        if (!options.dice) {
+            options.dice = 1;
         }
+
+        var rollObject = $.extend(true, {}, options);
+        rollObject.datetime = DateFormat.format.date(new Date(), "yyyy-MM-dd HH:mm:ss");
+        rollObject.result = 0;
+        rollObject.rolls = [];
+
+        if (isNaN(options.sides)) {
+            return options;
+        }
+
+        for (var roll = 1; roll <= options.dice; roll++) {
+            var rollResult = Utility.roll(options.sides);
+            rollObject.rolls.push(rollResult);
+            rollObject.result += rollResult;
+        }
+
+        if (!rolls.hasOwnProperty(options.sides)) {
+            rolls[options.sides] = [];
+        }
+
+        rolls[options.sides].push(rollObject);
+
+        data_save();
+
+        return rollObject;
     }
 
     /**

@@ -29,14 +29,43 @@ var Page_Dice = new function() {
 
         var rolls = Dice.getRolls();
         if (!$.isEmptyObject(rolls)) {
+            var groupedRolls = {};
             for (var die in rolls) {
                 if (rolls.hasOwnProperty(die) && rolls[die].length) {
                     for (var i = 0, rollObject; rollObject = rolls[die][i]; i++) {
+                        var column = rollObject.dice && rollObject.dice > 1 ? 'd' : rollObject.sides;
+
+                        if (!groupedRolls[column]) {
+                            groupedRolls[column] = [];
+                        }
+
+                        groupedRolls[column].push(rollObject);
+                    }
+                }
+            }
+
+            if (groupedRolls.d) {
+                // Since the custom rolls had to be grouped from other sources they need to be sorted
+                groupedRolls.d.sort(function(a, b) {
+                    return new Date(a.datetime) - new Date(b.datetime);
+                });
+            }
+
+            for (die in groupedRolls) {
+                if (groupedRolls.hasOwnProperty(die) && groupedRolls[die].length) {
+                    for (var j = 0; rollObject = groupedRolls[die][j]; j++) {
                         display_result(rollObject, true);
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Explain the correct dice notation in an alert.
+     */
+    function display_customRollExplanation() {
+        alert('Enter a value like 3d6 to roll 3 dice with 6 sides,\nthen press enter.');
     }
 
     function display_dice(target) {
@@ -52,7 +81,9 @@ var Page_Dice = new function() {
 
         elements.dice = {};
         for (var i = 0, die; die = config.dice[i]; i++) {
-            var wrapper = Utility.addElement('dice-die-wrapper', target);
+            var wrapper = Utility.addElement('dice-die-wrapper', target, {
+                'data-die': die
+            });
             var dieButton = Dice.appendDie(wrapper, die, action_roll);
             var log = Utility.addElement('dice-die-log', wrapper);
 
@@ -67,18 +98,57 @@ var Page_Dice = new function() {
     }
 
     function display_result(rollObject, suppressAnimation) {
-        if (elements.dice[rollObject.sides] && elements.dice[rollObject.sides].log) {
-            Dice.appendResult(elements.dice[rollObject.sides].log, rollObject, suppressAnimation);
+        var column = rollObject.dice && rollObject.dice > 1 ? 'd' : rollObject.sides;
+        if (elements.dice[column] && elements.dice[column].log) {
+            Dice.appendResult(elements.dice[column].log, rollObject, suppressAnimation);
         }
     }
 
+    /**
+     * Roll a die with a given number of sides. If it's the string "d" it fetches the custom value from the input box.
+     *
+     * @param {number|string} sides
+     * @return {boolean} Whether it was able to make a roll.
+     */
     function action_roll(sides) {
+        var rollObject;
         if (!isNaN(sides)) {
-            var rollObject = Dice.roll({ sides: sides });
+            rollObject = Dice.roll({sides: sides});
+            display_result(rollObject);
+        } else if (sides === 'd') {
+            var $rollsInput = $('.dice-die.custom');
+            var rolls = $rollsInput.val();
 
+            if (!rolls || typeof rolls !== 'string') {
+                display_customRollExplanation();
+                return false;
+            }
+
+            rolls = rolls.replace(/^[^\d]*(\d+d\d+)[^\d]*$/, '$1');
+
+            if (!rolls.match(/^\d+d\d+$/)) {
+                display_customRollExplanation();
+                return false;
+            }
+
+            $rollsInput.val(rolls);
+
+            var parts = rolls.split('d');
+            var dice = parseInt(parts[0]);
+            var diceSides = parseInt(parts[1]);
+
+            if (isNaN(dice) || isNaN(diceSides)) {
+                alert('Something went wrong!');
+                return false;
+            }
+
+            rollObject = Dice.roll({dice: dice, sides: diceSides});
             display_result(rollObject);
         } else {
-            // TODO: multi-side options
+            // Invalid number of sides
+            return false;
         }
+
+        return true;
     }
 };
