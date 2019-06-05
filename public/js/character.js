@@ -1,16 +1,16 @@
-var Character = new function() {
+var Character = new function () {
     var config = {
-        highestId: 0
+        highestId: 0,
     };
     var characters = {};
     var characterTemplate = {
         id: 1,
         name: 'Unnamed Character',
         stats: {},
-        system: 'deciv'
+        system: 'deciv',
     };
 
-    this.create = function(name, system) {
+    this.create = function (name, system) {
         var highestId = config.highestId;
         for (var id in characters) {
             if (characters.hasOwnProperty(id) && typeof characters[id] == 'object' && characters[id] && characters[id].id > highestId) {
@@ -22,7 +22,7 @@ var Character = new function() {
         characters[newId] = $.extend(true, {}, characterTemplate, {
             id: newId,
             name: name,
-            system: system || 'deciv'
+            system: system || 'deciv',
         });
 
         config.highestId = newId;
@@ -36,13 +36,13 @@ var Character = new function() {
      * @param {number} characterId
      * @returns {object}
      */
-    this.get = function(characterId) {
+    this.get = function (characterId) {
         return characters[characterId] ?
             $.extend(true, {}, characters[characterId]) :
             null;
     };
 
-    this.delete = function(characterId) {
+    this.delete = function (characterId) {
         if (characters[characterId]) {
             if (confirm('Are you sure you want to delete "' + characters[characterId].name + '"?')) {
                 if (confirm('If you delete "' + characters[characterId].name + '" you CANNOT get them back!')) {
@@ -55,8 +55,8 @@ var Character = new function() {
         return false;
     };
 
-    this.getCharacters = function() {
-        return Utility.sortObject(characters, function(a, b) {
+    this.getCharacters = function () {
+        return Utility.sortObject(characters, function (a, b) {
             return a.name.localeCompare(b.name);
         });
     };
@@ -65,7 +65,7 @@ var Character = new function() {
      * @param {number} characterId
      * @returns {string|null}
      */
-    this.getName = function(characterId) {
+    this.getName = function (characterId) {
         return characters[characterId] && characters[characterId].name || 'Character #' + characterId;
     };
 
@@ -74,8 +74,8 @@ var Character = new function() {
      * @param {string} value
      * @returns {boolean}
      */
-    this.setName = function(characterId, value) {
-        if (typeof value == 'string' &&  value && characters[characterId] && characters[characterId].name != value) {
+    this.setName = function (characterId, value) {
+        if (typeof value == 'string' && value && characters[characterId] && characters[characterId].name != value) {
             characters[characterId].name = value;
             data_save(characterId);
 
@@ -89,7 +89,7 @@ var Character = new function() {
      * @param {number} characterId
      * @param {number} stat
      */
-    this.getStat = function(characterId, stat) {
+    this.getStat = function (characterId, stat) {
         if (characters[characterId] && characters[characterId].stats.hasOwnProperty(stat)) {
             return characters[characterId].stats[stat];
         }
@@ -102,7 +102,7 @@ var Character = new function() {
      * @param {number} stat
      * @param {number} value
      */
-    this.setStat = function(characterId, stat, value) {
+    this.setStat = function (characterId, stat, value) {
         if (!characters[characterId]) {
             return;
         }
@@ -118,7 +118,7 @@ var Character = new function() {
         return updatedStats;
     };
 
-    this.getStats = function(characterId) {
+    this.getStats = function (characterId) {
         if (characters[characterId]) {
             return characters[characterId].stats;
         }
@@ -130,7 +130,7 @@ var Character = new function() {
      * @param {number} characterId
      * @returns {string|null}
      */
-    this.getSystem = function(characterId) {
+    this.getSystem = function (characterId) {
         if (characters[characterId] && characters[characterId].system) {
             return characters[characterId].system;
         }
@@ -138,7 +138,7 @@ var Character = new function() {
         return null;
     };
 
-    this.sort = function(a, b) {
+    this.sort = function (a, b) {
         // General Rolls last
         if (a.id == 0) {
             return 1;

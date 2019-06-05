@@ -1,10 +1,10 @@
-var Page_Dice = new function() {
+var Page_Dice = new function () {
     var config = {
-        dice: [ 'd', 4, 6, 8, 10, 12, 20, 100 ]
+        dice: ['d', 4, 6, 8, 10, 12, 20, 100],
     };
     var elements = {};
 
-    this.init = function(target) {
+    this.init = function (target) {
         elements.container = target;
 
         display_controls();
@@ -46,7 +46,7 @@ var Page_Dice = new function() {
 
             if (groupedRolls.d) {
                 // Since the custom rolls had to be grouped from other sources they need to be sorted
-                groupedRolls.d.sort(function(a, b) {
+                groupedRolls.d.sort(function (a, b) {
                     return new Date(a.datetime) - new Date(b.datetime);
                 });
             }
@@ -82,7 +82,7 @@ var Page_Dice = new function() {
         elements.dice = {};
         for (var i = 0, die; die = config.dice[i]; i++) {
             var wrapper = Utility.addElement('dice-die-wrapper', target, {
-                'data-die': die
+                'data-die': die,
             });
             var dieButton = Dice.appendDie(wrapper, die, action_roll);
             var log = Utility.addElement('dice-die-log', wrapper);
@@ -90,7 +90,7 @@ var Page_Dice = new function() {
             elements.dice[die] = {
                 wrapper: wrapper,
                 die: dieButton,
-                log: log
+                log: log,
             };
         }
 

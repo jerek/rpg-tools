@@ -1,4 +1,4 @@
-var Base = new function() {
+var Base = new function () {
     var config = {
         pages: {
             '404': {
@@ -45,7 +45,7 @@ var Base = new function() {
         lockHash: false,
     };
 
-    this.init = function() {
+    this.init = function () {
         elements.wrapper = Utility.addElement('wrapper', document.body);
         elements.header = Utility.addElement('header', elements.wrapper);
         elements.body = Utility.addElement('body', elements.wrapper);
@@ -202,7 +202,7 @@ var Base = new function() {
         }
 
         if (lockHash && !hashWasLocked) {
-            setTimeout(function() {
+            setTimeout(function () {
                 status.lockHash = false;
             }, 0);
         }

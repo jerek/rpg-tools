@@ -1,7 +1,7 @@
-var Dice = new function() {
+var Dice = new function () {
     var config = {
         animateRolls: true,
-        dice: [ 'd', 4, 6, 8, 10, 12, 20, 100 ],
+        dice: ['d', 4, 6, 8, 10, 12, 20, 100],
         rollAnimationCount: 20,
         rollAnimationRate: 4,
     };
@@ -18,7 +18,7 @@ var Dice = new function() {
         return data_roll(options);
     };
 
-    this.clearRolls = function(callback) {
+    this.clearRolls = function (callback) {
         if (rolls && !$.isEmptyObject(rolls)) {
             if (confirm('Clear ALL roll data? This is PERMANENT!')) {
                 rolls = {};
@@ -41,7 +41,7 @@ var Dice = new function() {
      * @param target {jQuery} The element to be emptied and filled.
      * @param [callback] {function} Function to call when options are changed. Passed a string of what option was changed.
      */
-    this.displayControls = function(target, callback) {
+    this.displayControls = function (target, callback) {
         target.empty();
 
         if (!target.hasClass('dice-controls')) {
@@ -53,31 +53,31 @@ var Dice = new function() {
         elements.animateControl = Utility.addElement('dice-controls-animate', elements.controls, {
             element: 'a',
             text: 'Animation',
-            click: function() {
+            click: function () {
                 config.animateRolls = !config.animateRolls;
                 data_save();
                 if (typeof callback == 'function') {
                     callback('roll-animation');
                 }
             },
-            mousedown: Utility.returnFalse
+            mousedown: Utility.returnFalse,
         });
         Utility.addElement(null, elements.animateControl, {
             element: 'i',
             prepend: true,
-            'class': 'fa fa-fw fa-' + (config.animateRolls ? 'check-square-o' : 'square-o')
+            'class': 'fa fa-fw fa-' + (config.animateRolls ? 'check-square-o' : 'square-o'),
         });
 
         elements.clearControl = Utility.addElement('dice-controls-clear', elements.controls, {
             element: 'a',
             text: 'Clear',
             click: Dice.clearRolls.bind(this, callback),
-            mousedown: Utility.returnFalse
+            mousedown: Utility.returnFalse,
         });
         Utility.addElement(null, elements.clearControl, {
             element: 'i',
             prepend: true,
-            'class': 'fa fa-fw fa-times'
+            'class': 'fa fa-fw fa-times',
         });
     };
 
@@ -88,19 +88,19 @@ var Dice = new function() {
      * @param sides {number|string}
      * @param callback {function} Called when the button is clicked.
      */
-    this.appendDie = function(target, sides, callback) {
+    this.appendDie = function (target, sides, callback) {
         if (sides === 'd') {
             return Utility.addElement('dice-die custom', target, {
                 element: 'input',
                 type: 'text',
                 placeholder: 'custom',
                 title: 'Type a value like 3d6 and press Enter',
-                keydown: (function(callback, sides, event) {
+                keydown: (function (callback, sides, event) {
                     if (event && event.keyCode === 13) {
                         callback(sides);
                         return false;
                     }
-                }).bind(null, callback, sides)
+                }).bind(null, callback, sides),
             });
         }
 
@@ -108,7 +108,7 @@ var Dice = new function() {
             element: 'a',
             href: 'javascript:;',
             text: sides,
-            click: callback.bind(null, sides)
+            click: callback.bind(null, sides),
         });
     };
 
@@ -119,7 +119,7 @@ var Dice = new function() {
      * @param rollObjectOrOptions {object} If the "result" property is not found this is passed to data_roll. Must contain the "sides" property.
      * @param [suppressAnimation] {boolean} Whether to prevent animation of the property when it's added.
      */
-    this.appendResult = function(target, rollObjectOrOptions, suppressAnimation) {
+    this.appendResult = function (target, rollObjectOrOptions, suppressAnimation) {
         if (typeof rollObjectOrOptions.result != 'number') {
             return;
             // rollObjectOrOptions = data_roll(rollObjectOrOptions); // TODO: This should replace the roll instead of creating a new one! Currently this method is not called without the result property.
@@ -128,7 +128,7 @@ var Dice = new function() {
         var animate = !suppressAnimation && config.animateRolls;
         var die = Utility.addElement('dice-die-result', target, {
             prepend: true,
-            css: animate ? {} : { color: '#111' }
+            css: animate ? {} : {color: '#111'},
         });
         if (rollObjectOrOptions.dice && rollObjectOrOptions.dice > 1) {
             die.attr('title', rollObjectOrOptions.sides + 'd' + rollObjectOrOptions.dice);
@@ -143,13 +143,13 @@ var Dice = new function() {
 
                     Utility.addElement('dice-die-result-stat', this, {
                         text: stat.name,
-                        title: characterName + ' - ' + systemConfig.name
+                        title: characterName + ' - ' + systemConfig.name,
                     });
                 }
 
                 Utility.addElement('dice-die-result-timestamp', this, {
                     text: DateFormat.format.prettyDate(rollObject.datetime + '.000'),
-                    title: rollObject.datetime
+                    title: rollObject.datetime,
                 });
             }).bind(die, rollObjectOrOptions))
             .mouseleave(function () {
@@ -168,7 +168,7 @@ var Dice = new function() {
      *
      * @returns {boolean}
      */
-    this.getAnimation = function() {
+    this.getAnimation = function () {
         return config.animateRolls;
     };
 
@@ -177,7 +177,7 @@ var Dice = new function() {
      *
      * @returns {boolean}
      */
-    this.setAnimation = function(value) {
+    this.setAnimation = function (value) {
         config.animateRolls = value;
     };
 
@@ -239,7 +239,7 @@ var Dice = new function() {
             target
                 .html(rollObject.result)
                 .css({
-                    color: '#111'
+                    color: '#111',
                 });
         }
     }
@@ -286,7 +286,7 @@ var Dice = new function() {
      */
     function data_save() {
         LocalStorage.set('dice-settings', {
-            animateRolls: config.animateRolls
+            animateRolls: config.animateRolls,
         });
         LocalStorage.set('rolls', rolls);
     }

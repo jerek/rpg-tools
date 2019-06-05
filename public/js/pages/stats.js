@@ -1,9 +1,9 @@
-var Page_Stats = new function() {
+var Page_Stats = new function () {
     var elements = {
-        stats: {}
+        stats: {},
     };
 
-    this.init = function(target) {
+    this.init = function (target) {
         elements.container = target;
 
         display_heading();
@@ -15,7 +15,7 @@ var Page_Stats = new function() {
 
         elements.heading = Utility.addElement('statistics-heading', elements.container, {
             element: 'h1',
-            text: 'Statistics'
+            text: 'Statistics',
         });
     }
 
@@ -25,7 +25,7 @@ var Page_Stats = new function() {
         if ($.isEmptyObject(allRolls)) {
             Utility.addElement(null, elements.container, {
                 element: 'p',
-                text: 'No rolls yet!'
+                text: 'No rolls yet!',
             });
             return;
         }
@@ -63,17 +63,17 @@ var Page_Stats = new function() {
             if (characterId == 0) {
                 characters.push({
                     id: characterId,
-                    name: 'General Rolls'
+                    name: 'General Rolls',
                 });
             } else {
                 characters.push($.extend(true, {}, Character.get(characterId) || {}, {
                     id: characterId,
-                    name: Character.getName(characterId)
+                    name: Character.getName(characterId),
                 }));
             }
         }
 
-        var getMostRecentRoll = function(characterId) {
+        var getMostRecentRoll = function (characterId) {
             var mostRecent = '2000-01-01 00:00:00';
 
             if (!rolls[characterId]) {
@@ -93,7 +93,7 @@ var Page_Stats = new function() {
             return mostRecentDate;
         };
 
-        characters.sort(function(a, b) {
+        characters.sort(function (a, b) {
             return getMostRecentRoll(a.id) > getMostRecentRoll(b.id) ? -1 : 1;
         });
 
@@ -101,7 +101,7 @@ var Page_Stats = new function() {
         for (var k = 0, character; character = characters[k]; k++) {
             Utility.addElement('statistics-character-name', elements.body, {
                 element: 'h2',
-                text: character.name
+                text: character.name,
             });
 
             display_rolls(character, rolls[character.id], elements.body);
@@ -113,17 +113,17 @@ var Page_Stats = new function() {
             if (rolls.hasOwnProperty(sides)) {
                 Utility.addElement('statistics-character-rolls-heading', target, {
                     element: 'h3',
-                    text: 'd' + sides
+                    text: 'd' + sides,
                 });
 
                 Utility.addElement(null, target, {
                     element: 'p',
-                    text: 'Total rolls: ' + rolls[sides].length
+                    text: 'Total rolls: ' + rolls[sides].length,
                 });
 
                 Utility.addElement(null, target, {
                     element: 'p',
-                    text: 'Average roll: ' + Math.round(Utility.propertyAverage(rolls[sides], 'result') * 10) / 10
+                    text: 'Average roll: ' + Math.round(Utility.propertyAverage(rolls[sides], 'result') * 10) / 10,
                 });
             }
         }

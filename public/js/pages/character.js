@@ -1,12 +1,12 @@
-var Page_Character = new function() {
+var Page_Character = new function () {
     var config = {
-        character: null
+        character: null,
     };
     var elements = {
-        stats: {}
+        stats: {},
     };
 
-    this.init = function(target) {
+    this.init = function (target) {
         elements.container = target;
 
         display_controls();
@@ -23,24 +23,24 @@ var Page_Character = new function() {
             element: 'a',
             text: 'Characters',
             click: action_characterList,
-            mousedown: Utility.returnFalse
+            mousedown: Utility.returnFalse,
         });
         Utility.addElement(null, elements.characterListControl, {
             element: 'i',
             prepend: true,
-            'class': 'fa fa-fw fa-file-text-o'
+            'class': 'fa fa-fw fa-file-text-o',
         });
 
         elements.setStatsControl = Utility.addElement('character-controls-set-stats', elements.controls, {
             element: 'a',
             text: 'Set All Stats',
             click: action_setStats,
-            mousedown: Utility.returnFalse
+            mousedown: Utility.returnFalse,
         });
         Utility.addElement(null, elements.setStatsControl, {
             element: 'i',
             prepend: true,
-            'class': 'fa fa-fw fa-pencil-square-o'
+            'class': 'fa fa-fw fa-pencil-square-o',
         });
 
         /*
@@ -120,11 +120,11 @@ var Page_Character = new function() {
         var createChar = Utility.addElement('character-list-characters-character-name', charWrapper, {
             element: 'a',
             text: ' Create Character',
-            click: action_createCharacter
+            click: action_createCharacter,
         });
         Utility.addElement('fa fa-plus-square-o', createChar, {
             element: 'i',
-            prepend: true
+            prepend: true,
         });
 
         for (var i = 0, character; character = characters[i]; i++) {
@@ -133,17 +133,17 @@ var Page_Character = new function() {
             var deleteLink = Utility.addElement('character-list-characters-character-delete', charWrapper, {
                 element: 'a',
                 text: ' Delete',
-                click: action_deleteCharacter.bind(null, character.id)
+                click: action_deleteCharacter.bind(null, character.id),
             });
             Utility.addElement('fa fa-times', deleteLink, {
                 element: 'i',
-                prepend: true
+                prepend: true,
             });
 
             Utility.addElement('character-list-characters-character-name', charWrapper, {
                 element: 'a',
                 text: character.name,
-                click: action_loadCharacter.bind(null, character.id)
+                click: action_loadCharacter.bind(null, character.id),
             });
         }
     }
@@ -154,7 +154,7 @@ var Page_Character = new function() {
         var name = Utility.addElement('character-stat-name', elements.stats[stat.id], {
             text: stat.name,
             click: action_roll.bind(elements.stats[stat.id], stat),
-            mousedown: Utility.returnFalse
+            mousedown: Utility.returnFalse,
         });
 
         if (stat.secondary) {
@@ -163,7 +163,7 @@ var Page_Character = new function() {
 
         var statValue = Character.getStat(config.character, stat.id);
         var statValueDisplay = Utility.addElement('character-stat-value', elements.stats[stat.id], {
-            text: typeof statValue == 'number' ? statValue : '?'
+            text: typeof statValue == 'number' ? statValue : '?',
         });
         if (!stat.formula) {
             statValueDisplay.addClass('editable');
@@ -182,10 +182,10 @@ var Page_Character = new function() {
         var logToggler = Utility.addElement('character-stat-log-toggler fa fa-plus', log, {
             element: 'a',
             click: action_toggleLog.bind(elements.stats[stat.id], stat),
-            mousedown: Utility.returnFalse
+            mousedown: Utility.returnFalse,
         });
 
-        var rolls = Dice.getRolls({ system: 'deciv', character: config.character, stat: stat.id, sides: stat.die });
+        var rolls = Dice.getRolls({system: 'deciv', character: config.character, stat: stat.id, sides: stat.die});
 
         if (rolls && rolls.length) {
             for (var j = 0, roll; roll = rolls[j]; j++) {
@@ -266,7 +266,7 @@ var Page_Character = new function() {
             system: character.system,
             character: character.id,
             stat: stat.id,
-            sides: stat.die
+            sides: stat.die,
         });
 
         display_result($('.character-stat-log-inner', this), rollObject);
@@ -375,7 +375,7 @@ var Page_Character = new function() {
     }
 
     function data_setCharacterDataAttribute() {
-        $(function() {
+        $(function () {
             $(document.body).attr('data-character', config.character || 'none');
         });
     }

@@ -1,15 +1,15 @@
-var Utility = new function() {
+var Utility = new function () {
     /**
      * @param {string|null} name
      * @param {jQuery|HTMLElement} [target]
      * @param {object|string} [options] If it's string, it's treated as the "element" property of the options object.
      * @returns {jQuery}
      */
-    this.addElement = function(name, target, options) {
+    this.addElement = function (name, target, options) {
         switch (typeof options) {
             case 'string':
                 options = {
-                    element: options
+                    element: options,
                 };
                 break;
             case 'object':
@@ -49,7 +49,7 @@ var Utility = new function() {
      * @param {string} text
      * @param {jQuery|HTMLElement} target
      */
-    this.addText = function(text, target) {
+    this.addText = function (text, target) {
         $(target).append(document.createTextNode(text));
     };
 
@@ -57,7 +57,7 @@ var Utility = new function() {
      * @param {number} sides
      * @returns {number}
      */
-    this.roll = function(sides) {
+    this.roll = function (sides) {
         return Math.floor((Math.random() * sides) + 1);
     };
 
@@ -72,7 +72,7 @@ var Utility = new function() {
      * @param {string|*} message Can only be non-string when consoleOnly is true.
      * @param {boolean} [consoleOnly]
      */
-    this.error = function(message, consoleOnly) {
+    this.error = function (message, consoleOnly) {
         if (consoleOnly === true) {
             if (typeof console != 'undefined' && console && typeof console.error == 'function') {
                 console.error(message);
@@ -86,7 +86,7 @@ var Utility = new function() {
      * @param {Array} numbers
      * @returns {number}
      */
-    this.average = function(numbers) {
+    this.average = function (numbers) {
         var total = 0;
         for (var i = 0, len = numbers.length; i < len; i++) {
             total += numbers[i];
@@ -95,7 +95,7 @@ var Utility = new function() {
         return total / len;
     };
 
-    this.propertyAverage = function(objectOrArray, property) {
+    this.propertyAverage = function (objectOrArray, property) {
         var numbers = [];
         for (var i in objectOrArray) {
             if (objectOrArray.hasOwnProperty(i) && $.isNumeric(objectOrArray[i][property])) {
@@ -110,7 +110,7 @@ var Utility = new function() {
         return Utility.average(numbers);
     };
 
-    this.getObjectUpdateList = function(oldObject, newObject) {
+    this.getObjectUpdateList = function (oldObject, newObject) {
         var updates = [];
 
         for (var property in newObject) {
@@ -127,7 +127,7 @@ var Utility = new function() {
      * @param {function} [sortFunc]
      * @returns {Array}
      */
-    this.sortObject = function(object, sortFunc) {
+    this.sortObject = function (object, sortFunc) {
         var result = [];
 
         for (var property in object) {

@@ -1,6 +1,6 @@
-var LocalStorage = new function() {
+var LocalStorage = new function () {
     var status = {
-        supported: null
+        supported: null,
     };
 
     try {
@@ -23,7 +23,7 @@ var LocalStorage = new function() {
         return status.supported;
     };
 
-    this.set = function(key, value) {
+    this.set = function (key, value) {
         if (!status.supported) {
             return;
         }
@@ -31,7 +31,7 @@ var LocalStorage = new function() {
         localStorage.setItem(key, JSON.stringify(value));
     };
 
-    this.get = function(key) {
+    this.get = function (key) {
         if (!status.supported) {
             return;
         }
@@ -39,7 +39,7 @@ var LocalStorage = new function() {
         return JSON.parse(localStorage.getItem(key));
     };
 
-    this.remove = function(key) {
+    this.remove = function (key) {
         if (!status.supported) {
             return;
         }

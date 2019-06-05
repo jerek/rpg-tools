@@ -1,4 +1,4 @@
-var Page_RandomWords = new function() {
+var Page_RandomWords = new function () {
     var elements = {
         formElements: {},
     };
@@ -27,7 +27,7 @@ var Page_RandomWords = new function() {
     };
     var lastResult = null;
 
-    this.init = function(target) {
+    this.init = function (target) {
         elements.container = target;
 
         display_heading();
@@ -54,7 +54,7 @@ var Page_RandomWords = new function() {
         elements.form = Utility.addElement('random-words-form', elements.container, {
             element: 'form',
             name: 'random-words-form',
-            submit: function(event) {
+            submit: function (event) {
                 var params = {};
                 if (document.forms['random-words-form']['type'].value) {
                     var type = document.forms['random-words-form']['type'].value;

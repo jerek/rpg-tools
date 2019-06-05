@@ -1,7 +1,7 @@
-var Page_Home = new function() {
+var Page_Home = new function () {
     var elements = {};
 
-    this.init = function(target) {
+    this.init = function (target) {
         elements.container = target;
 
         display_body();

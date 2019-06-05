@@ -1,7 +1,7 @@
-var Page_404 = new function() {
+var Page_404 = new function () {
     var elements = {};
 
-    this.init = function(target) {
+    this.init = function (target) {
         elements.container = target;
 
         display_body();
@@ -9,7 +9,7 @@ var Page_404 = new function() {
 
     function display_body() {
         elements.container.append($('<h1/>', {
-            text: '404'
+            text: '404',
         }));
     }
 };

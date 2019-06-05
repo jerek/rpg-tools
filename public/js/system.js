@@ -1,18 +1,18 @@
-var System = new function() {
+var System = new function () {
     var config = {
         systems: {
             deciv: {
                 id: 'deciv',
                 name: 'Deciv',
-                'class': 'Deciv'
-            }
-        }
+                'class': 'Deciv',
+            },
+        },
     };
 
     /**
      * @returns {Array}
      */
-    this.getSystems = function() {
+    this.getSystems = function () {
         var systems = [];
 
         for (var system in config.systems) {
@@ -28,7 +28,7 @@ var System = new function() {
      * @param {string} systemId
      * @returns {object|null}
      */
-    this.getClass = function(systemId) {
+    this.getClass = function (systemId) {
         if (config.systems[systemId]) {
             return window['System_' + config.systems[systemId]['class']];
         }
@@ -40,7 +40,7 @@ var System = new function() {
      * @param {string} systemId
      * @returns {object|null}
      */
-    this.getConfig = function(systemId) {
+    this.getConfig = function (systemId) {
         return config.systems[systemId] || null;
     };
 };
