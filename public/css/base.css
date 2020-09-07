@@ -1,5 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,400italic,600italic,700italic,800italic|Montserrat:400,700);
 
+/* Hack in a dark mode. */
+html {filter:invert() hue-rotate(180deg)}
+body {opacity:.9}
+
 body {
     background: #eee;
     color: #111;

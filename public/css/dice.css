@@ -43,7 +43,6 @@ input[type="text"]::placeholder {color:#ccc}
 .dice .dice-die {
     border: 0;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.25);
     display: inline-block;
     font-size: 30px;
     margin: 0 0 5px;
