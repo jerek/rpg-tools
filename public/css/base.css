@@ -25,6 +25,8 @@ a:hover {
     text-decoration: underline;
 }
 
+textarea {box-sizing:border-box; margin:10px 0; min-height:18em; width:100%}
+
 .header {
     background: #e1e1e1;
     height: 40px;
@@ -48,6 +50,8 @@ a:hover {
     margin: 0;
     padding: 0;
 }
+
+.header-inner > nav li#nav-page-settings {float:right}
 
 .header-inner > nav a {
     color: #000;
