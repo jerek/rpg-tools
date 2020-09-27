@@ -1,8 +1,8 @@
-var Utility = new function () {
+window.Utility = new function () {
     /**
-     * @param {string|null} name
+     * @param {string|null}        name
      * @param {jQuery|HTMLElement} [target]
-     * @param {object|string} [options] If it's string, it's treated as the "element" property of the options object.
+     * @param {Object|string}      [options] If it's string, it's used as the "element" property of the options object.
      * @returns {jQuery}
      */
     this.addElement = function (name, target, options) {
@@ -23,16 +23,16 @@ var Utility = new function () {
             options['class'] = name;
         }
 
-        var nodeType = 'div';
+        let nodeType = 'div';
         if (options.element) {
             nodeType = options.element;
             delete options.element;
         }
 
-        var prepend = !!options.prepend;
+        let prepend = !!options.prepend;
         delete options.prepend;
 
-        var element = $('<' + nodeType + '/>', options);
+        let element = $('<' + nodeType + '/>', options);
 
         if (target) {
             if (prepend) {
@@ -46,7 +46,7 @@ var Utility = new function () {
     };
 
     /**
-     * @param {string} text
+     * @param {string}             text
      * @param {jQuery|HTMLElement} target
      */
     this.addText = function (text, target) {
@@ -69,12 +69,12 @@ var Utility = new function () {
     };
 
     /**
-     * @param {string|*} message Can only be non-string when consoleOnly is true.
-     * @param {boolean} [consoleOnly]
+     * @param {string|*} message       If not a string, effectively sets consoleOnly to true.
+     * @param {boolean}  [consoleOnly]
      */
     this.error = function (message, consoleOnly) {
-        if (consoleOnly === true) {
-            if (typeof console != 'undefined' && console && typeof console.error == 'function') {
+        if (consoleOnly === true || typeof message !== 'string') {
+            if (typeof console !== 'undefined' && console && typeof console.error === 'function') {
                 console.error(message);
             }
         } else {
@@ -83,12 +83,13 @@ var Utility = new function () {
     };
 
     /**
-     * @param {Array} numbers
+     * @param {number[]} numbers
      * @returns {number}
      */
     this.average = function (numbers) {
-        var total = 0;
-        for (var i = 0, len = numbers.length; i < len; i++) {
+        let total = 0;
+        let len = numbers.length;
+        for (let i = 0; i < len; i++) {
             total += numbers[i];
         }
 
@@ -96,8 +97,8 @@ var Utility = new function () {
     };
 
     this.propertyAverage = function (objectOrArray, property) {
-        var numbers = [];
-        for (var i in objectOrArray) {
+        let numbers = [];
+        for (let i in objectOrArray) {
             if (objectOrArray.hasOwnProperty(i) && $.isNumeric(objectOrArray[i][property])) {
                 numbers.push(parseInt(objectOrArray[i][property]));
             }
@@ -111,10 +112,13 @@ var Utility = new function () {
     };
 
     this.getObjectUpdateList = function (oldObject, newObject) {
-        var updates = [];
+        let updates = [];
 
-        for (var property in newObject) {
-            if (typeof oldObject != 'object' || !oldObject || (newObject.hasOwnProperty(property) && newObject[property] !== oldObject[property])) {
+        for (let property in newObject) {
+            if (
+                newObject.hasOwnProperty(property) &&
+                (newObject[property] !== oldObject[property] || typeof oldObject !== 'object' || !oldObject)
+            ) {
                 updates.push(property);
             }
         }
@@ -123,14 +127,14 @@ var Utility = new function () {
     };
 
     /**
-     * @param {object} object
+     * @param {Object}   object
      * @param {function} [sortFunc]
-     * @returns {Array}
+     * @returns {*[]}
      */
     this.sortObject = function (object, sortFunc) {
-        var result = [];
+        let result = [];
 
-        for (var property in object) {
+        for (let property in object) {
             if (object.hasOwnProperty(property)) {
                 result.push(object[property]);
             }

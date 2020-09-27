@@ -3,6 +3,7 @@ window.Page_Settings = new function () {
     // ***** VARIABLES ***** //
     // ********************* //
 
+    /** @type {Object} References to various DOM elements. */
     const elements = {
         stats: {},
     };

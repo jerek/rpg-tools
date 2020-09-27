@@ -1,13 +1,13 @@
-var System_Deciv = new function () {
+window.System_Deciv = new function () {
     // ********************* //
     // ***** CONSTANTS ***** //
     // ********************* //
 
-    var config = {
+    const config = {
         rollDirection: -1,
         statType: 'against',
     };
-    var attributes = [
+    const attributes = [
         {id: 'athleticism', name: 'Athleticism', die: 20},
         {id: 'strength',    name: 'Strength',    die: 20, secondary: true},
         {id: 'agility',     name: 'Agility',     die: 20, secondary: true},
@@ -23,7 +23,7 @@ var System_Deciv = new function () {
         {id: 'affinity',    name: 'Affinity',    die: 20, secondary: true},
         {id: 'influence',   name: 'Influence',   die: 20, secondary: true},
     ];
-    var specialAttributes = [
+    const specialAttributes = [
         {id: 'luck', name: 'Luck', die: 20},
         {
             id: 'initiative', name: 'Initiative', die: 20, formula: {
@@ -32,7 +32,7 @@ var System_Deciv = new function () {
             },
         },
     ];
-    var technicalAttributes = [
+    const technicalAttributes = [
         {id: 'melee',    name: 'Melee',    die: 20},
         {id: 'guns',     name: 'Guns',     die: 20},
         {id: 'stealth',  name: 'Stealth',  die: 20},
@@ -62,11 +62,13 @@ var System_Deciv = new function () {
     };
 
     this.getStat = function (attributeId) {
-        var attributes = this.getAllStats();
+        let attributes = this.getAllStats();
 
-        for (var i = 0, statGroup; statGroup = attributes[i]; i++) {
-            for (var j = 0, attribute; attribute = statGroup[j]; j++) {
-                if (attribute.id == attributeId) {
+        // noinspection JSAssignmentUsedAsCondition
+        for (let i = 0, statGroup; statGroup = attributes[i]; i++) {
+            // noinspection JSAssignmentUsedAsCondition
+            for (let j = 0, attribute; attribute = statGroup[j]; j++) {
+                if (attribute.id === attributeId) {
                     return $.extend(true, {}, attribute);
                 }
             }

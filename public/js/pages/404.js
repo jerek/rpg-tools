@@ -1,9 +1,10 @@
-var Page_404 = new function () {
+window.Page_404 = new function () {
     // ********************* //
     // ***** VARIABLES ***** //
     // ********************* //
 
-    var elements = {};
+    /** @type {Object} References to various DOM elements. */
+    const elements = {};
 
     // ********************* //
     // ***** FUNCTIONS ***** //

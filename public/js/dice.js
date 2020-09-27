@@ -1,9 +1,31 @@
-var Dice = new function () {
+window.Dice = new function () {
+    // *********************** //
+    // ***** DEFINITIONS ***** //
+    // *********************** //
+
+    /**
+     * @typedef {Object} DiceRollRequest A set of options representing what should be rolled.
+     * @property {number} sides  How many sides each die should have.
+     * @property {number} [dice] A count of how many dice to roll.
+     *
+     * Options specific to characters:
+     * @property {number} [character] The numeric character ID.
+     * @property {string} [stat]      The string ID of the rolled stat.
+     * @property {string} [system]    The string ID of what game system the character is using.
+     */
+
+    /**
+     * @typedef {DiceRollRequest} DiceRollResult The result of a roll. Includes all options from the roll request.
+     * @property {string}   datetime The time of the roll in "yyyy-MM-dd HH:mm:ss" format.
+     * @property {number}   result   The sum of all dice rolls.
+     * @property {number[]} rolls    The individual dice rolls.
+     */
+
     // ********************* //
     // ***** CONSTANTS ***** //
     // ********************* //
 
-    var config = {
+    const config = {
         animateRolls: true,
         dice: ['d', 4, 6, 8, 10, 12, 20, 100],
         rollAnimationCount: 20,
@@ -14,8 +36,10 @@ var Dice = new function () {
     // ***** VARIABLES ***** //
     // ********************* //
 
-    var elements = {};
-    var rolls = null;
+    /** @type {Object} References to various DOM elements. */
+    const elements = {};
+
+    let rolls = null;
 
     // ********************* //
     // ***** FUNCTIONS ***** //
@@ -28,8 +52,8 @@ var Dice = new function () {
     /**
      * Get the result of a roll without effecting the DOM.
      *
-     * @param options
-     * @returns {object}
+     * @param {DiceRollRequest} options
+     * @returns {DiceRollResult}
      */
     this.roll = function (options) {
         return data_roll(options);
@@ -40,14 +64,14 @@ var Dice = new function () {
             if (confirm('Clear ALL roll data? This is PERMANENT!')) {
                 rolls = {};
                 data_save();
-                if (typeof callback == 'function') {
+                if (typeof callback === 'function') {
                     callback('clear-rolls');
                 }
                 return;
             }
         }
 
-        if (typeof callback == 'function') {
+        if (typeof callback === 'function') {
             callback('clear-rolls');
         }
     };
@@ -55,8 +79,8 @@ var Dice = new function () {
     /**
      * Fill the target element with dice controls.
      *
-     * @param target {jQuery} The element to be emptied and filled.
-     * @param [callback] {function} Function to call when options are changed. Passed a string of what option was changed.
+     * @param {jQuery}   target     The element to be emptied and filled.
+     * @param {function} [callback] Function to call when options are changed. Passed the changed option's string ID.
      */
     this.displayControls = function (target, callback) {
         target.empty();
@@ -73,7 +97,7 @@ var Dice = new function () {
             click: function () {
                 config.animateRolls = !config.animateRolls;
                 data_save();
-                if (typeof callback == 'function') {
+                if (typeof callback === 'function') {
                     callback('roll-animation');
                 }
             },
@@ -101,9 +125,9 @@ var Dice = new function () {
     /**
      * Append a die roll button to the target.
      *
-     * @param target {jQuery}
-     * @param sides {number|string}
-     * @param callback {function} Called when the button is clicked.
+     * @param {jQuery}        target
+     * @param {number|string} sides
+     * @param {function}      callback Called when the button is clicked.
      */
     this.appendDie = function (target, sides, callback) {
         if (sides === 'd') {
@@ -132,31 +156,33 @@ var Dice = new function () {
     /**
      * Append a die result, and roll it if necessary.
      *
-     * @param target {jQuery}
-     * @param rollObjectOrOptions {object} If the "result" property is not found this is passed to data_roll. Must contain the "sides" property.
-     * @param [suppressAnimation] {boolean} Whether to prevent animation of the property when it's added.
+     * @param {jQuery}         target
+     * @param {DiceRollResult} rollResult          If the "result" property is not found this is passed to data_roll.
+     * @param {boolean}        [suppressAnimation] Whether to prevent animation of the property when it's added.
      */
-    this.appendResult = function (target, rollObjectOrOptions, suppressAnimation) {
-        if (typeof rollObjectOrOptions.result != 'number') {
+    this.appendResult = function (target, rollResult, suppressAnimation) {
+        if (typeof rollResult.result !== 'number') {
             return;
-            // rollObjectOrOptions = data_roll(rollObjectOrOptions); // TODO: This should replace the roll instead of creating a new one! Currently this method is not called without the result property.
+            // TODO: This should replace the roll instead of creating a new one! Currently this method is not called
+            // TODO: without the result property.
+            // rollResult = data_roll(rollResult);
         }
 
-        var animate = !suppressAnimation && config.animateRolls;
-        var die = Utility.addElement('dice-die-result', target, {
+        let animate = !suppressAnimation && config.animateRolls;
+        let die = Utility.addElement('dice-die-result', target, {
             prepend: true,
             css: animate ? {} : {color: '#111'},
         });
-        if (rollObjectOrOptions.dice && rollObjectOrOptions.dice > 1) {
-            die.attr('title', rollObjectOrOptions.sides + 'd' + rollObjectOrOptions.dice);
+        if (rollResult.dice && rollResult.dice > 1) {
+            die.attr('title', rollResult.sides + 'd' + rollResult.dice);
         }
         die
             .mouseenter((function (rollObject) {
                 if (rollObject.stat) {
-                    var systemConfig = System.getConfig(rollObject.system);
-                    var systemClass = System.getClass(rollObject.system);
-                    var stat = systemClass.getStat(rollObject.stat);
-                    var characterName = Character.getName(rollObject.character);
+                    let systemConfig = System.getConfig(rollObject.system);
+                    let systemClass = System.getClass(rollObject.system);
+                    let stat = systemClass.getStat(rollObject.stat);
+                    let characterName = Character.getName(rollObject.character);
 
                     Utility.addElement('dice-die-result-stat', this, {
                         text: stat.name,
@@ -168,15 +194,15 @@ var Dice = new function () {
                     text: DateFormat.format.prettyDate(rollObject.datetime + '.000'),
                     title: rollObject.datetime,
                 });
-            }).bind(die, rollObjectOrOptions))
+            }).bind(die, rollResult))
             .mouseleave(function () {
                 $('.dice-die-result-stat, .dice-die-result-timestamp', this).remove();
             });
 
         if (animate) {
-            display_resultAnimation(die, rollObjectOrOptions, 0);
+            display_resultAnimation(die, rollResult, 0);
         } else {
-            die.html(rollObjectOrOptions.result);
+            die.text(rollResult.result);
         }
     };
 
@@ -199,24 +225,26 @@ var Dice = new function () {
     };
 
     /**
-     * Get all rolls or rolls of a particular number of sides.
+     * Get all rolls or all rolls of a particular number of sides.
      *
-     * @param [filters] {number|object} If it's a number it'll return all rolls with that number of sides. Object filters MUST include a "sides" filter.
-     * @returns {*}
+     * @param {number|DiceRollRequest|DiceRollResult} [filters] If a number, returns all rolls with that side count.
+     * @returns {DiceRollResult[]|Object.<string|number, DiceRollResult>} When filtered, returns a list of rolls.
+     *                                                                    Otherwise, returns the complete roll object.
      */
     this.getRolls = function (filters) {
         switch (typeof filters) {
             case 'number':
                 return rolls && rolls[filters] || [];
-                break;
             case 'object':
-                var initialRolls = $.extend(true, [], rolls && rolls[filters.sides] || []);
-                var filteredRolls = [];
-                for (var i = 0, roll; roll = initialRolls[i]; i++) {
-                    var keeper = true;
-                    for (var key in filters) {
-                        if (filters.hasOwnProperty(key) && roll[key] != filters[key]) {
+                let initialRolls = $.extend(true, [], rolls && rolls[filters.sides] || []);
+                let filteredRolls = [];
+                // noinspection JSAssignmentUsedAsCondition
+                for (let i = 0, roll; roll = initialRolls[i]; i++) {
+                    let keeper = true;
+                    for (let key in filters) {
+                        if (filters.hasOwnProperty(key) && roll[key] !== filters[key]) {
                             keeper = false;
+                            break;
                         }
                     }
                     if (keeper) {
@@ -224,7 +252,6 @@ var Dice = new function () {
                     }
                 }
                 return filteredRolls;
-                break;
             default:
                 return rolls || {};
         }
@@ -237,47 +264,48 @@ var Dice = new function () {
     /**
      * Handle the animation of showing a roll result.
      *
-     * @param target {jQuery}
-     * @param rollObject {object}
-     * @param count {number} How many times this function has looped.
-     * @param [current] {number} The currently displayed false result.
+     * @param {jQuery}         target
+     * @param {DiceRollResult} rollResult
+     * @param {number}         count      How many times this function has looped.
+     * @param {number}         [current]  The currently displayed teaser result.
      */
-    function display_resultAnimation(target, rollObject, count, current) {
+    function display_resultAnimation(target, rollResult, count, current) {
         if (count < config.rollAnimationCount) {
-            var excludes = [];
+            let excludes = [];
             if (count >= config.rollAnimationCount - 1) {
-                excludes.push(rollObject.result);
+                excludes.push(rollResult.result);
             }
-            if (!isNaN(current) && current != excludes[0]) {
+            if (!isNaN(current) && current !== excludes[0]) {
                 excludes.push(current);
             }
 
-            current = utility_getExclusionaryRoll(rollObject.sides, excludes);
+            current = utility_getExclusionaryRoll(rollResult.sides, excludes);
             target.html(current);
 
-            setTimeout(display_resultAnimation.bind(this, target, rollObject, count + 1, current), count * count / config.rollAnimationRate);
+            setTimeout(
+                display_resultAnimation.bind(this, target, rollResult, count + 1, current),
+                count * count / config.rollAnimationRate
+            );
         } else {
             target
-                .html(rollObject.result)
-                .css({
-                    color: '#111',
-                });
+                .html(rollResult.result)
+                .css({color: '#111'});
         }
     }
 
     /**
      * Generate, store, and return a rollObject.
      *
-     * @param options {object}
-     * @returns {object}
+     * @param {DiceRollRequest} options
+     * @returns {DiceRollResult}
      */
     function data_roll(options) {
         if (!options.dice) {
             options.dice = 1;
         }
 
-        var rollObject = $.extend(true, {}, options);
-        rollObject.datetime = DateFormat.format.date(new Date(), "yyyy-MM-dd HH:mm:ss");
+        let rollObject = $.extend(true, {}, options);
+        rollObject.datetime = DateFormat.format.date(new Date(), 'yyyy-MM-dd HH:mm:ss');
         rollObject.result = 0;
         rollObject.rolls = [];
 
@@ -285,8 +313,8 @@ var Dice = new function () {
             return options;
         }
 
-        for (var roll = 1; roll <= options.dice; roll++) {
-            var rollResult = Utility.roll(options.sides);
+        for (let roll = 1; roll <= options.dice; roll++) {
+            let rollResult = Utility.roll(options.sides);
             rollObject.rolls.push(rollResult);
             rollObject.result += rollResult;
         }
@@ -318,8 +346,8 @@ var Dice = new function () {
     function data_load() {
         rolls = LocalStorage.get('rolls') || {};
 
-        var settings = LocalStorage.get('dice-settings');
-        if (typeof settings == 'object') {
+        let settings = LocalStorage.get('dice-settings');
+        if (typeof settings === 'object') {
             $.extend(config, settings);
         }
     }
@@ -327,16 +355,21 @@ var Dice = new function () {
     /**
      * Get a dice roll that excludes certain results. (Used for the fake rolls when animating results.)
      *
-     * @param sides {number}
-     * @param excludes {Array}
+     * @param {number}   sides
+     * @param {number[]} excludes A list of numbers to not allow as a result.
      * @returns {*}
      */
     function utility_getExclusionaryRoll(sides, excludes) {
+        // If we're somehow told to roll between 1 and 1, don't try to exclude anything or this will loop forever.
+        if (sides === 1) {
+            return 1;
+        }
+
         if (excludes.length >= sides) {
             excludes.splice(sides - 1);
         }
 
-        var result = Utility.roll(sides);
+        let result = Utility.roll(sides);
 
         if (excludes.indexOf(result) > -1) {
             return utility_getExclusionaryRoll(sides, excludes);

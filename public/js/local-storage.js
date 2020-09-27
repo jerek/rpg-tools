@@ -1,9 +1,9 @@
-var LocalStorage = new function () {
+window.LocalStorage = new function () {
     // ********************* //
     // ***** VARIABLES ***** //
     // ********************* //
 
-    var status = {
+    const status = {
         supported: null,
     };
 

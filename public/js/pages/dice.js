@@ -1,9 +1,9 @@
-var Page_Dice = new function () {
+window.Page_Dice = new function () {
     // ********************* //
     // ***** CONSTANTS ***** //
     // ********************* //
 
-    var config = {
+    const config = {
         dice: ['d', 4, 6, 8, 10, 12, 20, 100],
     };
 
@@ -11,7 +11,8 @@ var Page_Dice = new function () {
     // ***** VARIABLES ***** //
     // ********************* //
 
-    var elements = {};
+    /** @type {Object} References to various DOM elements. */
+    const elements = {};
 
     // ********************* //
     // ***** FUNCTIONS ***** //
@@ -48,13 +49,14 @@ var Page_Dice = new function () {
         elements.dice = Utility.addElement('dice', elements.diceWrapper);
         display_dice(elements.dice);
 
-        var rolls = Dice.getRolls();
+        let rolls = Dice.getRolls();
         if (!$.isEmptyObject(rolls)) {
-            var groupedRolls = {};
-            for (var die in rolls) {
+            let groupedRolls = {};
+            for (let die in rolls) {
                 if (rolls.hasOwnProperty(die) && rolls[die].length) {
-                    for (var i = 0, rollObject; rollObject = rolls[die][i]; i++) {
-                        var column = rollObject.dice && rollObject.dice > 1 ? 'd' : rollObject.sides;
+                    // noinspection JSAssignmentUsedAsCondition
+                    for (let i = 0, rollObject; rollObject = rolls[die][i]; i++) {
+                        let column = rollObject.dice && rollObject.dice > 1 ? 'd' : rollObject.sides;
 
                         if (!groupedRolls[column]) {
                             groupedRolls[column] = [];
@@ -72,9 +74,10 @@ var Page_Dice = new function () {
                 });
             }
 
-            for (die in groupedRolls) {
+            for (let die in groupedRolls) {
                 if (groupedRolls.hasOwnProperty(die) && groupedRolls[die].length) {
-                    for (var j = 0; rollObject = groupedRolls[die][j]; j++) {
+                    // noinspection JSAssignmentUsedAsCondition
+                    for (let j = 0, rollObject; rollObject = groupedRolls[die][j]; j++) {
                         display_result(rollObject, true);
                     }
                 }
@@ -91,7 +94,7 @@ var Page_Dice = new function () {
 
     function display_dice(target) {
         if (elements.dice) {
-            for (var oldDie in elements.dice) {
+            for (let oldDie in elements.dice) {
                 if (elements.dice.hasOwnProperty(oldDie) && elements.dice[oldDie] instanceof jQuery) {
                     elements.dice[oldDie].wrapper.remove();
                     elements.dice[oldDie].die.remove();
@@ -101,12 +104,13 @@ var Page_Dice = new function () {
         }
 
         elements.dice = {};
-        for (var i = 0, die; die = config.dice[i]; i++) {
-            var wrapper = Utility.addElement('dice-die-wrapper', target, {
+        // noinspection JSAssignmentUsedAsCondition
+        for (let i = 0, die; die = config.dice[i]; i++) {
+            let wrapper = Utility.addElement('dice-die-wrapper', target, {
                 'data-die': die,
             });
-            var dieButton = Dice.appendDie(wrapper, die, action_roll);
-            var log = Utility.addElement('dice-die-log', wrapper);
+            let dieButton = Dice.appendDie(wrapper, die, action_roll);
+            let log = Utility.addElement('dice-die-log', wrapper);
 
             elements.dice[die] = {
                 wrapper: wrapper,
@@ -119,7 +123,7 @@ var Page_Dice = new function () {
     }
 
     function display_result(rollObject, suppressAnimation) {
-        var column = rollObject.dice && rollObject.dice > 1 ? 'd' : rollObject.sides;
+        let column = rollObject.dice && rollObject.dice > 1 ? 'd' : rollObject.sides;
         if (elements.dice[column] && elements.dice[column].log) {
             Dice.appendResult(elements.dice[column].log, rollObject, suppressAnimation);
         }
@@ -132,13 +136,13 @@ var Page_Dice = new function () {
      * @return {boolean} Whether it was able to make a roll.
      */
     function action_roll(sides) {
-        var rollObject;
+        let rollObject;
         if (!isNaN(sides)) {
             rollObject = Dice.roll({sides: sides});
             display_result(rollObject);
         } else if (sides === 'd') {
-            var $rollsInput = $('.dice-die.custom');
-            var rolls = $rollsInput.val();
+            let $rollsInput = $('.dice-die.custom');
+            let rolls = $rollsInput.val();
 
             if (!rolls || typeof rolls !== 'string') {
                 display_customRollExplanation();
@@ -154,9 +158,9 @@ var Page_Dice = new function () {
 
             $rollsInput.val(rolls);
 
-            var parts = rolls.split('d');
-            var dice = parseInt(parts[0]);
-            var diceSides = parseInt(parts[1]);
+            let parts = rolls.split('d');
+            let dice = parseInt(parts[0]);
+            let diceSides = parseInt(parts[1]);
 
             if (isNaN(dice) || isNaN(diceSides)) {
                 alert('Something went wrong!');

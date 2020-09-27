@@ -1,9 +1,9 @@
-var Page_Character = new function () {
+window.Page_Character = new function () {
     // ********************* //
     // ***** CONSTANTS ***** //
     // ********************* //
 
-    var config = {
+    const config = {
         character: null,
     };
 
@@ -11,7 +11,8 @@ var Page_Character = new function () {
     // ***** VARIABLES ***** //
     // ********************* //
 
-    var elements = {
+    /** @type {Object} References to various DOM elements. */
+    const elements = {
         stats: {},
     };
 
@@ -107,20 +108,22 @@ var Page_Character = new function () {
 
         elements.characterStats = Utility.addElement('character-stats', elements.character);
 
-        var systemClass = System.getClass(Character.getSystem(config.character));
+        let systemClass = System.getClass(Character.getSystem(config.character));
 
         if (!systemClass) {
             return;
         }
 
-        var allStats = systemClass.getAllStats();
-        for (var i = 0, statSet; statSet = allStats[i]; i++) {
+        let allStats = systemClass.getAllStats();
+        // noinspection JSAssignmentUsedAsCondition
+        for (let i = 0, statSet; statSet = allStats[i]; i++) {
             if (i > 0) {
-                var emptyRow = Utility.addElement('character-stat', elements.characterStats);
+                let emptyRow = Utility.addElement('character-stat', elements.characterStats);
                 Utility.addElement(null, emptyRow);
             }
 
-            for (var j = 0, stat; stat = statSet[j]; j++) {
+            // noinspection JSAssignmentUsedAsCondition
+            for (let j = 0, stat; stat = statSet[j]; j++) {
                 display_stat(elements.characterStats, stat);
             }
         }
@@ -129,16 +132,19 @@ var Page_Character = new function () {
     function display_characterManagement() {
         elements.characterList = Utility.addElement('character-list', elements.container);
 
-        var characters = Character.getCharacters();
+        let characters = Character.getCharacters();
         if (!characters) {
             return;
         }
 
         elements.charactersList = Utility.addElement('character-list-characters', elements.characterList);
 
-        var charWrapper = Utility.addElement('character-list-characters-character character-list-characters-character-create', elements.characterList);
+        let charWrapper = Utility.addElement(
+            'character-list-characters-character character-list-characters-character-create',
+            elements.characterList
+        );
 
-        var createChar = Utility.addElement('character-list-characters-character-name', charWrapper, {
+        let createChar = Utility.addElement('character-list-characters-character-name', charWrapper, {
             element: 'a',
             text: ' Create Character',
             click: action_createCharacter,
@@ -148,10 +154,11 @@ var Page_Character = new function () {
             prepend: true,
         });
 
-        for (var i = 0, character; character = characters[i]; i++) {
+        // noinspection JSAssignmentUsedAsCondition
+        for (let i = 0, character; character = characters[i]; i++) {
             charWrapper = Utility.addElement('character-list-characters-character', elements.characterList);
 
-            var deleteLink = Utility.addElement('character-list-characters-character-delete', charWrapper, {
+            let deleteLink = Utility.addElement('character-list-characters-character-delete', charWrapper, {
                 element: 'a',
                 text: ' Delete',
                 click: action_deleteCharacter.bind(null, character.id),
@@ -172,7 +179,7 @@ var Page_Character = new function () {
     function display_stat(target, stat) {
         elements.stats[stat.id] = Utility.addElement('character-stat', target);
 
-        var name = Utility.addElement('character-stat-name', elements.stats[stat.id], {
+        let name = Utility.addElement('character-stat-name', elements.stats[stat.id], {
             text: stat.name,
             click: action_roll.bind(elements.stats[stat.id], stat),
             mousedown: Utility.returnFalse,
@@ -182,41 +189,48 @@ var Page_Character = new function () {
             name.addClass('secondary');
         }
 
-        var statValue = Character.getStat(config.character, stat.id);
-        var statValueDisplay = Utility.addElement('character-stat-value', elements.stats[stat.id], {
-            text: typeof statValue == 'number' ? statValue : '?',
+        let statValue = Character.getStat(config.character, stat.id);
+        let statValueDisplay = Utility.addElement('character-stat-value', elements.stats[stat.id], {
+            text: typeof statValue === 'number' ? statValue : '?',
         });
         if (!stat.formula) {
             statValueDisplay.addClass('editable');
             statValueDisplay.click(action_setStat.bind(null, stat));
         }
-        if (typeof statValue != 'number') {
+        if (typeof statValue !== 'number') {
             statValueDisplay.addClass('unknown');
         }
 
-        var log = Utility.addElement('character-stat-log', elements.stats[stat.id]);
+        let log = Utility.addElement('character-stat-log', elements.stats[stat.id]);
 
-        var logInner = Utility.addElement('character-stat-log-inner', log);
+        let logInner = Utility.addElement('character-stat-log-inner', log);
 
-        var logTogglerBg = Utility.addElement('character-stat-log-toggler-background', log);
+        let logTogglerBg = Utility.addElement('character-stat-log-toggler-background', log);
 
-        var logToggler = Utility.addElement('character-stat-log-toggler fa fa-plus', log, {
+        let logToggler = Utility.addElement('character-stat-log-toggler fa fa-plus', log, {
             element: 'a',
             click: action_toggleLog.bind(elements.stats[stat.id], stat),
             mousedown: Utility.returnFalse,
         });
 
-        var rolls = Dice.getRolls({system: 'deciv', character: config.character, stat: stat.id, sides: stat.die});
+        let rolls = Dice.getRolls({system: 'deciv', character: config.character, stat: stat.id, sides: stat.die});
 
         if (rolls && rolls.length) {
-            for (var j = 0, roll; roll = rolls[j]; j++) {
+            // noinspection JSAssignmentUsedAsCondition
+            for (let j = 0, roll; roll = rolls[j]; j++) {
                 Dice.appendResult(logInner, roll, true);
             }
         }
     }
 
-    function display_result(target, rollObject, suppressAnimation) {
-        Dice.appendResult(target, rollObject, suppressAnimation);
+    /**
+     *
+     * @param {jQuery|HTMLElement} target
+     * @param {DiceRollResult}     rollResult
+     * @param {boolean}            [suppressAnimation] Whether this display instance should never animate.
+     */
+    function display_result(target, rollResult, suppressAnimation) {
+        Dice.appendResult(target, rollResult, suppressAnimation);
     }
 
     function updateDisplay_refreshPage() {
@@ -237,7 +251,7 @@ var Page_Character = new function () {
         }
 
         if (elements.stats[statId]) {
-            if (typeof value == 'number') {
+            if (typeof value === 'number') {
                 $('.character-stat-value', elements.stats[statId]).html(value).removeClass('unknown');
             } else {
                 $('.character-stat-value', elements.stats[statId]).html('?');
@@ -246,14 +260,14 @@ var Page_Character = new function () {
     }
 
     function action_createCharacter() {
-        var name = prompt('Character Name:');
+        let name = prompt('Character Name:');
         if (name) {
             data_setCharacter(Character.create(name, 'deciv'));
         }
     }
 
     function action_deleteCharacter(id) {
-        var character = Character.get(id);
+        let character = Character.get(id);
 
         if (!character) {
             alert('Character with ID ' + id + ' not found!');
@@ -266,7 +280,7 @@ var Page_Character = new function () {
     }
 
     function action_loadCharacter(id) {
-        var character = Character.get(id);
+        let character = Character.get(id);
 
         if (!character) {
             alert('Character with ID ' + id + ' not found!');
@@ -281,16 +295,16 @@ var Page_Character = new function () {
     }
 
     function action_roll(stat) {
-        var character = Character.get(config.character);
+        let character = Character.get(config.character);
 
-        var rollObject = Dice.roll({
+        let rollResult = Dice.roll({
             system: character.system,
             character: character.id,
             stat: stat.id,
             sides: stat.die,
         });
 
-        display_result($('.character-stat-log-inner', this), rollObject);
+        display_result($('.character-stat-log-inner', this), rollResult);
     }
 
     function action_toggleLog(stat) {
@@ -308,11 +322,11 @@ var Page_Character = new function () {
     }
 
     function action_setName() {
-        var character = Character.get(config.character);
+        let character = Character.get(config.character);
 
-        var systemConfig = System.getConfig(character.system);
+        let systemConfig = System.getConfig(character.system);
 
-        var value = prompt('Enter your ' + systemConfig.name + ' character name:', character.name);
+        let value = prompt('Enter your ' + systemConfig.name + ' character name:', character.name);
         if (value) {
             Character.setName(character.id, value);
             updateDisplay_name();
@@ -320,12 +334,14 @@ var Page_Character = new function () {
     }
 
     function action_setStats() {
-        var systemClass = System.getClass(Character.getSystem(config.character));
-        var stats = systemClass.getAllStats();
+        let systemClass = System.getClass(Character.getSystem(config.character));
+        let stats = systemClass.getAllStats();
 
-        var result = false;
-        for (var i = 0, statGroup; statGroup = stats[i]; i++) {
-            for (var j = 0, stat; stat = statGroup[j]; j++) {
+        let result = false;
+        // noinspection JSAssignmentUsedAsCondition
+        for (let i = 0, statGroup; statGroup = stats[i]; i++) {
+            // noinspection JSAssignmentUsedAsCondition
+            for (let j = 0, stat; stat = statGroup[j]; j++) {
                 if (stat.formula) {
                     continue;
                 }
@@ -344,9 +360,9 @@ var Page_Character = new function () {
     }
 
     function action_setStat(stat) {
-        var stats = Character.getStats(config.character);
+        let stats = Character.getStats(config.character);
 
-        var value = prompt('Set ' + stat.name + ' to:', stats[stat.id]);
+        let value = prompt('Set ' + stat.name + ' to:', stats[stat.id]);
         if (value) {
             if (value.match(/^[0-9]+$/)) {
                 data_setStat(stat.id, value);
@@ -361,18 +377,18 @@ var Page_Character = new function () {
     }
 
     function data_load() {
-        var pageConfig = LocalStorage.get('page-character');
-        if (pageConfig && typeof pageConfig.character == 'number') {
+        let pageConfig = LocalStorage.get('page-character');
+        if (pageConfig && typeof pageConfig.character === 'number') {
             config.character = pageConfig.character;
         }
         data_setCharacterDataAttribute();
     }
 
     function data_save() {
-        var oldConfig = LocalStorage.get('page-character');
-        var pageNeedsRefresh = typeof oldConfig != 'object';
+        let oldConfig = LocalStorage.get('page-character');
+        let pageNeedsRefresh = typeof oldConfig !== 'object';
         if (!pageNeedsRefresh) {
-            var changes = Utility.getObjectUpdateList(oldConfig, config);
+            let changes = Utility.getObjectUpdateList(oldConfig, config);
             pageNeedsRefresh = changes.length > 0;
         }
 
@@ -402,8 +418,9 @@ var Page_Character = new function () {
     }
 
     function data_setStat(statId, value) {
-        var updatedStats = Character.setStat(config.character, statId, value);
-        for (var i = 0, updatedStat; updatedStat = updatedStats[i]; i++) {
+        let updatedStats = Character.setStat(config.character, statId, value);
+        // noinspection JSAssignmentUsedAsCondition
+        for (let i = 0, updatedStat; updatedStat = updatedStats[i]; i++) {
             updateDisplay_statValue(updatedStat);
         }
     }

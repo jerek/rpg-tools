@@ -1,9 +1,10 @@
-var Page_Stats = new function () {
+window.Page_Stats = new function () {
     // ********************* //
     // ***** VARIABLES ***** //
     // ********************* //
 
-    var elements = {
+    /** @type {Object} References to various DOM elements. */
+    const elements = {
         stats: {},
     };
 
@@ -36,7 +37,7 @@ var Page_Stats = new function () {
     }
 
     function display_body() {
-        var allRolls = Dice.getRolls();
+        let allRolls = Dice.getRolls();
 
         if ($.isEmptyObject(allRolls)) {
             Utility.addElement(null, elements.container, {
@@ -46,14 +47,15 @@ var Page_Stats = new function () {
             return;
         }
 
-        var rolls = {};
-        for (var sides in allRolls) {
+        let rolls = {};
+        for (let sides in allRolls) {
             if (!allRolls.hasOwnProperty(sides)) {
                 continue;
             }
 
-            for (var i = 0, roll; roll = allRolls[sides][i]; i++) {
-                var groupId = roll.character || 0;
+            // noinspection JSAssignmentUsedAsCondition
+            for (let i = 0, roll; roll = allRolls[sides][i]; i++) {
+                let groupId = roll.character || 0;
 
                 if (!rolls[groupId]) {
                     rolls[groupId] = {};
@@ -67,16 +69,17 @@ var Page_Stats = new function () {
             }
         }
 
-        var characterIds = [];
-        for (var charId in rolls) {
+        let characterIds = [];
+        for (let charId in rolls) {
             if (rolls.hasOwnProperty(charId) && characterIds.indexOf(charId)) {
                 characterIds.push(charId);
             }
         }
 
-        var characters = [];
-        for (var j = 0, characterId; characterId = characterIds[j]; j++) {
-            if (characterId == 0) {
+        let characters = [];
+        // noinspection JSAssignmentUsedAsCondition
+        for (let j = 0, characterId; characterId = characterIds[j]; j++) {
+            if (!characterId) {
                 characters.push({
                     id: characterId,
                     name: 'General Rolls',
@@ -89,17 +92,17 @@ var Page_Stats = new function () {
             }
         }
 
-        var getMostRecentRoll = function (characterId) {
-            var mostRecent = '2000-01-01 00:00:00';
+        let getMostRecentRoll = function (characterId) {
+            let mostRecent = '2000-01-01 00:00:00';
 
             if (!rolls[characterId]) {
                 return mostRecent;
             }
 
-            var mostRecentDate = new Date(mostRecent);
-            for (var sides in rolls[characterId]) {
+            let mostRecentDate = new Date(mostRecent);
+            for (let sides in rolls[characterId]) {
                 if (rolls[characterId].hasOwnProperty(sides)) {
-                    var rollDate = new Date(rolls[characterId][sides][rolls[characterId][sides].length - 1].datetime);
+                    let rollDate = new Date(rolls[characterId][sides][rolls[characterId][sides].length - 1].datetime);
                     if (rollDate > mostRecentDate) {
                         mostRecentDate = rollDate;
                     }
@@ -114,7 +117,8 @@ var Page_Stats = new function () {
         });
 
         elements.body = Utility.addElement('statistics-body', elements.container);
-        for (var k = 0, character; character = characters[k]; k++) {
+        // noinspection JSAssignmentUsedAsCondition
+        for (let k = 0, character; character = characters[k]; k++) {
             Utility.addElement('statistics-character-name', elements.body, {
                 element: 'h2',
                 text: character.name,
@@ -125,7 +129,7 @@ var Page_Stats = new function () {
     }
 
     function display_rolls(character, rolls, target) {
-        for (var sides in rolls) {
+        for (let sides in rolls) {
             if (rolls.hasOwnProperty(sides)) {
                 Utility.addElement('statistics-character-rolls-heading', target, {
                     element: 'h3',

@@ -1,9 +1,9 @@
-var Page_RandomWords = new function () {
+window.Page_RandomWords = new function () {
     // ********************* //
     // ***** CONSTANTS ***** //
     // ********************* //
 
-    var config = {
+    const config = {
         defaults: {
             type: 'noun',
             wordCount: 100,
@@ -31,11 +31,12 @@ var Page_RandomWords = new function () {
     // ***** VARIABLES ***** //
     // ********************* //
 
-    var elements = {
+    /** @type {Object} References to various DOM elements. */
+    const elements = {
         formElements: {},
     };
 
-    var lastResult = null;
+    let lastResult = null;
 
     // ********************* //
     // ***** FUNCTIONS ***** //
@@ -77,9 +78,9 @@ var Page_RandomWords = new function () {
             element: 'form',
             name: 'random-words-form',
             submit: function (event) {
-                var params = {};
+                let params = {};
                 if (document.forms['random-words-form']['type'].value) {
-                    var type = document.forms['random-words-form']['type'].value;
+                    let type = document.forms['random-words-form']['type'].value;
                     if (config.values.type.indexOf(type) >= 0) {
                         params['type'] = type;
                     } else {
@@ -87,7 +88,7 @@ var Page_RandomWords = new function () {
                     }
                 }
                 if (document.forms['random-words-form']['word-count'].value) {
-                    var wordCount = parseInt(document.forms['random-words-form']['word-count'].value);
+                    let wordCount = parseInt(document.forms['random-words-form']['word-count'].value);
                     if (wordCount < config.minimums.wordCount) {
                         wordCount = config.minimums.wordCount;
                     }
@@ -102,7 +103,7 @@ var Page_RandomWords = new function () {
                     }
                 }
                 if (document.forms['random-words-form']['syllable-count'].value) {
-                    var syllableCount = parseInt(document.forms['random-words-form']['syllable-count'].value);
+                    let syllableCount = parseInt(document.forms['random-words-form']['syllable-count'].value);
                     if (syllableCount < config.minimums.syllableCount) {
                         syllableCount = config.minimums.syllableCount;
                     }
@@ -122,69 +123,70 @@ var Page_RandomWords = new function () {
         });
 
         // Type
-        elements.formElements.typeLabel = Utility.addElement('random-words-form-type-label', elements.form, {
-            element: 'label',
-            to: 'type',
-            text: 'Type: ',
-        });
-        elements.formElements.type = Utility.addElement('random-words-form-type', elements.formElements.typeLabel, {
-            element: 'select',
-            name: 'type',
-            type: 'text',
-        });
-        for (var i = 0, type; type = config.values.type[i]; i++) {
-            Utility.addElement('random-words-form-type-option', elements.formElements.type, {
-                element: 'option',
-                value: type,
-                text: type.substr(0, 1).toUpperCase() + type.substr(1),
-            });
+        elements.formElements.typeLabel = Utility.addElement(
+            'random-words-form-type-label',
+            elements.form,
+            {element: 'label', to: 'type', text: 'Type: '}
+        );
+        elements.formElements.type = Utility.addElement(
+            'random-words-form-type',
+            elements.formElements.typeLabel,
+            {element: 'select', name: 'type', type: 'text'}
+        );
+        // noinspection JSAssignmentUsedAsCondition
+        for (let i = 0, type; type = config.values.type[i]; i++) {
+            Utility.addElement(
+                'random-words-form-type-option',
+                elements.formElements.type,
+                {element: 'option', value: type, text: type.substr(0, 1).toUpperCase() + type.substr(1)}
+            );
         }
 
         // Word Count
-        elements.formElements.wordCountLabel = Utility.addElement('random-words-form-word-count-label', elements.form, {
-            element: 'label',
-            to: 'word-count',
-            text: 'Word Count: ',
-        });
-        elements.formElements.wordCount = Utility.addElement('random-words-form-word-count', elements.formElements.wordCountLabel, {
-            element: 'input',
-            name: 'word-count',
-            type: 'text',
-            value: config.defaults.wordCount,
-        });
+        elements.formElements.wordCountLabel = Utility.addElement(
+            'random-words-form-word-count-label',
+            elements.form,
+            {element: 'label', to: 'word-count', text: 'Word Count: '}
+        );
+        elements.formElements.wordCount = Utility.addElement(
+            'random-words-form-word-count',
+            elements.formElements.wordCountLabel,
+            {element: 'input', name: 'word-count', type: 'text', value: config.defaults.wordCount}
+        );
 
         // Syllable Count
-        elements.formElements.syllableCountLabel = Utility.addElement('random-words-form-syllable-count-label', elements.form, {
-            element: 'label',
-            to: 'syllable-count',
-            text: 'Syllable Count: ',
-        });
-        elements.formElements.syllableCount = Utility.addElement('random-words-form-syllable-count', elements.formElements.syllableCountLabel, {
-            element: 'select',
-            name: 'syllable-count',
-            type: 'text',
-        });
-        var syllableCounts = [
+        elements.formElements.syllableCountLabel = Utility.addElement(
+            'random-words-form-syllable-count-label',
+            elements.form,
+            {element: 'label', to: 'syllable-count', text: 'Syllable Count: '}
+        );
+        elements.formElements.syllableCount = Utility.addElement(
+            'random-words-form-syllable-count',
+            elements.formElements.syllableCountLabel,
+            {element: 'select', name: 'syllable-count', type: 'text'}
+        );
+        let syllableCounts = [
             ['', 'Any'],
             [1, 1],
             [2, 2],
             [3, 3],
             [4, 4],
         ];
-        for (var j = 0, syllableCount; syllableCount = syllableCounts[j]; j++) {
-            Utility.addElement('random-words-form-syllable-count-option', elements.formElements.syllableCount, {
-                element: 'option',
-                value: syllableCount[0],
-                text: syllableCount[1],
-            });
+        // noinspection JSAssignmentUsedAsCondition
+        for (let j = 0, syllableCount; syllableCount = syllableCounts[j]; j++) {
+            Utility.addElement(
+                'random-words-form-syllable-count-option',
+                elements.formElements.syllableCount,
+                {element: 'option', value: syllableCount[0], text: syllableCount[1]}
+            );
         }
 
         // Submit button
-        elements.formElements.submit = Utility.addElement('random-words-form-submit', elements.form, {
-            element: 'button',
-            type: 'submit',
-            text: 'Display',
-        });
+        elements.formElements.submit = Utility.addElement(
+            'random-words-form-submit',
+            elements.form,
+            {element: 'button', type: 'submit', text: 'Display'}
+        );
     }
 
     function display_body() {
@@ -196,15 +198,18 @@ var Page_RandomWords = new function () {
     }
 
     function display_words(words) {
-        if (words instanceof Array) {
-            elements.body.empty();
-            for (var i = 0, word; word = words[i]; i++) {
-                Utility.addElement('random-words-word', elements.body, {
-                    element: 'div',
-                    text: word,
-                });
-            }
-            lastResult = words;
+        if (!Array.isArray(words)) {
+            return;
         }
+
+        elements.body.empty();
+        // noinspection JSAssignmentUsedAsCondition
+        for (let i = 0, word; word = words[i]; i++) {
+            Utility.addElement('random-words-word', elements.body, {
+                element: 'div',
+                text: word,
+            });
+        }
+        lastResult = words;
     }
 };

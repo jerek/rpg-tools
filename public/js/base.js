@@ -1,9 +1,9 @@
-var Base = new function () {
+window.Base = new function () {
     // ********************* //
     // ***** CONSTANTS ***** //
     // ********************* //
 
-    var config = {
+    const config = {
         pages: {
             '404': {
                 name: 'Page Not Found',
@@ -55,8 +55,10 @@ var Base = new function () {
     // ***** VARIABLES ***** //
     // ********************* //
 
-    var elements = {};
-    var status = {
+    /** @type {Object} References to various DOM elements. */
+    const elements = {};
+
+    const status = {
         lockHash: false,
     };
 
@@ -86,17 +88,18 @@ var Base = new function () {
 
     function display_navigation(target) {
         target.empty();
-        for (var i = 0, navKey; navKey = config.nav[i]; i++) {
+        // noinspection JSAssignmentUsedAsCondition
+        for (let i = 0, navKey; navKey = config.nav[i]; i++) {
             display_navigationItem(target, config.pages[navKey]);
         }
     }
 
     function display_navigationItem(target, navItem) {
-        var li = Utility.addElement(null, target, {
+        let li = Utility.addElement(null, target, {
             element: 'li',
             id: 'nav-page-' + navItem.root,
         });
-        var a = Utility.addElement(null, li, {
+        let a = Utility.addElement(null, li, {
             element: 'a',
             href: '#' + navItem.path,
         });
@@ -105,7 +108,7 @@ var Base = new function () {
 
     function display_page(pageObject) {
         $(document.body).attr('data-page', pageObject.path || pageObject.root);
-        var pageClassName = utility_ucFirst(utility_camelCase(pageObject.path || 'home'));
+        let pageClassName = utility_ucFirst(utility_camelCase(pageObject.path || 'home'));
         if (window['Page_' + pageClassName]) {
             elements.body.empty();
             window['Page_' + pageClassName].init(elements.body);
@@ -119,11 +122,11 @@ var Base = new function () {
             return;
         }
 
-        var hash = ('' + location.hash).replace(/^#/, '');
+        let hash = ('' + location.hash).replace(/^#/, '');
 
         $('.header-inner > nav li').removeClass('active');
 
-        if (hash && hash != 'home') {
+        if (hash && hash !== 'home') {
             data_setPage(hash);
         } else {
             data_setPage('home');
@@ -136,14 +139,14 @@ var Base = new function () {
             pages = config.pages;
         }
 
-        var pathParts = path.replace(/[?&].*/, '').split('/');
+        let pathParts = path.replace(/[?&].*/, '').split('/');
 
         if (['home', '.'].indexOf(pathParts[0]) > -1) {
             pathParts[0] = '';
         }
 
-        for (var i in pages) {
-            if (pages.hasOwnProperty(i) && pages[i].path == pathParts[0]) {
+        for (let i in pages) {
+            if (pages.hasOwnProperty(i) && pages[i].path === pathParts[0]) {
                 if (pathParts.length > 1) {
                     if (pages[i].children) {
                         return data_getPage(path.replace(/^[^\/]+\//, ''), pages[i].children);
@@ -160,7 +163,7 @@ var Base = new function () {
     }
 
     function data_setPage(path) {
-        var page = data_getPage(path);
+        let page = data_getPage(path);
         $('#nav-page-' + page.root).attr('class', 'active');
         display_page(page);
     }
@@ -170,11 +173,12 @@ var Base = new function () {
     }
 
     function utility_camelCase(string) {
-        var parts = string.split(/[-\/]/);
+        let parts = string.split(/[-\/]/);
 
-        var result = parts.shift();
+        let result = parts.shift();
 
-        for (var i = 0, part; part = parts[i]; i++) {
+        // noinspection JSAssignmentUsedAsCondition
+        for (let i = 0, part; part = parts[i]; i++) {
             result += utility_ucFirst(part);
         }
 
@@ -182,38 +186,38 @@ var Base = new function () {
     }
 
     function utility_hyphenate(string) {
-        var parts = string.split(/[-\/]/);
+        let parts = string.split(/[-\/]/);
 
-        var result = parts.shift();
+        let result = parts.shift();
 
         return result.join('-');
     }
 
     function utility_setHash(hash, disallowBackButton, lockHash) {
-        var hashWasLocked = !!status.lockHash;
+        let hashWasLocked = !!status.lockHash;
         if (lockHash && !hashWasLocked) {
             status.lockHash = true;
         }
 
-        if (hash == 'home') {
+        if (hash === 'home') {
             hash = '';
         }
 
-        var oldHash = '' + location.hash;
-        var href = ('' + location.href).replace(/#.*/, '');
-        var newHash = typeof hash == 'string' && hash ?
+        let oldHash = '' + location.hash;
+        let href = ('' + location.href).replace(/#.*/, '');
+        let newHash = typeof hash === 'string' && hash ?
             '#' + hash :
             '';
         href += newHash;
 
         if (disallowBackButton) {
-            if (window.history && window.history.replaceState && location.protocol != 'file:') {
+            if (window.history && window.history.replaceState && location.protocol !== 'file:') {
                 window.history.replaceState({}, '', href);
             } else {
                 location.replace(newHash || '#.');
             }
         } else {
-            if (window.history && window.history.pushState && location.protocol != 'file:') {
+            if (window.history && window.history.pushState && location.protocol !== 'file:') {
                 window.history.pushState({}, '', href);
             } else {
                 location.hash = newHash || '#.';
