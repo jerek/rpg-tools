@@ -1,14 +1,31 @@
 var Character = new function () {
+    // ********************* //
+    // ***** CONSTANTS ***** //
+    // ********************* //
+
     var config = {
         highestId: 0,
     };
-    var characters = {};
     var characterTemplate = {
         id: 1,
         name: 'Unnamed Character',
         stats: {},
         system: 'deciv',
     };
+
+    // ********************* //
+    // ***** VARIABLES ***** //
+    // ********************* //
+
+    var characters = {};
+
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
+
+    // ------ //
+    // PUBLIC //
+    // ------ //
 
     this.create = function (name, system) {
         var highestId = config.highestId;
@@ -177,6 +194,10 @@ var Character = new function () {
         return a.id - b.id;
     };
 
+    // ------- //
+    // PRIVATE //
+    // ------- //
+
     function data_load() {
         config.highestId = LocalStorage.get('characters-highest-id') || 0;
 
@@ -257,6 +278,10 @@ var Character = new function () {
             }
         }
     }
+
+    // ************************** //
+    // ***** INITIALIZATION ***** //
+    // ************************** //
 
     data_load();
 };

@@ -1,7 +1,8 @@
 var Page_RandomWords = new function () {
-    var elements = {
-        formElements: {},
-    };
+    // ********************* //
+    // ***** CONSTANTS ***** //
+    // ********************* //
+
     var config = {
         defaults: {
             type: 'noun',
@@ -25,7 +26,24 @@ var Page_RandomWords = new function () {
             ],
         },
     };
+
+    // ********************* //
+    // ***** VARIABLES ***** //
+    // ********************* //
+
+    var elements = {
+        formElements: {},
+    };
+
     var lastResult = null;
+
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
+
+    // ------ //
+    // PUBLIC //
+    // ------ //
 
     this.init = function (target) {
         elements.container = target;
@@ -38,6 +56,10 @@ var Page_RandomWords = new function () {
             display_words(lastResult);
         }
     };
+
+    // ------- //
+    // PRIVATE //
+    // ------- //
 
     function display_heading() {
         elements.heading && elements.heading.remove && elements.heading.remove();

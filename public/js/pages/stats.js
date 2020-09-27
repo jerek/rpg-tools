@@ -1,7 +1,19 @@
 var Page_Stats = new function () {
+    // ********************* //
+    // ***** VARIABLES ***** //
+    // ********************* //
+
     var elements = {
         stats: {},
     };
+
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
+
+    // ------ //
+    // PUBLIC //
+    // ------ //
 
     this.init = function (target) {
         elements.container = target;
@@ -9,6 +21,10 @@ var Page_Stats = new function () {
         display_heading();
         display_body();
     };
+
+    // ------- //
+    // PRIVATE //
+    // ------- //
 
     function display_heading() {
         elements.heading && elements.heading.remove && elements.heading.remove();

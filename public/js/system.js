@@ -1,4 +1,8 @@
 var System = new function () {
+    // ********************* //
+    // ***** CONSTANTS ***** //
+    // ********************* //
+
     var config = {
         systems: {
             deciv: {
@@ -8,6 +12,10 @@ var System = new function () {
             },
         },
     };
+
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
 
     /**
      * @returns {Array}

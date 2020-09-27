@@ -1,23 +1,19 @@
 var LocalStorage = new function () {
+    // ********************* //
+    // ***** VARIABLES ***** //
+    // ********************* //
+
     var status = {
         supported: null,
     };
 
-    try {
-        status.supported = 'localStorage' in window && window['localStorage'] !== null;
-    } catch (e) {
-        status.supported = false;
-    }
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
 
-    if (status.supported) {
-        try {
-            localStorage.setItem('test', '123');
-            status.supported = localStorage.getItem('test') == '123';
-            localStorage.removeItem('test');
-        } catch (e) {
-            status.supported = false;
-        }
-    }
+    // ------ //
+    // PUBLIC //
+    // ------ //
 
     this.supported = function () {
         return status.supported;
@@ -46,4 +42,35 @@ var LocalStorage = new function () {
 
         localStorage.removeItem(key);
     };
+
+    // ------- //
+    // PRIVATE //
+    // ------- //
+
+    /**
+     * Test if local storage is available for use.
+     */
+    function init() {
+        try {
+            status.supported = 'localStorage' in window && window['localStorage'] !== null;
+        } catch (e) {
+            status.supported = false;
+        }
+
+        if (status.supported) {
+            try {
+                localStorage.setItem('test', '123');
+                status.supported = localStorage.getItem('test') === '123';
+                localStorage.removeItem('test');
+            } catch (e) {
+                status.supported = false;
+            }
+        }
+    }
+
+    // ************************** //
+    // ***** INITIALIZATION ***** //
+    // ************************** //
+
+    init();
 };

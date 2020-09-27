@@ -1,4 +1,8 @@
 var System_Deciv = new function () {
+    // ********************* //
+    // ***** CONSTANTS ***** //
+    // ********************* //
+
     var config = {
         rollDirection: -1,
         statType: 'against',
@@ -40,6 +44,10 @@ var System_Deciv = new function () {
         {id: 'science',  name: 'Science',  die: 20},
         {id: 'crafting', name: 'Crafting', die: 20},
     ];
+
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
 
     this.getConfig = function () {
         return $.extend(true, {}, config);

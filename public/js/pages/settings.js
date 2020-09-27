@@ -1,7 +1,19 @@
 window.Page_Settings = new function () {
+    // ********************* //
+    // ***** VARIABLES ***** //
+    // ********************* //
+
     const elements = {
         stats: {},
     };
+
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
+
+    // ------ //
+    // PUBLIC //
+    // ------ //
 
     /**
      * Sets up the Settings page.
@@ -58,7 +70,11 @@ window.Page_Settings = new function () {
                 copyButton.html('<i class="fa fa-clipboard"></i> Copy');
             }, 2000);
         });
-    }
+    };
+
+    // ------- //
+    // PRIVATE //
+    // ------- //
 
     /**
      * Imports the data from the given textarea, replacing all current data.

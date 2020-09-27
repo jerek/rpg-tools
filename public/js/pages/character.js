@@ -1,10 +1,27 @@
 var Page_Character = new function () {
+    // ********************* //
+    // ***** CONSTANTS ***** //
+    // ********************* //
+
     var config = {
         character: null,
     };
+
+    // ********************* //
+    // ***** VARIABLES ***** //
+    // ********************* //
+
     var elements = {
         stats: {},
     };
+
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
+
+    // ------ //
+    // PUBLIC //
+    // ------ //
 
     this.init = function (target) {
         elements.container = target;
@@ -13,6 +30,10 @@ var Page_Character = new function () {
         display_name();
         display_body();
     };
+
+    // ------- //
+    // PRIVATE //
+    // ------- //
 
     function display_controls() {
         elements.controls && elements.controls.remove && elements.controls.remove();
@@ -386,6 +407,10 @@ var Page_Character = new function () {
             updateDisplay_statValue(updatedStat);
         }
     }
+
+    // ************************** //
+    // ***** INITIALIZATION ***** //
+    // ************************** //
 
     data_load();
 };

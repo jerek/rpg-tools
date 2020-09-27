@@ -1,4 +1,8 @@
 var Base = new function () {
+    // ********************* //
+    // ***** CONSTANTS ***** //
+    // ********************* //
+
     var config = {
         pages: {
             '404': {
@@ -46,12 +50,21 @@ var Base = new function () {
             'settings',
         ],
     };
+
+    // ********************* //
+    // ***** VARIABLES ***** //
+    // ********************* //
+
     var elements = {};
     var status = {
         lockHash: false,
     };
 
-    this.init = function () {
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
+
+    function init() {
         elements.wrapper = Utility.addElement('wrapper', document.body);
         elements.header = Utility.addElement('header', elements.wrapper);
         elements.body = Utility.addElement('body', elements.wrapper);
@@ -60,7 +73,7 @@ var Base = new function () {
 
         $(window).on('hashchange', action_nav);
         action_nav();
-    };
+    }
 
     function display_header(target) {
         elements.headerInner = Utility.addElement('header-inner', target);
@@ -219,6 +232,10 @@ var Base = new function () {
     function utility_clearHash(allowBackButton) {
         return utility_setHash(null, !allowBackButton, true);
     }
-};
 
-$(Base.init);
+    // ************************** //
+    // ***** INITIALIZATION ***** //
+    // ************************** //
+
+    setTimeout(init, 0);
+};

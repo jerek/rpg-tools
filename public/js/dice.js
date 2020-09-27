@@ -1,12 +1,29 @@
 var Dice = new function () {
+    // ********************* //
+    // ***** CONSTANTS ***** //
+    // ********************* //
+
     var config = {
         animateRolls: true,
         dice: ['d', 4, 6, 8, 10, 12, 20, 100],
         rollAnimationCount: 20,
         rollAnimationRate: 4,
     };
+
+    // ********************* //
+    // ***** VARIABLES ***** //
+    // ********************* //
+
     var elements = {};
     var rolls = null;
+
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
+
+    // ------ //
+    // PUBLIC //
+    // ------ //
 
     /**
      * Get the result of a roll without effecting the DOM.
@@ -213,6 +230,10 @@ var Dice = new function () {
         }
     };
 
+    // ------- //
+    // PRIVATE //
+    // ------- //
+
     /**
      * Handle the animation of showing a roll result.
      *
@@ -323,6 +344,10 @@ var Dice = new function () {
             return result;
         }
     }
+
+    // ************************** //
+    // ***** INITIALIZATION ***** //
+    // ************************** //
 
     data_load();
 };

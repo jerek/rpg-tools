@@ -1,11 +1,27 @@
 var Page_Home = new function () {
+    // ********************* //
+    // ***** VARIABLES ***** //
+    // ********************* //
+
     var elements = {};
+
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
+
+    // ------ //
+    // PUBLIC //
+    // ------ //
 
     this.init = function (target) {
         elements.container = target;
 
         display_body();
     };
+
+    // ------- //
+    // PRIVATE //
+    // ------- //
 
     function display_body() {
         elements.container.html('<h1>Jerek\'s RPG Tools</h1>\

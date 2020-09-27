@@ -1,8 +1,25 @@
 var Page_Dice = new function () {
+    // ********************* //
+    // ***** CONSTANTS ***** //
+    // ********************* //
+
     var config = {
         dice: ['d', 4, 6, 8, 10, 12, 20, 100],
     };
+
+    // ********************* //
+    // ***** VARIABLES ***** //
+    // ********************* //
+
     var elements = {};
+
+    // ********************* //
+    // ***** FUNCTIONS ***** //
+    // ********************* //
+
+    // ------ //
+    // PUBLIC //
+    // ------ //
 
     this.init = function (target) {
         elements.container = target;
@@ -10,6 +27,10 @@ var Page_Dice = new function () {
         display_controls();
         display_body();
     };
+
+    // ------- //
+    // PRIVATE //
+    // ------- //
 
     function display_controls() {
         elements.controls && elements.controls.remove && elements.controls.remove();
