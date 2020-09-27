@@ -77,7 +77,7 @@ window.Page_RandomWords = new function () {
         elements.form = Utility.addElement('random-words-form', elements.container, {
             element: 'form',
             name: 'random-words-form',
-            submit: function (event) {
+            submit: function () {
                 let params = {};
                 if (document.forms['random-words-form']['type'].value) {
                     let type = document.forms['random-words-form']['type'].value;

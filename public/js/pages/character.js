@@ -205,11 +205,11 @@ window.Page_Character = new function () {
 
         let logInner = Utility.addElement('character-stat-log-inner', log);
 
-        let logTogglerBg = Utility.addElement('character-stat-log-toggler-background', log);
+        Utility.addElement('character-stat-log-toggler-background', log);
 
-        let logToggler = Utility.addElement('character-stat-log-toggler fa fa-plus', log, {
+        Utility.addElement('character-stat-log-toggler fa fa-plus', log, {
             element: 'a',
-            click: action_toggleLog.bind(elements.stats[stat.id], stat),
+            click: action_toggleLog.bind(elements.stats[stat.id]),
             mousedown: Utility.returnFalse,
         });
 
@@ -307,7 +307,7 @@ window.Page_Character = new function () {
         display_result($('.character-stat-log-inner', this), rollResult);
     }
 
-    function action_toggleLog(stat) {
+    function action_toggleLog() {
         if (this.hasClass('expand')) {
             this.removeClass('expand');
             $('.character-stat-log-toggler', this)

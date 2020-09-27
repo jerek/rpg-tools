@@ -185,14 +185,6 @@ window.Base = new function () {
         return result;
     }
 
-    function utility_hyphenate(string) {
-        let parts = string.split(/[-\/]/);
-
-        let result = parts.shift();
-
-        return result.join('-');
-    }
-
     function utility_setHash(hash, disallowBackButton, lockHash) {
         let hashWasLocked = !!status.lockHash;
         if (lockHash && !hashWasLocked) {
