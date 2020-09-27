@@ -239,5 +239,5 @@ window.Base = new function () {
     // ***** INITIALIZATION ***** //
     // ************************** //
 
-    setTimeout(init, 0);
+    window.addEventListener('DOMContentLoaded', init);
 };
