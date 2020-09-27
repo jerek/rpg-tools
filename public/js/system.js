@@ -1,7 +1,15 @@
 window.System = new function () {
+    const self = this;
+    const Utility = window.Utility;
+
     // *********************** //
     // ***** DEFINITIONS ***** //
     // *********************** //
+
+    /**
+     * @typedef {{min: number, location: string}} GameBodyLocation A system's list of body locations, and their minimum
+     * hit location rolls to match them, as determined by a d100 roll. This list MUST be ordered highest to lowest.
+     */
 
     /**
      * @typedef {Object} GameStat
@@ -22,6 +30,17 @@ window.System = new function () {
     // ***** CONSTANTS ***** //
     // ********************* //
 
+    // ------ //
+    // PUBLIC //
+    // ------ //
+
+    /** @type {string} The default system ID. */
+    this.DEFAULT_SYSTEM = 'deciv';
+
+    // ------- //
+    // PRIVATE //
+    // ------- //
+
     const ID_DECIV = 'deciv';
 
     /** @type {{systems: Object}} */
@@ -41,20 +60,20 @@ window.System = new function () {
     // ********************* //
 
     /**
-     * Returns a list of string IDs of available game systems.
+     * Returns this system's list of body locations, as determined by a d100 roll.
      *
-     * @returns {string[]}
+     * @param {string} systemId
+     * @return {GameBodyLocation[]}
      */
-    this.getSystemIds = function () {
-        let systems = [];
+    this.getBodyLocations = function (systemId) {
+        let systemClass = self.getClass(systemId);
+        if (!systemClass) {
+            Utility.error('No class found for ' + JSON.stringify(systemId) + ' system.');
 
-        for (let system in config.systems) {
-            if (config.systems.hasOwnProperty(system)) {
-                systems.push(system);
-            }
+            return [];
         }
 
-        return systems;
+        return systemClass.getBodyLocations();
     };
 
     /**
@@ -62,11 +81,14 @@ window.System = new function () {
      * @returns {object|null}
      */
     this.getClass = function (systemId) {
-        if (config.systems[systemId]) {
-            return window['System_' + config.systems[systemId]['class']];
+        let systemConfig = self.getConfig(systemId);
+        if (!systemConfig) {
+            Utility.error('No configuration found for ' + JSON.stringify(systemId) + ' system.');
+
+            return null;
         }
 
-        return null;
+        return window['System_' + systemConfig['class']];
     };
 
     /**
@@ -75,5 +97,22 @@ window.System = new function () {
      */
     this.getConfig = function (systemId) {
         return config.systems[systemId] || null;
+    };
+
+    /**
+     * Returns a list of string IDs of available game systems.
+     *
+     * @returns {string[]}
+     */
+    this.getSystemIds = function () {
+        let systemIds = [];
+
+        for (let systemId in config.systems) {
+            if (config.systems.hasOwnProperty(systemId)) {
+                systemIds.push(systemId);
+            }
+        }
+
+        return systemIds;
     };
 };

@@ -1,11 +1,6 @@
 window.Page_Dice = new function () {
-    // ********************* //
-    // ***** CONSTANTS ***** //
-    // ********************* //
-
-    const config = {
-        dice: ['d', 4, 6, 8, 10, 12, 20, 100],
-    };
+    const Dice = window.Dice;
+    const Utility = window.Utility;
 
     // ********************* //
     // ***** VARIABLES ***** //
@@ -55,14 +50,14 @@ window.Page_Dice = new function () {
             for (let die in rolls) {
                 if (rolls.hasOwnProperty(die) && rolls[die].length) {
                     // noinspection JSAssignmentUsedAsCondition
-                    for (let i = 0, rollObject; rollObject = rolls[die][i]; i++) {
-                        let column = rollObject.dice && rollObject.dice > 1 ? 'd' : rollObject.sides;
+                    for (let i = 0, rollResult; rollResult = rolls[die][i]; i++) {
+                        let column = rollResult.dice && rollResult.dice > 1 ? Dice.DIE_CUSTOM : rollResult.sides;
 
                         if (!groupedRolls[column]) {
                             groupedRolls[column] = [];
                         }
 
-                        groupedRolls[column].push(rollObject);
+                        groupedRolls[column].push(rollResult);
                     }
                 }
             }
@@ -77,8 +72,8 @@ window.Page_Dice = new function () {
             for (let die in groupedRolls) {
                 if (groupedRolls.hasOwnProperty(die) && groupedRolls[die].length) {
                     // noinspection JSAssignmentUsedAsCondition
-                    for (let j = 0, rollObject; rollObject = groupedRolls[die][j]; j++) {
-                        display_result(rollObject, true);
+                    for (let j = 0, rollResult; rollResult = groupedRolls[die][j]; j++) {
+                        display_result(rollResult, true);
                     }
                 }
             }
@@ -104,76 +99,97 @@ window.Page_Dice = new function () {
         }
 
         elements.dice = {};
+        let dice = Dice.getDice();
         // noinspection JSAssignmentUsedAsCondition
-        for (let i = 0, die; die = config.dice[i]; i++) {
+        for (let i = 0, die; die = dice[i]; i++) {
             let wrapper = Utility.addElement('dice-die-wrapper', target, {
-                'data-die': die,
+                'data-die': die.id,
             });
-            let dieButton = Dice.appendDie(wrapper, die, action_roll);
+            let dieButton = Dice.appendDieButton(wrapper, die, action_roll);
             let log = Utility.addElement('dice-die-log', wrapper);
 
-            elements.dice[die] = {
+            elements.dice[die.id] = {
                 wrapper: wrapper,
                 die: dieButton,
                 log: log,
             };
         }
 
-        target.attr('data-dice-count', config.dice.length);
+        target.attr('data-dice-count', dice.length);
     }
 
-    function display_result(rollObject, suppressAnimation) {
-        let column = rollObject.dice && rollObject.dice > 1 ? 'd' : rollObject.sides;
+    /**
+     * Display the given roll result on the page.
+     *
+     * @param {DiceRollResult} rollResult
+     * @param {boolean}        [suppressAnimation] Whether this display instance should never animate.
+     */
+    function display_result(rollResult, suppressAnimation) {
+        let column = Dice.getRollTypeId(rollResult);
         if (elements.dice[column] && elements.dice[column].log) {
-            Dice.appendResult(elements.dice[column].log, rollObject, suppressAnimation);
+            Dice.appendResult(elements.dice[column].log, rollResult, suppressAnimation);
         }
     }
 
     /**
      * Roll a die with a given number of sides. If it's the string "d" it fetches the custom value from the input box.
      *
-     * @param {number|string} sides
+     * @param {Die} die
      * @return {boolean} Whether it was able to make a roll.
      */
-    function action_roll(sides) {
-        let rollObject;
-        if (!isNaN(sides)) {
-            rollObject = Dice.roll({sides: sides});
-            display_result(rollObject);
-        } else if (sides === 'd') {
-            let $rollsInput = $('.dice-die.custom');
-            let rolls = $rollsInput.val();
+    function action_roll(die) {
+        /** @type {DiceRollRequest} De-reference the die object so we can modify a new copy of it as a request. */
+        let rollRequest = JSON.parse(JSON.stringify(die));
 
-            if (!rolls || typeof rolls !== 'string') {
-                display_customRollExplanation();
+        switch (rollRequest.type) {
+            case Dice.DIE_NUMERIC:
+            case Dice.DIE_BODY_LOCATION:
+                // These types can be rolled as-is.
+
+                display_result(Dice.roll(rollRequest));
+
+                return true;
+            case Dice.DIE_CUSTOM:
+                // Check the user's input for the custom roll, and validate it.
+
+                let $rollsInput = $('.dice-die.custom');
+                let rolls = $rollsInput.val();
+
+                if (!rolls || typeof rolls !== 'string') {
+                    display_customRollExplanation();
+
+                    return false;
+                }
+
+                rolls = rolls.replace(/^[^\d]*(\d+d\d+)[^\d]*$/, '$1');
+
+                if (!rolls.match(/^\d+d\d+$/)) {
+                    display_customRollExplanation();
+
+                    return false;
+                }
+
+                $rollsInput.val(rolls);
+
+                let parts = rolls.split(Dice.DIE_CUSTOM);
+                rollRequest.dice = parseInt(parts[0]);
+                rollRequest.sides = parseInt(parts[1]);
+
+                if (isNaN(rollRequest.dice) || isNaN(rollRequest.sides)) {
+                    Utility.error('Error parsing custom roll request.');
+
+                    return false;
+                }
+
+                display_result(Dice.roll(rollRequest));
+
+                return true;
+            default:
+                // Invalid die type.
+
+                Utility.error('Cannot roll die of unknown type ' + JSON.stringify(die) + '.');
+
                 return false;
-            }
-
-            rolls = rolls.replace(/^[^\d]*(\d+d\d+)[^\d]*$/, '$1');
-
-            if (!rolls.match(/^\d+d\d+$/)) {
-                display_customRollExplanation();
-                return false;
-            }
-
-            $rollsInput.val(rolls);
-
-            let parts = rolls.split('d');
-            let dice = parseInt(parts[0]);
-            let diceSides = parseInt(parts[1]);
-
-            if (isNaN(dice) || isNaN(diceSides)) {
-                alert('Something went wrong!');
-                return false;
-            }
-
-            rollObject = Dice.roll({dice: dice, sides: diceSides});
-            display_result(rollObject);
-        } else {
-            // Invalid number of sides
-            return false;
         }
-
-        return true;
     }
 };
