@@ -73,13 +73,15 @@ window.Utility = new function () {
      * @param {boolean}  [consoleOnly]
      */
     this.error = function (message, consoleOnly) {
-        if (consoleOnly === true || typeof message !== 'string') {
-            if (typeof console !== 'undefined' && console && typeof console.error === 'function') {
-                console.error(message);
-            }
-        } else {
-            alert(message);
+        if (typeof console !== 'undefined' && console && typeof console.error === 'function') {
+            console.error(message);
         }
+
+        if (consoleOnly === true || typeof message !== 'string') {
+            return;
+        }
+
+        alert(message);
     };
 
     /**
