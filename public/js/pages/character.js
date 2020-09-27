@@ -359,6 +359,10 @@ window.Page_Character = new function () {
         }
     }
 
+    /**
+     * @param {GameStat} stat
+     * @return {boolean|null}
+     */
     function action_setStat(stat) {
         let stats = Character.getStats(config.character);
 

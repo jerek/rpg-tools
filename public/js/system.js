@@ -4,6 +4,14 @@ window.System = new function () {
     // *********************** //
 
     /**
+     * @typedef {Object} GameStat
+     * @property {string}  id          A unique string ID.
+     * @property {string}  name        The display name of this stat.
+     * @property {number}  die         The die side number to use when rolling this stat.
+     * @property {boolean} [secondary] Whether to visually distinguish this stat as being less significant than others.
+     */
+
+    /**
      * @typedef {Object} GameSystem
      * @property {string} id    A unique string ID.
      * @property {string} name  The display name of this game system.
@@ -16,7 +24,9 @@ window.System = new function () {
 
     const ID_DECIV = 'deciv';
 
+    /** @type {{systems: Object}} */
     const config = {
+        /** @type {Object} */
         systems: {
             [ID_DECIV]: {
                 id: ID_DECIV,

@@ -7,6 +7,8 @@ window.System_Deciv = new function () {
         rollDirection: -1,
         statType: 'against',
     };
+
+    /** @type {GameStat[]} */
     const attributes = [
         {id: 'athleticism', name: 'Athleticism', die: 20},
         {id: 'strength',    name: 'Strength',    die: 20, secondary: true},
@@ -23,6 +25,8 @@ window.System_Deciv = new function () {
         {id: 'affinity',    name: 'Affinity',    die: 20, secondary: true},
         {id: 'influence',   name: 'Influence',   die: 20, secondary: true},
     ];
+
+    /** @type {GameStat[]} */
     const specialAttributes = [
         {id: 'luck', name: 'Luck', die: 20},
         {
@@ -32,6 +36,8 @@ window.System_Deciv = new function () {
             },
         },
     ];
+
+    /** @type {GameStat[]} */
     const technicalAttributes = [
         {id: 'melee',    name: 'Melee',    die: 20},
         {id: 'guns',     name: 'Guns',     die: 20},

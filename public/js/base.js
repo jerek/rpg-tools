@@ -168,6 +168,12 @@ window.Base = new function () {
         display_page(page);
     }
 
+    /**
+     * Returns the given string with the first character in uppercase.
+     *
+     * @param {string} string
+     * @return {string}
+     */
     function utility_ucFirst(string) {
         return string.substr(0, 1).toUpperCase() + string.substr(1);
     }
